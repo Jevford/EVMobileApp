@@ -1,0 +1,20 @@
+[
+    {
+        "nickname": "Emon's Car",
+        "manufacturer": "Tesla",
+        "model": "Model S",
+        "year": "2016"
+    },
+    {
+        "nickname": "Mary's Car",
+        "manufacturer": "Volkswagen",
+        "model": "e-Golf",
+        "year": "2019"
+    },
+    {
+        "nickname": "Joseph's Car",
+        "manufacturer": "BMW",
+        "model": "iX3",
+        "year": "2020"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "evse_id": "US*A23*E45B*78C",
+        "voltage": "LV 2",
+        "output": "30 Amps",
+        "plug_type": "J1772",
+        "provider": "SoCal Edison",
+        "zip": "91612"
+    },
+    {
+        "evse_id": "US*F34*EADT*W2W",
+        "voltage": "LV 1",
+        "output": "16 Amps",
+        "plug_type": "J1772",
+        "provider": "SDG&E",
+        "zip": "90201"
+    },
+    {
+        "evse_id": "US*S81*EXEB*5W9",
+        "voltage": "LV 2",
+        "output": "24 Amps",
+        "plug_type": "J1772",
+        "provider": "PG&E",
+        "zip": "92657"
+    }
+]
