@@ -1,16 +1,70 @@
-import React, { Component } from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
-
+import React, {Component} from 'react';
+import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 
-
 export default class Vehicles extends Component {
+    state = {car: 'EVIE'};
+
     render() {
         return (
             <View style={styles.container}>
                 <Header title='Vehicles'/>
                 <View style={styles.container}>
-                    <Text>Vehicles Screen</Text>
+
+                    <View style={styles.container}>
+                        <Text style={styles.headingText}>Select a Vehicle</Text>
+                        <Picker
+                        selectedValue={this.state.language}
+                        style={{height: 75, width: 200}}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({language: itemValue})
+                        }>
+                        <Picker.Item label="Emon's Car" value="emon" />
+                        <Picker.Item label="Mary's Car" value="mary" />
+                        <Picker.Item label="Joseph's Car" value="joseph" />
+                        </Picker>
+                    </View>
+
+                    <View style={styles.container}>
+                        <Text style={styles.headingText}>Vehicle Information</Text>
+                        <View style={styles.infoView}>
+                            <Text style={styles.infoTextLeft}>Nickname</Text>
+                            <Text style={styles.infoTextRight}>EVIE</Text>
+                        </View>
+                        <View style={styles.infoView}>
+                            <Text style={styles.infoTextLeft}>Manufacturer</Text>
+                            <Text style={styles.infoTextRight}>Tesla</Text>
+                        </View>
+                        <View style={styles.infoView}>
+                            <Text style={styles.infoTextLeft}>Model</Text>
+                            <Text style={styles.infoTextRight}>Model 3</Text>
+                        </View>
+                        <View style={styles.infoView}>
+                            <Text style={styles.infoTextLeft}>Year</Text>
+                            <Text style={styles.infoTextRight}>2020</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.optionsContainer}>
+                        <Text style={styles.headingText}>Vehicle Options</Text>
+                        <View style={styles.buttonContainer}>
+                            <View style={{width: "50%"}}>
+                                <Button
+                                title="Remove"
+                                color="#f04646"
+                                onPress={() => Alert.alert('Car Removed')}
+                                />
+                            </View>
+                            <View style={{width: "50%"}}>
+                                <Button
+                                title="Add"
+                                onPress={() => Alert.alert('Car Added!')}
+                                />
+                            </View>
+                        </View>
+                    </View>
+
                 </View>
             </View> 
         );
@@ -22,6 +76,39 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
-    }
+        backgroundColor: 'white',
+    },
+    optionsContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
+    buttonContainer: {
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    headingText: {
+        paddingTop: 10,
+        fontSize: 24,
+        color: '#999999',
+    },
+    infoTextLeft: {
+        flex: 1,
+        textAlign: 'left',
+        paddingTop: 15,
+        paddingLeft: 40,
+        fontSize: 18,
+    },
+    infoTextRight: {
+        flex: 1,
+        textAlign: 'right',
+        paddingTop: 15,
+        paddingRight: 40,
+        fontSize: 18,
+    },
+    infoView: {
+        flexDirection: 'row',
+    },
 })
