@@ -3,7 +3,9 @@ import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from
 
 import Header from '../components/Header';
 
+// Vehicle Status Images
 import Idle from '../assets/homeIcons/unplug.png'
+import Charging from '../assets/homeIcons/plug.png'
 
 // Money Images
 import money0 from '../assets/homeIcons/cost/lv0.png'
@@ -26,21 +28,29 @@ export default class Home extends Component {
     constructor(){
         super();
         this.state = { 
+            vehicleStatusImg: Idle,
+            vehicleStatusText: "Not Charging",
+            chargeText: "Charge Now",
             optionbank1: money0,
             optionbank2: money3,
             optionbank3: money5,
             optiontree1: tree0,
             optiontree2: tree3,
-            optiontree3: tree5
+            optiontree3: tree5,
+            option1flag: false,
+            option2flag: false,
+            option3flag: false
         };
     }
 
+    vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
 
     randomImg = () => {
         return Math.floor(Math.random() * 6);
     }
+
     refreshOptions = () => {
         this.setState({
             optionbank1: this.piggybanks[this.randomImg()],
@@ -48,8 +58,69 @@ export default class Home extends Component {
             optionbank3: this.piggybanks[this.randomImg()],
             optiontree1: this.trees[this.randomImg()],
             optiontree2: this.trees[this.randomImg()],
-            optiontree3: this.trees[this.randomImg()]
+            optiontree3: this.trees[this.randomImg()],
+            option1flag: false,
+            option2flag: false,
+            option3flag: false
          })
+    }
+
+    styleOption = (flag) => {
+        let selectionColor = flag ? "#cdd1ce" : "transparent"; 
+        return {
+                marginTop:5,
+                paddingTop:45,
+                paddingBottom:40,
+                paddingLeft:170,
+                paddingRight:170,
+                marginLeft:0,
+                marginRight:0,
+                backgroundColor: selectionColor,
+                borderRadius:8,
+                borderWidth: 1,
+                borderColor: '#ABABAB'
+            }
+    }
+
+    setOptionFlag = (option) => {
+        if(option === 'option1'){
+            this.setState({
+                option1flag: true,
+                option2flag: false,
+                option3flag: false
+            })
+        }
+        else if(option === 'option2'){
+            this.setState({
+                option1flag: false,
+                option2flag: true,
+                option3flag: false
+            })
+        }
+        else if(option === 'option3'){
+            this.setState({
+                option1flag: false,
+                option2flag: false,
+                option3flag: true
+            })
+        }
+    }
+
+    setChargeOption = () => {
+        if(this.state.chargeText === "Charge Now"){
+            this.setState({
+                vehicleStatusImg: Charging,
+                vehicleStatusText: "Charging",
+                chargeText: "Stop Charging"
+            })
+        }
+        else{
+            this.setState({
+                vehicleStatusImg: Idle,
+                vehicleStatusText: "Not Charging",
+                chargeText: "Charge Now"
+            })
+        }
     }
 
     render() {
@@ -59,15 +130,15 @@ export default class Home extends Component {
             <View style={styles.container}>
                 <View style={styles.container}>
                     <Text style={styles.vehicleText}> Connected Charger: {evseID} </Text>
-                    <Image source={Idle} style={styles.vehicleStatus}/>
-                    <Text style={styles.vehicleText}>Not Charging</Text>
+                    <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
+                    <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.chargingOptionsText}> Your Charging Options </Text>
                     <TouchableOpacity
-                        style={styles.SelectionButton}
+                        style={this.styleOption(this.state.option1flag)}
                         activeOpacity={0.5}
-                        onPress={() =>{ Alert.alert('Selection Fast Chosen') }}
+                        onPress={() =>{ this.setOptionFlag('option1') }}
                     >
                         <View style={styles.SelectionText}>
                             <Text style={styles.selectionTitle}>[Fast] Quickest Charge</Text>
@@ -78,9 +149,9 @@ export default class Home extends Component {
                         </View>
                         </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.SelectionButton}
+                        style={this.styleOption(this.state.option2flag)}
                         activeOpacity={0.5}
-                        onPress={() =>{ Alert.alert('Selection Moderate Chosen') }}
+                        onPress={() => { this.setOptionFlag('option2') }}
                     >
                         <View style={styles.SelectionText}>
                             <Text style={styles.selectionTitle}>[Moderate] Some Savings</Text>
@@ -91,9 +162,9 @@ export default class Home extends Component {
                         </View>
                         </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.SelectionButton}
+                        style={this.styleOption(this.state.option3flag)}
                         activeOpacity={0.5}
-                        onPress={() =>{ Alert.alert('Selection Slow Chosen') }}
+                        onPress={() =>{ this.setOptionFlag('option3') }}
                     >
                         <View style={styles.SelectionText}>
                             <Text style={styles.selectionTitle}>[Slow] Great Cost and Tree Savings</Text>
@@ -108,7 +179,11 @@ export default class Home extends Component {
                             <Text style={styles.refreshText}>Refresh My Options</Text>
                         </View>
                     </TouchableOpacity>
-                    <Text style={styles.chargingOptionsText}> Charge Now </Text>
+                    <TouchableOpacity onPress={this.setChargeOption}>
+                        <View>
+                            <Text style={styles.chargingOptionsText}> {this.state.chargeText} </Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
             </ScrollView>
@@ -118,7 +193,7 @@ export default class Home extends Component {
 
 const evseID = "EVTSX1"
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
@@ -136,7 +211,7 @@ const styles = StyleSheet.create({
         color: '#999999'
     },
     chargingOptions: {
-        borderColor: 'transparent',
+        borderColor: "transparent",
         borderBottomColor: '#65CB87',
         borderStyle: 'solid',
     },
@@ -153,19 +228,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#65CB87'
     },  
-    SelectionButton: {
-        marginTop:5,
-        paddingTop:45,
-        paddingBottom:40,
-        paddingLeft:170,
-        paddingRight:170,
-        marginLeft:0,
-        marginRight:0,
-        backgroundColor:'transparent',
-        borderRadius:8,
-        borderWidth: 1,
-        borderColor: '#ABABAB'
-    },
+    // SelectionButton: {
+    //     marginTop:5,
+    //     paddingTop:45,
+    //     paddingBottom:40,
+    //     paddingLeft:170,
+    //     paddingRight:170,
+    //     marginLeft:0,
+    //     marginRight:0,
+    //     backgroundColor: selectionColor,
+    //     borderRadius:8,
+    //     borderWidth: 1,
+    //     borderColor: '#ABABAB'
+    // },
     SelectionText: {
         position: 'absolute',
         left:10,
