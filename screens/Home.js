@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import axios from 'axios';
 
 import Header from '../components/Header';
 
@@ -31,38 +32,92 @@ export default class Home extends Component {
             vehicleStatusImg: Idle,
             vehicleStatusText: "Not Charging",
             chargeText: "Charge Now",
-            optionbank1: money0,
-            optionbank2: money3,
-            optionbank3: money5,
-            optiontree1: tree0,
-            optiontree2: tree3,
-            optiontree3: tree5,
+            dbOptions: '',
+            myOptions: {
+                option1: {
+                    label: '',
+                    charge: '',
+                    ready: '',
+                    save: '',
+                    tree: ''
+                },
+                option2: {
+                    label: '',
+                    charge: '',
+                    ready: '',
+                    save: '',
+                    tree: ''
+                },
+                option3: {
+                    label: '',
+                    charge: '',
+                    ready: '',
+                    save: '',
+                    tree: ''
+                }
+            },
             option1flag: false,
             option2flag: false,
-            option3flag: false
+            option3flag: false,
+            loadOptionsFlag: false
         };
     }
-
+    
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
+    
+    axiosTest = () => {
+        if (this.state.dbOptions === ''){
+            axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'options'}}
+            )
+            .then((res) => {
+                this.setState({dbOptions: res.data})
+            })
+            .catch((err) => Alert.alert(err));
+        }
+    }
 
-    randomImg = () => {
-        return Math.floor(Math.random() * 6);
+    random = () => {
+        return Math.floor(Math.random() * this.state.dbOptions.length);
     }
 
     refreshOptions = () => {
+        let selection1 = this.random();
+        let selection2 = this.random();
+        let selection3 = this.random();
+
         this.setState({
-            optionbank1: this.piggybanks[this.randomImg()],
-            optionbank2: this.piggybanks[this.randomImg()],
-            optionbank3: this.piggybanks[this.randomImg()],
-            optiontree1: this.trees[this.randomImg()],
-            optiontree2: this.trees[this.randomImg()],
-            optiontree3: this.trees[this.randomImg()],
+            myOptions: {
+                option1: {
+                    label: this.state.dbOptions[selection1]["Label"],
+                    charge: this.state.dbOptions[selection1]["Charge"],
+                    ready: this.state.dbOptions[selection1]["Ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection1]["Save"]],
+                    tree: this.trees[this.state.dbOptions[selection1]["Tree"]]
+                },
+                option2: {
+                    label: this.state.dbOptions[selection2]["Label"],
+                    charge: this.state.dbOptions[selection2]["Charge"],
+                    ready: this.state.dbOptions[selection2]["Ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection2]["Save"]],
+                    tree: this.trees[this.state.dbOptions[selection2]["Tree"]]
+                },
+                option3: {
+                    label: this.state.dbOptions[selection3]["Label"],
+                    charge: this.state.dbOptions[selection3]["Charge"],
+                    ready: this.state.dbOptions[selection3]["Ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection3]["Save"]],
+                    tree: this.trees[this.state.dbOptions[selection3]["Tree"]]
+                }
+            },
             option1flag: false,
             option2flag: false,
-            option3flag: false
-         })
+            option3flag: false,
+            loadOptionsFlag: true
+        })
     }
 
     styleOption = (flag) => {
@@ -124,6 +179,15 @@ export default class Home extends Component {
     }
 
     render() {
+
+        this.axiosTest();
+
+        // Giving Time for Promise to be resolved
+        setTimeout(() => {
+            if(!this.state.loadOptionsFlag){
+                this.refreshOptions();
+            }}, 500);
+
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
             {<Header title='Home'/>}
@@ -141,11 +205,11 @@ export default class Home extends Component {
                         onPress={() =>{ this.setOptionFlag('option1') }}
                     >
                         <View style={styles.SelectionText}>
-                            <Text style={styles.selectionTitle}>[Fast] Quickest Charge</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: 2 hours</Text>
-                            <Text style={styles.selectionEndTime}>End Time: 4:03am</Text>
-                            <Image source={this.state.optionbank1} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.optiontree1} style={styles.selectionImgTree}/>
+                            <Text style={styles.selectionTitle}>{this.state.myOptions.option1.label}</Text>
+                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option1.charge}</Text>
+                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option1.ready}</Text>
+                            <Image source={this.state.myOptions.option1.save} style={styles.selectionImgMoney}/>
+                            <Image source={this.state.myOptions.option1.tree} style={styles.selectionImgTree}/>
                         </View>
                         </TouchableOpacity>
                     <TouchableOpacity
@@ -154,11 +218,11 @@ export default class Home extends Component {
                         onPress={() => { this.setOptionFlag('option2') }}
                     >
                         <View style={styles.SelectionText}>
-                            <Text style={styles.selectionTitle}>[Moderate] Some Savings</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: 4 hours</Text>
-                            <Text style={styles.selectionEndTime}>End Time: 6:03am</Text>
-                            <Image source={this.state.optionbank2} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.optiontree2} style={styles.selectionImgTree}/>
+                        <Text style={styles.selectionTitle}>{this.state.myOptions.option2.label}</Text>
+                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option2.charge}</Text>
+                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option2.ready}</Text>
+                            <Image source={this.state.myOptions.option2.save} style={styles.selectionImgMoney}/>
+                            <Image source={this.state.myOptions.option2.tree} style={styles.selectionImgTree}/>
                         </View>
                         </TouchableOpacity>
                     <TouchableOpacity
@@ -167,11 +231,11 @@ export default class Home extends Component {
                         onPress={() =>{ this.setOptionFlag('option3') }}
                     >
                         <View style={styles.SelectionText}>
-                            <Text style={styles.selectionTitle}>[Slow] Great Cost and Tree Savings</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: 6 hours</Text>
-                            <Text style={styles.selectionEndTime}>End Time: 8:03am</Text>
-                            <Image source={this.state.optionbank3} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.optiontree3} style={styles.selectionImgTree}/>
+                        <Text style={styles.selectionTitle}>{this.state.myOptions.option3.label}</Text>
+                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option3.charge}</Text>
+                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option3.ready}</Text>
+                            <Image source={this.state.myOptions.option3.save} style={styles.selectionImgMoney}/>
+                            <Image source={this.state.myOptions.option3.tree} style={styles.selectionImgTree}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.refreshOptions}>
