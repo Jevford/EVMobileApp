@@ -3,6 +3,7 @@ import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} f
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import carData from '../json/cars.json';
+import axios from 'axios';
 
 export default class Vehicles extends Component {
     state = {
@@ -19,14 +20,10 @@ export default class Vehicles extends Component {
 
     getData = async () => {
         if (this.state.carData === ''){
-            try{
-                let res = await axios.get(
-                    'http://52.156.135.73/api.php',
-                    {params : {collection : 'users'}}
-                    )
-                } catch(err) {
-                    Alert.alert(err.toString());
-            }
+            let res = await axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'users'}}
+                )
             this.setState({carData: res.data});
             this.setCars();
         }

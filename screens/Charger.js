@@ -4,6 +4,7 @@ import {Picker} from '@react-native-community/picker'; // https://github.com/rea
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import chargerData from '../json/chargers.json';
+import axios from 'axios';
 
 export default class Vehicles extends Component {
     state = {

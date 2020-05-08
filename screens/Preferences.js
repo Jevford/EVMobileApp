@@ -10,7 +10,10 @@ export default class Preferences extends Component {
         this.state = {
             costValue: 33,
             envValue: 33,
-            socValue: 33
+            socValue: 33,
+            costPriority: '[Medium]',
+            envPriority: '[Medium]',
+            socPriority: '[Medium]',
         }
     }
 
@@ -22,6 +25,21 @@ export default class Preferences extends Component {
             envValue: env,
             socValue: soc
         })
+        this.setFactorPriorities();
+    }
+
+    setFactorPriorities = () => {
+        this.setState({
+            costPriority: this.ratePriority(this.state.costValue),
+            envPriority: this.ratePriority(this.state.envValue),
+            socPriority: this.ratePriority(this.state.socValue)
+        })
+    }
+
+    ratePriority = (value) => {
+        if(value < 25) return '[Low]';
+        else if(value < 70) return '[Medium]';
+        else return '[High]';
     }
 
     render() {
@@ -45,18 +63,18 @@ export default class Preferences extends Component {
                 <View style={styles.descriptionContainer}>
                     <View style={styles.costDescriptionBox}>
                         <Text>Cost Description</Text>
-                        <Text style={styles.right}>[Low]</Text>
-                        <Text>You Cost is Trash</Text>
+                        <Text style={styles.right}>{this.state.costPriority}}</Text>
+                        <Text style={styles.descriptionText}>You Environment is TrashYou Environment is Trash</Text>
                     </View>
                     <View style={styles.envDescriptionBox}>
                         <Text>Environment Description</Text>
-                        <Text style={styles.right}>[Low]</Text>
-                        <Text>You Environment is Trash</Text>
+                        <Text style={styles.right}>{this.state.envPriority}}</Text>
+                        <Text style={styles.descriptionText}>You Environment is TrashYou Environment is Trash</Text>
                     </View>
                     <View style={styles.socDescriptionBox}>
                         <Text>Society Description</Text>
-                        <Text style={styles.right}>[Low]</Text>
-                        <Text>You Society is Trash</Text>
+                        <Text style={styles.right}>{this.state.socPriority}}</Text> 
+                        <Text style={styles.descriptionText}>a a a a a a a a a a a a a a a a a a a a a a a a a a</Text>
                     </View>
                 </View>
                 <TouchableOpacity>
@@ -74,7 +92,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     prefContainer: {
         flex: 1,
@@ -100,27 +118,35 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     descriptionContainer: {
-        flex: 2,
-        top: 0
+        alignItems: 'flex-start',
+        marginLeft: 30,
+        marginRight: 30,
+        top: -20
     },
     costDescriptionBox: {
         borderColor: 'black',
         borderTopWidth: 1,
-        paddingRight: '30%'
+        paddingRight: '30%',
+        marginBottom: 60
     },
     envDescriptionBox: {
         borderColor: 'black',
         borderTopWidth: 1,
-        paddingRight: '30%'
+        paddingRight: '30%',
+        marginBottom: 60
     },
     socDescriptionBox: {
         borderColor: 'black',
         borderTopWidth: 1,
-        paddingRight: '30%'
+        paddingRight: '30%',
+        marginBottom: 60
     },
     right: {
         position: 'absolute',
-        right: 0
+        right: 0,
+    },
+    descriptionText: {
+        flexWrap: 'wrap'
     },
     saveBtn: {
         alignItems: 'center',
