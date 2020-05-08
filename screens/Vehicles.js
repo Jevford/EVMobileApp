@@ -2,19 +2,34 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-import carData from '../json/cars.json';
+import carDataJson from '../json/cars.json';
 import axios from 'axios';
 
 export default class Vehicles extends Component {
     state = {
-        car: '',
         carData: '',
-        index: 0
+        index: 0,
+        car: '',
+        nickname: '',
+        make: '',
+        model: ''
     };
 
-    setCars = () => {
+    setCars = (value, index) => {
         this.setState({
-            car: this.state.carData[this.state.index]["Vehicle"]
+            index: index,
+            car: value,
+            nickname: this.state.carData[index]["Vehicle"],
+            make: this.state.carData[index]["Made"],
+            model: this.state.carData[index]["Model"]
+        })
+    }
+
+    initCars = () => {
+        this.setState({
+            nickname: this.state.carData[this.state.index]["Vehicle"],
+            make: this.state.carData[this.state.index]["Made"],
+            model: this.state.carData[this.state.index]["Model"]
         })
     }
 
@@ -24,8 +39,8 @@ export default class Vehicles extends Component {
                 'http://52.156.135.73/api.php',
                 {params : {collection : 'users'}}
                 )
-            this.setState({carData: res.data});
-            this.setCars();
+            this.setState({carData: res.data}); 
+            this.initCars();
         }
     }
 
@@ -40,16 +55,15 @@ export default class Vehicles extends Component {
 
                     <View style={styles.container}>
                         <Text style={styles.headingText}>Select a Vehicle</Text>
-                        <Text style={styles.headingText}>{this.state.car}</Text>
                         <Picker
                         selectedValue={this.state.car}
                         style={{height: 75, width: 200}}
                         onValueChange={(itemValue, itemIndex) =>
-                            this.setState({car: itemValue, index: itemIndex})
+                            this.setCars(itemValue, itemIndex)
                         }>
-                        <Picker.Item label="Emon's Car" value="A123" />
-                        <Picker.Item label="Mary's Car" value="B123" />
-                        <Picker.Item label="Joseph's Car" value="C123" />
+                        <Picker.Item label="Emon's Car" value="E" />
+                        <Picker.Item label="Mary's Car" value="M" />
+                        <Picker.Item label="Joseph's Car" value="J" />
                         </Picker>
                     </View>
 
@@ -57,19 +71,19 @@ export default class Vehicles extends Component {
                         <Text style={styles.headingText}>Vehicle Information</Text>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Nickname</Text>
-                            <Text style={styles.infoTextRight}>{carData[this.state.index].nickname}</Text>
+                            <Text style={styles.infoTextRight}>{this.state.nickname}</Text>
                         </View>
                         <View style={styles.infoView}>
-                            <Text style={styles.infoTextLeft}>Manufacturer</Text>
-                            <Text style={styles.infoTextRight}>{carData[this.state.index].manufacturer}</Text>
+                            <Text style={styles.infoTextLeft}>Make</Text>
+                            <Text style={styles.infoTextRight}>{this.state.make}</Text>
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Model</Text>
-                            <Text style={styles.infoTextRight}>{carData[this.state.index].model}</Text>
+                            <Text style={styles.infoTextRight}>{this.state.model}</Text>
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Year</Text>
-                            <Text style={styles.infoTextRight}>{carData[this.state.index].year}</Text>
+                            <Text style={styles.infoTextRight}>{carDataJson[this.state.index].year}</Text>
                         </View>
                     </View>
 
@@ -132,14 +146,14 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'left',
         paddingTop: 15,
-        paddingLeft: 30,
+        paddingLeft: 16,
         fontSize: 18,
     },
     infoTextRight: {
         flex: 1,
         textAlign: 'right',
         paddingTop: 15,
-        paddingRight: 30,
+        paddingRight: 16,
         fontSize: 18,
     },
     infoView: {

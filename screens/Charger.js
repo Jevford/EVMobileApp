@@ -3,47 +3,62 @@ import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} f
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
-import chargerData from '../json/chargers.json';
+import chargerDataJson from '../json/chargers.json';
 import axios from 'axios';
 
 export default class Vehicles extends Component {
     state = {
-        charger: "emon",
-        index: 0
+        chargerData: '',
+        index: 0,
+        charger: '',
+        location: ''
     };
 
-    // getData = async () => {
-    //     if (this.state.dbOptions === ''){
-    //         let res = await axios.get(
-    //             'http://52.156.135.73/api.php',
-    //             {params : {collection : 'user_device_table'}}
-    //             )
-    
-    //         this.setState({dbOptions: res.data});
-    //         if(!this.state.loadOptionsFlag){
-    //             this.refreshOptions();
-    //         }
-    //     }
-    // } 
+    setChargers = (value, index) => {
+        this.setState({
+            index: index,
+            charger: value,
+            location: this.state.chargerData[index]["User_Location"]
+        })
+    }
+
+    initChargers = () => {
+        this.setState({
+            location: this.state.chargerData[this.state.index]["User_Location"]
+        })
+    }
+
+    getData = async () => {
+        if (this.state.chargerData === ''){
+            let res = await axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'user_device_profile'}}
+                )
+            this.setState({chargerData: res.data}); 
+            this.initChargers();
+        }
+    }
 
     render() {
+        // connect to backend
+        this.getData();
+
         return (
             <View style={styles.container}>
                 <Header title='Charger'/>
                 <ScrollView>
                     <View style={styles.container}>
-
                         <View style={styles.container}>
                             <Text style={styles.headingText}>Select a Charger</Text>
                             <Picker
                             selectedValue={this.state.charger}
                             style={{height: 75, width: 200}}
                             onValueChange={(itemValue, itemIndex) =>
-                                this.setState({charger: itemValue, index: itemIndex})
+                                this.setChargers(itemValue, itemIndex)
                             }>
-                            <Picker.Item label="Emon's Charger" value="emon" />
-                            <Picker.Item label="Mary's Charger" value="mary" />
-                            <Picker.Item label="Joseph's Charger" value="joseph" />
+                            <Picker.Item label="Emon's Charger" value="E" />
+                            <Picker.Item label="Mary's Charger" value="M" />
+                            <Picker.Item label="Joseph's Charger" value="J" />
                             </Picker>
                         </View>
 
@@ -51,19 +66,19 @@ export default class Vehicles extends Component {
                             <Text style={styles.headingText}>Charger Information</Text> 
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>EVSE ID</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].evse_id}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].evse_id}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Voltage</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].voltage}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].voltage}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Output</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].output}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].output}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Plug Type</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].plug_type}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].plug_type}</Text>
                             </View>
                         </View>
 
@@ -71,11 +86,15 @@ export default class Vehicles extends Component {
                             <Text style={styles.headingText}>Location Information</Text>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Service Provider</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].provider}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].provider}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Zip Code</Text>
-                                <Text style={styles.infoTextRight}>{chargerData[this.state.index].zip}</Text>
+                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].zip}</Text>
+                            </View>
+                            <View style={styles.infoView}>
+                                <Text style={styles.infoTextLeft}>Location</Text>
+                                <Text style={styles.infoTextRight}>{this.state.location}</Text>
                             </View>
                         </View>
                         
