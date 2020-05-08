@@ -14,6 +14,9 @@ export default class Preferences extends Component {
             costPriority: '[Medium]',
             envPriority: '[Medium]',
             socPriority: '[Medium]',
+            costText: 'You are paying the normal charge rate for your electric vehicle.',
+            envText: 'You are releasing an average amount of carbon emission.',
+            socText: 'You have an average amount of impact on your local electrical grid system.'
         }
     }
 
@@ -26,6 +29,9 @@ export default class Preferences extends Component {
             socValue: soc
         })
         this.setFactorPriorities();
+        this.setDescriptionText('cost');
+        this.setDescriptionText('env');
+        this.setDescriptionText('soc');
     }
 
     setFactorPriorities = () => {
@@ -37,9 +43,63 @@ export default class Preferences extends Component {
     }
 
     ratePriority = (value) => {
-        if(value < 25) return '[Low]';
-        else if(value < 63) return '[Medium]';
+        if(value < 30) return '[Low]';
+        else if(value < 50) return '[Medium]';
         else return '[High]';
+    }
+
+    setDescriptionText = (factor) => {
+        if(factor === 'cost'){
+            if(this.state.costValue < 30){
+                this.setState({
+                    costText: 'You are paying the normal charge rate for your electric vehicle.'
+                })
+            }
+            else if(this.state.costValue < 55){
+                this.setState({
+                    costText: 'You are saving a small amount of money, but you are helping the environment and society.'
+                })
+            }
+            else{
+                this.setState({
+                    costText: 'You are saving a large amount of money but positively affecting other the environment and society.'
+                })
+            }
+        }
+        else if(factor === 'env'){
+            if(this.state.envValue < 30){
+                this.setState({
+                    envText: 'You are releasing a large amount of carbon emission.'
+                })
+            }
+            else if(this.state.envValue < 55){
+                this.setState({
+                    envText: 'You are releasing an average amount of carbon emission.'
+                })
+            }
+            else{
+                this.setState({
+                    envText: 'You are releasing a minimal amount of carbon.  Thank you for helping the Environment!'
+                })
+            }
+        }
+        else if(factor === 'soc'){
+            if(this.state.socValue < 30){
+                this.setState({
+                    socText: 'You are having a large impact on your local electrical grid system.'
+                })
+            }
+            else if(this.state.socValue < 55){
+                this.setState({
+                    socText: 'You have an average amount of impact on your local electrical grid system.'
+                })
+            }
+            else{
+                this.setState({
+                    socText: 'You have minimal impact on your local electrical grid system.  Thank you for helping your neighbors!'
+                })
+            }
+        }
     }
 
     render() {
@@ -62,19 +122,19 @@ export default class Preferences extends Component {
                 </View>
                 <View style={styles.descriptionContainer}>
                     <View style={styles.costDescriptionBox}>
-                        <Text>Cost Description</Text>
-                        <Text style={styles.right}>{this.state.costPriority}}</Text>
-                        <Text style={styles.descriptionText}>You Environment is TrashYou Environment is Trash</Text>
+                        <Text style={styles.costText}>Cost Description</Text>
+                        <Text style={styles.right}>{this.state.costPriority}</Text>
+                        <Text style={styles.descriptionText}>{this.state.costText}</Text>
                     </View>
                     <View style={styles.envDescriptionBox}>
-                        <Text>Environment Description</Text>
-                        <Text style={styles.right}>{this.state.envPriority}}</Text>
-                        <Text style={styles.descriptionText}>You Environment is TrashYou Environment is Trash</Text>
+                        <Text style={styles.envText}>Environment Description</Text>
+                        <Text style={styles.right}>{this.state.envPriority}</Text>
+                        <Text style={styles.descriptionText}>{this.state.envText}</Text>
                     </View>
                     <View style={styles.socDescriptionBox}>
-                        <Text>Society Description</Text>
+                        <Text style={styles.socText}>Society Description</Text>
                         <Text style={styles.right}>{this.state.socPriority}</Text> 
-                        <Text style={styles.descriptionText}>a a a a a a a a a a a a a a a a a a a a a a a a a a</Text>
+                        <Text style={styles.descriptionText}>{this.state.socText}</Text>
                     </View>
                 </View>
                 <TouchableOpacity>
@@ -104,49 +164,56 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#42b6f5",
         fontWeight: "bold",
-        paddingBottom: 10
+        marginBottom: 5
     },  
     envText: {
         fontSize: 20,
         color: "#65CB89",
         fontWeight: "bold",
-        paddingBottom: 10
+        marginBottom: 5
     },  
     socText: {
         fontSize: 20,
         color: "#d4c559",
-        paddingBottom: 10
+        marginBottom: 5
     },
     descriptionContainer: {
-        alignItems: 'flex-start',
+        position: 'absolute',
         marginLeft: 30,
         marginRight: 30,
-        top: -20
+        top: 270
     },
     costDescriptionBox: {
+        position: 'relative',
         borderColor: 'black',
-        borderTopWidth: 1,
-        paddingRight: '30%',
-        marginBottom: 60
+        borderTopWidth: 2,
+        borderTopColor: "#42b6f5",
+        marginBottom: 20
     },
     envDescriptionBox: {
+        position: 'relative',
         borderColor: 'black',
-        borderTopWidth: 1,
-        paddingRight: '30%',
-        marginBottom: 60
+        borderTopWidth: 2,
+        borderTopColor: "#65CB89",
+        marginTop: 20,
+        marginBottom: 20
     },
     socDescriptionBox: {
+        position: 'relative',
         borderColor: 'black',
-        borderTopWidth: 1,
-        paddingRight: '30%',
-        marginBottom: 60
+        borderTopWidth: 2,
+        borderTopColor: "#d4c559",
+        marginTop: 20,
+        marginBottom: 20
     },
     right: {
         position: 'absolute',
         right: 0,
+        fontSize: 16
     },
     descriptionText: {
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        fontSize: 16
     },
     saveBtn: {
         alignItems: 'center',
