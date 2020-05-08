@@ -6,11 +6,33 @@ import carData from '../json/cars.json';
 
 export default class Vehicles extends Component {
     state = {
-        car: "emon",
+        car: '',
+        carData: '',
         index: 0
     };
 
+    setCars = () => {
+        this.setState({
+            car: this.state.carData[this.state.index]["Vehicle"]
+        })
+    }
+
+    getData = async () => {
+        if (this.state.carData === ''){
+            let res = await axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'users'}}
+                )
+    
+            this.setState({carData: res.data});
+            this.setCars();
+        }
+    }
+
     render() {
+        // connect to backend
+        this.getData();
+
         return (
             <View style={styles.container}>
                 <Header title='Vehicles'/>
@@ -18,15 +40,16 @@ export default class Vehicles extends Component {
 
                     <View style={styles.container}>
                         <Text style={styles.headingText}>Select a Vehicle</Text>
+                        <Text style={styles.headingText}>{this.state.car}</Text>
                         <Picker
                         selectedValue={this.state.car}
                         style={{height: 75, width: 200}}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({car: itemValue, index: itemIndex})
                         }>
-                        <Picker.Item label="Emon's Car" value="emon" />
-                        <Picker.Item label="Mary's Car" value="mary" />
-                        <Picker.Item label="Joseph's Car" value="joseph" />
+                        <Picker.Item label="Emon's Car" value="A123" />
+                        <Picker.Item label="Mary's Car" value="B123" />
+                        <Picker.Item label="Joseph's Car" value="C123" />
                         </Picker>
                     </View>
 

@@ -11,6 +11,20 @@ export default class Vehicles extends Component {
         index: 0
     };
 
+    getData = async () => {
+        if (this.state.dbOptions === ''){
+            let res = await axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'user_device_table'}}
+                )
+    
+            this.setState({dbOptions: res.data});
+            if(!this.state.loadOptionsFlag){
+                this.refreshOptions();
+            }
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
