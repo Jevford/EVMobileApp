@@ -38,7 +38,7 @@ export default class Preferences extends Component {
 
     ratePriority = (value) => {
         if(value < 25) return '[Low]';
-        else if(value < 70) return '[Medium]';
+        else if(value < 63) return '[Medium]';
         else return '[High]';
     }
 
@@ -73,7 +73,7 @@ export default class Preferences extends Component {
                     </View>
                     <View style={styles.socDescriptionBox}>
                         <Text>Society Description</Text>
-                        <Text style={styles.right}>{this.state.socPriority}}</Text> 
+                        <Text style={styles.right}>{this.state.socPriority}</Text> 
                         <Text style={styles.descriptionText}>a a a a a a a a a a a a a a a a a a a a a a a a a a</Text>
                     </View>
                 </View>
