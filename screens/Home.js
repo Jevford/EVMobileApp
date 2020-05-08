@@ -70,7 +70,7 @@ export default class Home extends Component {
     axiosTest = () => {
         if (this.state.dbOptions === ''){
             axios.get(
-                'http://52.156.135.73/api.php',
+                'https://api.calplug.club/api.php',
                 {params : {collection : 'options'}}
             )
             .then((res) => {
