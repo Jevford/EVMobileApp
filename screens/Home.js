@@ -178,15 +178,29 @@ export default class Home extends Component {
         }
     }
 
-    render() {
-
-        this.axiosTest();
-
-        // Giving Time for Promise to be resolved
-        setTimeout(() => {
+    getData = async () => {
+        if (this.state.dbOptions === ''){
+            let res = await  axios.get(
+                'http://52.156.135.73/api.php',
+                {params : {collection : 'options'}}
+                )
+    
+            this.setState({dbOptions: res.data});
             if(!this.state.loadOptionsFlag){
                 this.refreshOptions();
-            }}, 500);
+            }
+        }
+    }
+
+    render() {
+        this.getData();
+        // this.axiosTest();
+
+        // // Giving Time for Promise to be resolved
+        // setTimeout(() => {
+        //     if(!this.state.loadOptionsFlag){
+        //         this.refreshOptions();
+        //     }}, 500);
 
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
