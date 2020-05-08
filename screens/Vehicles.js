@@ -19,11 +19,14 @@ export default class Vehicles extends Component {
 
     getData = async () => {
         if (this.state.carData === ''){
-            let res = await axios.get(
-                'http://52.156.135.73/api.php',
-                {params : {collection : 'users'}}
-                )
-    
+            try{
+                let res = await axios.get(
+                    'http://52.156.135.73/api.php',
+                    {params : {collection : 'users'}}
+                    )
+                } catch(err) {
+                    Alert.alert(err.toString());
+            }
             this.setState({carData: res.data});
             this.setCars();
         }

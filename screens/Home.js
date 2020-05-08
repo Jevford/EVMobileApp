@@ -38,22 +38,22 @@ export default class Home extends Component {
                     label: '',
                     charge: '',
                     ready: '',
-                    save: '',
-                    tree: ''
+                    save: money0,
+                    tree: tree0
                 },
                 option2: {
                     label: '',
                     charge: '',
                     ready: '',
-                    save: '',
-                    tree: ''
+                    save: money0,
+                    tree: tree0
                 },
                 option3: {
                     label: '',
                     charge: '',
                     ready: '',
-                    save: '',
-                    tree: ''
+                    save: money0,
+                    tree: tree0
                 }
             },
             option1flag: false,
@@ -183,7 +183,7 @@ export default class Home extends Component {
             let res = await axios.get(
                 'http://52.156.135.73/api.php',
                 {params : {collection : 'options'}}
-                )
+            )
     
             this.setState({dbOptions: res.data});
             if(!this.state.loadOptionsFlag){

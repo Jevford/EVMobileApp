@@ -42,6 +42,23 @@ export default class Preferences extends Component {
                         minMarkerOverlapDistance={10}
                     />
                 </View>
+                <View style={styles.descriptionContainer}>
+                    <View style={styles.costDescriptionBox}>
+                        <Text>Cost Description</Text>
+                        <Text style={styles.right}>[Low]</Text>
+                        <Text>You Cost is Trash</Text>
+                    </View>
+                    <View style={styles.envDescriptionBox}>
+                        <Text>Environment Description</Text>
+                        <Text style={styles.right}>[Low]</Text>
+                        <Text>You Environment is Trash</Text>
+                    </View>
+                    <View style={styles.socDescriptionBox}>
+                        <Text>Society Description</Text>
+                        <Text style={styles.right}>[Low]</Text>
+                        <Text>You Society is Trash</Text>
+                    </View>
+                </View>
                 <TouchableOpacity>
                     <View>
                         <Text style={styles.saveBtn}> Save Preferences </Text>
@@ -63,7 +80,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        fontWeight: "bold",
         top: 20
     },
     costText: {
@@ -82,7 +98,30 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#d4c559",
         paddingBottom: 10
-    },  
+    },
+    descriptionContainer: {
+        flex: 2,
+        top: 0
+    },
+    costDescriptionBox: {
+        borderColor: 'black',
+        borderTopWidth: 1,
+        paddingRight: '30%'
+    },
+    envDescriptionBox: {
+        borderColor: 'black',
+        borderTopWidth: 1,
+        paddingRight: '30%'
+    },
+    socDescriptionBox: {
+        borderColor: 'black',
+        borderTopWidth: 1,
+        paddingRight: '30%'
+    },
+    right: {
+        position: 'absolute',
+        right: 0
+    },
     saveBtn: {
         alignItems: 'center',
         justifyContent: 'center',
