@@ -45,7 +45,7 @@ export default class Vehicles extends Component {
     getData = async () => {
         if (this.state.chargerData === ''){
             let res = await axios.get(
-                'http://52.156.135.73/api.php',
+                'https://api.calplug.club/api.php',
                 {params : {collection : 'chargers'}}
                 )
             this.setState({chargerData: res.data}); 
