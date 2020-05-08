@@ -3,7 +3,6 @@ import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} f
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
-import chargerDataJson from '../json/chargers.json';
 import axios from 'axios';
 
 export default class Vehicles extends Component {
@@ -11,20 +10,35 @@ export default class Vehicles extends Component {
         chargerData: '',
         index: 0,
         charger: '',
-        location: ''
+        evse: '',
+        voltage: '',
+        output: '',
+        plug_type: '',
+        provider: '',
+        zip: ''
     };
 
     setChargers = (value, index) => {
         this.setState({
             index: index,
             charger: value,
-            location: this.state.chargerData[index]["User_Location"]
+            evse: this.state.chargerData[index]["evse_id"],
+            voltage: this.state.chargerData[index]["voltage"],
+            output: this.state.chargerData[index]["output"],
+            plug_type: this.state.chargerData[index]["plug_type"],
+            provider: this.state.chargerData[index]["provider"],
+            zip: this.state.chargerData[index]["zip"]
         })
     }
 
     initChargers = () => {
         this.setState({
-            location: this.state.chargerData[this.state.index]["User_Location"]
+            evse: this.state.chargerData[this.state.index]["evse_id"],
+            voltage: this.state.chargerData[this.state.index]["voltage"],
+            output: this.state.chargerData[this.state.index]["output"],
+            plug_type: this.state.chargerData[this.state.index]["plug_type"],
+            provider: this.state.chargerData[this.state.index]["provider"],
+            zip: this.state.chargerData[this.state.index]["zip"]
         })
     }
 
@@ -32,7 +46,7 @@ export default class Vehicles extends Component {
         if (this.state.chargerData === ''){
             let res = await axios.get(
                 'http://52.156.135.73/api.php',
-                {params : {collection : 'user_device_profile'}}
+                {params : {collection : 'chargers'}}
                 )
             this.setState({chargerData: res.data}); 
             this.initChargers();
@@ -66,19 +80,19 @@ export default class Vehicles extends Component {
                             <Text style={styles.headingText}>Charger Information</Text> 
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>EVSE ID</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].evse_id}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.evse}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Voltage</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].voltage}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.voltage}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Output</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].output}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.output}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Plug Type</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].plug_type}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.plug_type}</Text>
                             </View>
                         </View>
 
@@ -86,15 +100,11 @@ export default class Vehicles extends Component {
                             <Text style={styles.headingText}>Location Information</Text>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Service Provider</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].provider}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.provider}</Text>
                             </View>
                             <View style={styles.infoView}>
                                 <Text style={styles.infoTextLeft}>Zip Code</Text>
-                                <Text style={styles.infoTextRight}>{chargerDataJson[this.state.index].zip}</Text>
-                            </View>
-                            <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Location</Text>
-                                <Text style={styles.infoTextRight}>{this.state.location}</Text>
+                                <Text style={styles.infoTextRight}>{this.state.zip}</Text>
                             </View>
                         </View>
                         

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-import carDataJson from '../json/cars.json';
 import axios from 'axios';
 
 export default class Vehicles extends Component {
@@ -12,24 +11,27 @@ export default class Vehicles extends Component {
         car: '',
         nickname: '',
         make: '',
-        model: ''
+        model: '',
+        year: ''
     };
 
     setCars = (value, index) => {
         this.setState({
             index: index,
             car: value,
-            nickname: this.state.carData[index]["Vehicle"],
-            make: this.state.carData[index]["Made"],
-            model: this.state.carData[index]["Model"]
+            nickname: this.state.carData[index]["nickname"],
+            make: this.state.carData[index]["manufacturer"],
+            model: this.state.carData[index]["model"],
+            year: this.state.carData[index]["year"]
         })
     }
 
     initCars = () => {
         this.setState({
-            nickname: this.state.carData[this.state.index]["Vehicle"],
-            make: this.state.carData[this.state.index]["Made"],
-            model: this.state.carData[this.state.index]["Model"]
+            nickname: this.state.carData[this.state.index]["nickname"],
+            make: this.state.carData[this.state.index]["manufacturer"],
+            model: this.state.carData[this.state.index]["model"],
+            year: this.state.carData[this.state.index]["year"]
         })
     }
 
@@ -37,7 +39,7 @@ export default class Vehicles extends Component {
         if (this.state.carData === ''){
             let res = await axios.get(
                 'http://52.156.135.73/api.php',
-                {params : {collection : 'users'}}
+                {params : {collection : 'cars'}}
                 )
             this.setState({carData: res.data}); 
             this.initCars();
@@ -83,7 +85,7 @@ export default class Vehicles extends Component {
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Year</Text>
-                            <Text style={styles.infoTextRight}>{carDataJson[this.state.index].year}</Text>
+                            <Text style={styles.infoTextRight}>{this.state.year}</Text>
                         </View>
                     </View>
 

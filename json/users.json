@@ -1,0 +1,65 @@
+[
+    {
+        "user": "Emon",
+        "cars": [
+            {
+                "nickname": "Eevee",
+                "manufacturer": "Tesla",
+                "model": "Model S",
+                "year": "2016"
+            }
+        ],
+        "chargers": [
+            {
+                "evse_id": "US*A23*E45B*78C",
+                "voltage": "LV 2",
+                "output": "30 Amps",
+                "plug_type": "J1772",
+                "provider": "SoCal Edison",
+                "zip": "91612"
+            }
+        ]
+    },
+    {
+        "user": "Mary",
+        "cars": [
+            {
+                "nickname": "Flareon",
+                "manufacturer": "Volkswagen",
+                "model": "e-Golf",
+                "year": "2019"
+            }
+        ],
+        "chargers": [
+            {
+                "evse_id": "US*F34*EADT*W2W",
+                "voltage": "LV 1",
+                "output": "16 Amps",
+                "plug_type": "J1772",
+                "provider": "SDG&E",
+                "zip": "90201"
+            }
+        ]
+    },
+    {
+        "user": "Joseph",
+        "cars": [
+            {
+                "nickname": "Jolteon",
+                "manufacturer": "BMW",
+                "model": "iX3",
+                "year": "2020"
+            }
+        ],
+        "chargers": [
+            {
+                "evse_id": "US*S81*EXEB*5W9",
+                "voltage": "LV 2",
+                "output": "24 Amps",
+                "plug_type": "J1772",
+                "provider": "PG&E",
+                "zip": "92657"
+            }
+        ]
+    }
+]
