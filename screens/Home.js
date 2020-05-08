@@ -180,7 +180,7 @@ export default class Home extends Component {
 
     getData = async () => {
         if (this.state.dbOptions === ''){
-            let res = await  axios.get(
+            let res = await axios.get(
                 'http://52.156.135.73/api.php',
                 {params : {collection : 'options'}}
                 )
