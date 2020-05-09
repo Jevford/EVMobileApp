@@ -48,7 +48,7 @@ export default class Vehicles extends Component {
                 'https://api.calplug.club/api.php',
                 {params : {collection : 'chargers'}}
                 )
-            this.setState({chargerData: res.data}); 
+            this.setState({chargerData: res.data});
             this.initChargers();
         }
     }

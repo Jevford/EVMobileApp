@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import axios from 'axios';
@@ -41,7 +41,7 @@ export default class Vehicles extends Component {
                 'https://api.calplug.club/api.php',
                 {params : {collection : 'cars'}}
                 )
-            this.setState({carData: res.data}); 
+            this.setState({carData: res.data});
             this.initCars();
         }
     }
