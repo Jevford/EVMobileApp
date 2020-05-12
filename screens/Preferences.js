@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import axiosInstance from '../components/axiosInstance';
+import CustomMarkerLeft from '../components/CustomLeftMarker';
+import CustomMarkerRight from '../components/CustomRightMarker';
+import customSliderStyle from '../components/sliderStyle';
 
 import Header from '../components/Header';
 import Background from '../components/Background';
@@ -116,11 +119,24 @@ export default class Preferences extends Component {
                     <MultiSlider
                         values={[30,70]}
                         max={100}
+                        sliderLength={355}
                         onValuesChange={(values) => this.setSliderValues(values[0], values[1])}
-                        isMarkersSeparated={false}
+                        isMarkersSeparated={true}
                         enabledOne={true}
                         enabledTwo={true}
                         minMarkerOverlapDistance={10}
+                        customMarkerLeft = {(e) => {
+                            return (<CustomMarkerLeft
+                                currentValue = {e.currentValue}/>)
+                        }}
+                        customMarkerRight = {(e) => {
+                            return (<CustomMarkerRight
+                                currentValue = {e.currentValue}/>)
+                        }}
+                        selectedStyle={customSliderStyle.selectedTrack}
+                        trackStyle={customSliderStyle.track}
+                        containerStyle={customSliderStyle.container}
+                        markerContainerStyle={customSliderStyle.markerContainer}
                     />
                 </View>
                 <View style={styles.descriptionContainer}>
@@ -169,26 +185,26 @@ const styles = StyleSheet.create({
     costText: {
         fontSize: 20,
         color: "#42b6f5",
-        fontWeight: "800",
+        fontWeight: "bold",
         marginBottom: 5,
         textShadowColor: 'rgba(0, 0, 0, 1)',
-        textShadowRadius: 2
+        textShadowRadius: 4
     },  
     envText: {
         fontSize: 20,
         color: "#65CB89",
-        fontWeight: "800",
+        fontWeight: "bold",
         marginBottom: 5,
         textShadowColor: 'rgba(0, 0, 0, 1)',
-        textShadowRadius: 2
+        textShadowRadius: 4
     },  
     socText: {
         fontSize: 20,
         color: "#d4c559",
         marginBottom: 5,
-        fontWeight: '800',
+        fontWeight: 'bold',
         textShadowColor: 'rgba(0, 0, 0, 1)',
-        textShadowRadius: 3
+        textShadowRadius: 6
     },
     descriptionContainer: {
         position: 'absolute',
