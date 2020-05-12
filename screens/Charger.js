@@ -5,6 +5,8 @@ import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 
+import Background from '../components/Background'
+
 export default class Vehicles extends Component {
     state = {
         chargerData: '',
@@ -46,7 +48,7 @@ export default class Vehicles extends Component {
         if (this.state.chargerData === ''){
             let res = await axios.get(
                 'https://api.calplug.club/api.php',
-                {params : {collection : 'chargers'}}
+                {params : {version: 1, collection : 'chargers'}}
                 )
             this.setState({chargerData: res.data});
             this.initChargers();
@@ -60,6 +62,7 @@ export default class Vehicles extends Component {
         return (
             <View style={styles.container}>
                 <Header title='Charger'/>
+                <Background/>
                 <ScrollView>
                     <View style={styles.container}>
                         <View style={styles.container}>
@@ -147,13 +150,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
     },
     optionsContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
     },
     buttonContainer: {
         marginTop: 20,

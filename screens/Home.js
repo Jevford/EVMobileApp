@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
 import axios from 'axios';
 
-import Header from '../components/Header';
+import Header from '../components/Header'
+import Background from '../components/Background'
+import background from '../assets/green.jpg'
 
 // Vehicle Status Images
 import Idle from '../assets/homeIcons/unplug.png'
@@ -67,19 +69,6 @@ export default class Home extends Component {
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
     
-    axiosTest = () => {
-        if (this.state.dbOptions === ''){
-            axios.get(
-                'https://api.calplug.club/api.php',
-                {params : {collection : 'options'}}
-            )
-            .then((res) => {
-                this.setState({dbOptions: res.data})
-            })
-            .catch((err) => Alert.alert(err));
-        }
-    }
-
     random = () => {
         return Math.floor(Math.random() * this.state.dbOptions.length);
     }
@@ -92,25 +81,25 @@ export default class Home extends Component {
         this.setState({
             myOptions: {
                 option1: {
-                    label: this.state.dbOptions[selection1]["Label"],
-                    charge: this.state.dbOptions[selection1]["Charge"],
-                    ready: this.state.dbOptions[selection1]["Ready"],
-                    save: this.piggybanks[this.state.dbOptions[selection1]["Save"]],
-                    tree: this.trees[this.state.dbOptions[selection1]["Tree"]]
+                    label: this.state.dbOptions[selection1]["label"],
+                    charge: this.state.dbOptions[selection1]["charge"],
+                    ready: this.state.dbOptions[selection1]["ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection1]["save"]],
+                    tree: this.trees[this.state.dbOptions[selection1]["tree"]]
                 },
                 option2: {
-                    label: this.state.dbOptions[selection2]["Label"],
-                    charge: this.state.dbOptions[selection2]["Charge"],
-                    ready: this.state.dbOptions[selection2]["Ready"],
-                    save: this.piggybanks[this.state.dbOptions[selection2]["Save"]],
-                    tree: this.trees[this.state.dbOptions[selection2]["Tree"]]
+                    label: this.state.dbOptions[selection2]["label"],
+                    charge: this.state.dbOptions[selection2]["charge"],
+                    ready: this.state.dbOptions[selection2]["ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection2]["save"]],
+                    tree: this.trees[this.state.dbOptions[selection2]["tree"]]
                 },
                 option3: {
-                    label: this.state.dbOptions[selection3]["Label"],
-                    charge: this.state.dbOptions[selection3]["Charge"],
-                    ready: this.state.dbOptions[selection3]["Ready"],
-                    save: this.piggybanks[this.state.dbOptions[selection3]["Save"]],
-                    tree: this.trees[this.state.dbOptions[selection3]["Tree"]]
+                    label: this.state.dbOptions[selection3]["label"],
+                    charge: this.state.dbOptions[selection3]["charge"],
+                    ready: this.state.dbOptions[selection3]["ready"],
+                    save: this.piggybanks[this.state.dbOptions[selection3]["save"]],
+                    tree: this.trees[this.state.dbOptions[selection3]["tree"]]
                 }
             },
             option1flag: false,
@@ -132,8 +121,8 @@ export default class Home extends Component {
                 marginRight:0,
                 backgroundColor: selectionColor,
                 borderRadius:8,
-                borderWidth: 1,
-                borderColor: '#ABABAB'
+                borderWidth: 2,
+                borderColor: '#ABABAB',
             }
     }
 
@@ -181,8 +170,8 @@ export default class Home extends Component {
     getData = async () => {
         if (this.state.dbOptions === ''){
             let res = await axios.get(
-                'http://52.156.135.73/api.php',
-                {params : {collection : 'options'}}
+                'https://api.calplug.club/api.php',
+                {params : {version: 1, collection : 'options'}}
             )
     
             this.setState({dbOptions: res.data});
@@ -194,76 +183,70 @@ export default class Home extends Component {
 
     render() {
         this.getData();
-        // this.axiosTest();
-
-        // // Giving Time for Promise to be resolved
-        // setTimeout(() => {
-        //     if(!this.state.loadOptionsFlag){
-        //         this.refreshOptions();
-        //     }}, 500);
 
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-            {<Header title='Home'/>}
-            <View style={styles.container}>
+                <Header title='Home'/>
+                <Background/>
                 <View style={styles.container}>
-                    <Text style={styles.vehicleText}> Connected Charger: {evseID} </Text>
-                    <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
-                    <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>
-                </View>
-                <View style={styles.container}>
-                    <Text style={styles.chargingOptionsText}> Your Charging Options </Text>
-                    <TouchableOpacity
-                        style={this.styleOption(this.state.option1flag)}
-                        activeOpacity={0.5}
-                        onPress={() =>{ this.setOptionFlag('option1') }}
-                    >
-                        <View style={styles.SelectionText}>
-                            <Text style={styles.selectionTitle}>{this.state.myOptions.option1.label}</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option1.charge}</Text>
-                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option1.ready}</Text>
-                            <Image source={this.state.myOptions.option1.save} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.myOptions.option1.tree} style={styles.selectionImgTree}/>
-                        </View>
+                    <View style={styles.container}>
+                        <Text style={styles.vehicleText}> Connected Charger: {evseID} </Text>
+                        <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
+                        <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <Text style={styles.chargingOptionsText}> Your Charging Options </Text>
+                        <TouchableOpacity
+                            style={this.styleOption(this.state.option1flag)}
+                            activeOpacity={0.5}
+                            onPress={() =>{ this.setOptionFlag('option1') }}
+                        >
+                            <View style={styles.SelectionText}>
+                                <Text style={styles.selectionTitle}>{this.state.myOptions.option1.label}</Text>
+                                <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option1.charge}</Text>
+                                <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option1.ready}</Text>
+                                <Image source={this.state.myOptions.option1.save} style={styles.selectionImgMoney}/>
+                                <Image source={this.state.myOptions.option1.tree} style={styles.selectionImgTree}/>
+                            </View>
+                            </TouchableOpacity>
+                        <TouchableOpacity
+                            style={this.styleOption(this.state.option2flag)}
+                            activeOpacity={0.5}
+                            onPress={() => { this.setOptionFlag('option2') }}
+                        >
+                            <View style={styles.SelectionText}>
+                                <Text style={styles.selectionTitle}>{this.state.myOptions.option2.label}</Text>
+                                <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option2.charge}</Text>
+                                <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option2.ready}</Text>
+                                <Image source={this.state.myOptions.option2.save} style={styles.selectionImgMoney}/>
+                                <Image source={this.state.myOptions.option2.tree} style={styles.selectionImgTree}/>
+                            </View>
+                            </TouchableOpacity>
+                        <TouchableOpacity
+                            style={this.styleOption(this.state.option3flag)}
+                            activeOpacity={0.5}
+                            onPress={() =>{ this.setOptionFlag('option3') }}
+                        >
+                            <View style={styles.SelectionText}>
+                                <Text style={styles.selectionTitle}>{this.state.myOptions.option3.label}</Text>
+                                <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option3.charge}</Text>
+                                <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option3.ready}</Text>
+                                <Image source={this.state.myOptions.option3.save} style={styles.selectionImgMoney}/>
+                                <Image source={this.state.myOptions.option3.tree} style={styles.selectionImgTree}/>
+                            </View>
                         </TouchableOpacity>
-                    <TouchableOpacity
-                        style={this.styleOption(this.state.option2flag)}
-                        activeOpacity={0.5}
-                        onPress={() => { this.setOptionFlag('option2') }}
-                    >
-                        <View style={styles.SelectionText}>
-                        <Text style={styles.selectionTitle}>{this.state.myOptions.option2.label}</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option2.charge}</Text>
-                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option2.ready}</Text>
-                            <Image source={this.state.myOptions.option2.save} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.myOptions.option2.tree} style={styles.selectionImgTree}/>
-                        </View>
+                        <TouchableOpacity onPress={this.refreshOptions}>
+                            <View>
+                                <Text style={styles.refreshText}>Refresh My Options</Text>
+                            </View>
                         </TouchableOpacity>
-                    <TouchableOpacity
-                        style={this.styleOption(this.state.option3flag)}
-                        activeOpacity={0.5}
-                        onPress={() =>{ this.setOptionFlag('option3') }}
-                    >
-                        <View style={styles.SelectionText}>
-                        <Text style={styles.selectionTitle}>{this.state.myOptions.option3.label}</Text>
-                            <Text style={styles.selectionChargeTime}>Charge Time: {this.state.myOptions.option3.charge}</Text>
-                            <Text style={styles.selectionEndTime}>Ready By: {this.state.myOptions.option3.ready}</Text>
-                            <Image source={this.state.myOptions.option3.save} style={styles.selectionImgMoney}/>
-                            <Image source={this.state.myOptions.option3.tree} style={styles.selectionImgTree}/>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.refreshOptions}>
-                        <View>
-                            <Text style={styles.refreshText}>Refresh My Options</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.setChargeOption}>
-                        <View>
-                            <Text style={styles.chargingOptionsText}> {this.state.chargeText} </Text>
-                        </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={this.setChargeOption}>
+                            <View>
+                                <Text style={styles.chargingOptionsText}> {this.state.chargeText} </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
             </ScrollView>
         );
     }
@@ -276,8 +259,25 @@ let styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
+    backContainer: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    },
+    image2: {
+        width: 0,
+    },  
+    image: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height + 50,
+        resizeMode: 'stretch',
+        justifyContent: 'center',
+        opacity: 0.3
+    },  
     vehicleStatus: {
         width: 290,
         height: 160,
@@ -286,6 +286,9 @@ let styles = StyleSheet.create({
     vehicleText: {
         paddingTop: 15,
         fontSize: 24,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2,
         color: '#999999'
     },
     chargingOptions: {
@@ -297,28 +300,21 @@ let styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 10,
         fontSize: 24,
-        color: '#65CB87'
+        color: '#65CB87',
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2
     },
     refreshText: {
         marginLeft: 160,
         paddingTop: 5,
         paddingBottom: 5,
         fontSize: 18,
-        color: '#65CB87'
+        color: '#65CB87',
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 5
     },  
-    // SelectionButton: {
-    //     marginTop:5,
-    //     paddingTop:45,
-    //     paddingBottom:40,
-    //     paddingLeft:170,
-    //     paddingRight:170,
-    //     marginLeft:0,
-    //     marginRight:0,
-    //     backgroundColor: selectionColor,
-    //     borderRadius:8,
-    //     borderWidth: 1,
-    //     borderColor: '#ABABAB'
-    // },
     SelectionText: {
         position: 'absolute',
         left:10,
@@ -328,16 +324,25 @@ let styles = StyleSheet.create({
         color:'black',
         position:"absolute",
         top:0,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2
     },
     selectionChargeTime: {
         color:'black',
         position:"absolute",
         top:20,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2
     },
     selectionEndTime: {
         color:'black',
         position:"absolute",
         top:40,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2
     },
     selectionImgMoney: {
         position: 'absolute',

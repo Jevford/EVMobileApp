@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import Header from '../components/Header';
+import Background from '../components/Background';
 
 export default class Preferences extends Component {
     constructor(){
@@ -106,6 +107,7 @@ export default class Preferences extends Component {
         return (
             <View style={styles.container}>
                 <Header title='Preferences'/>
+                <Background/>
                 <View style={styles.prefContainer}>
                     <Text style={styles.costText}>Cost: {this.state.costValue}</Text>
                     <Text style={styles.envText}>Environment: {this.state.envValue}</Text>
@@ -154,6 +156,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    image2: {
+        top: 50
+    },
     prefContainer: {
         flex: 1,
         alignItems: 'flex-start',
@@ -164,18 +169,25 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#42b6f5",
         fontWeight: "bold",
-        marginBottom: 5
+        marginBottom: 5,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 3
     },  
     envText: {
         fontSize: 20,
         color: "#65CB89",
         fontWeight: "bold",
-        marginBottom: 5
+        marginBottom: 5,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 3
     },  
     socText: {
         fontSize: 20,
         color: "#d4c559",
-        marginBottom: 5
+        marginBottom: 5,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 3
     },
     descriptionContainer: {
         position: 'absolute',
