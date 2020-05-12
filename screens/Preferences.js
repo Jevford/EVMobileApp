@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import axiosInstance from '../components/axiosInstance';
 
 import Header from '../components/Header';
 import Background from '../components/Background';
@@ -168,25 +169,25 @@ const styles = StyleSheet.create({
     costText: {
         fontSize: 20,
         color: "#42b6f5",
-        fontWeight: "bold",
+        fontWeight: "800",
         marginBottom: 5,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowRadius: 3
+        textShadowColor: 'rgba(0, 0, 0, 1)',
+        textShadowRadius: 2
     },  
     envText: {
         fontSize: 20,
         color: "#65CB89",
-        fontWeight: "bold",
+        fontWeight: "800",
         marginBottom: 5,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowRadius: 3
+        textShadowColor: 'rgba(0, 0, 0, 1)',
+        textShadowRadius: 2
     },  
     socText: {
         fontSize: 20,
         color: "#d4c559",
         marginBottom: 5,
-        fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        fontWeight: '800',
+        textShadowColor: 'rgba(0, 0, 0, 1)',
         textShadowRadius: 3
     },
     descriptionContainer: {

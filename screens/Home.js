@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
-import axios from 'axios';
+import axiosInstance from '../components/axiosInstance';
 
 import Header from '../components/Header'
 import Background from '../components/Background'
@@ -169,8 +169,8 @@ export default class Home extends Component {
 
     getData = async () => {
         if (this.state.dbOptions === ''){
-            let res = await axios.get(
-                'https://api.calplug.club/api.php',
+            let res = await axiosInstance.get(
+                '/api.php',
                 {params : {version: 1, collection : 'options'}}
             )
     

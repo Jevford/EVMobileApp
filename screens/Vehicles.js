@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-import axios from 'axios';
+import axiosInstance from '../components/axiosInstance';
 
 import Background from '../components/Background'
 
@@ -39,8 +39,8 @@ export default class Vehicles extends Component {
 
     getData = async () => {
         if (this.state.carData === ''){
-            let res = await axios.get(
-                'https://api.calplug.club/api.php',
+            let res = await axiosInstance.get(
+                '/api.php',
                 {params : {version: 1, collection : 'cars'}}
                 )
             this.setState({carData: res.data});

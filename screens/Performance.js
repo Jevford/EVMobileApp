@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, Platform, ScrollView} from 'react-native';
+import axios from 'axios';
+
 
 // import { Image, Platform, StyleSheet, ScrollView, Text, View } from 'react-native';
 import left from '../assets/back.png'

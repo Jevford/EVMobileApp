@@ -3,7 +3,8 @@ import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} f
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
-import axios from 'axios';
+import axiosInstance from '../components/axiosInstance';
+
 
 import Background from '../components/Background'
 
@@ -46,8 +47,8 @@ export default class Vehicles extends Component {
 
     getData = async () => {
         if (this.state.chargerData === ''){
-            let res = await axios.get(
-                'https://api.calplug.club/api.php',
+            let res = await axiosInstance.get(
+                '/api.php',
                 {params : {version: 1, collection : 'chargers'}}
                 )
             this.setState({chargerData: res.data});
@@ -63,7 +64,7 @@ export default class Vehicles extends Component {
             <View style={styles.container}>
                 <Header title='Charger'/>
                 <Background/>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.container}>
                         <View style={styles.container}>
                             <Text style={styles.headingText}>Select a Charger</Text>
@@ -147,7 +148,7 @@ export default class Vehicles extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: 20,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
