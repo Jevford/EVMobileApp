@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         fontWeight: 'bold',
         textShadowColor: 'rgba(0, 0, 0, 1)',
-        textShadowRadius: 6
+        textShadowRadius: 3
     },
     descriptionContainer: {
         position: 'absolute',

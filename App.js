@@ -25,7 +25,10 @@ export default function App() {
         drawerContentOptions={{
           activeTintColor: '#2f804a',
           activeBackgroundColor: '#8ee6ab',
-          labelStyle: styles.contentOptions
+          labelStyle: styles.contentOptions,
+          itemStyle: {
+            borderRadius: 10
+          }
         }}
         drawerContent={(props) => <CustomDrawerContent {...props}/>}
       >
