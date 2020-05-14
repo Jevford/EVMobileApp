@@ -9,6 +9,7 @@ import Background from '../components/Background'
 export default class Vehicles extends Component {
     state = {
         carData: '',
+        responseData: '',
         index: 0,
         car: '',
         nickname: '',
@@ -48,9 +49,36 @@ export default class Vehicles extends Component {
         }
     }
 
+    // postData = async () => {
+    //     let res = await axiosInstance.post(
+    //         '/update.php',
+    //         {params: {collection: 'cars'}},
+    //         {data: {"nickname":"Vinh","manufacturer":"Tesla","model":"Model S","year":"2018"}}
+    //     )
+    //     this.setState({responseData: res.data});
+    //     Alert.alert('Car Added!');
+    // }
+
+    postData = async () => {
+        var config = axiosInstance({
+            url: '/update.php',
+            method: 'post',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            params: {'collection': 'cars'},
+            data: {"nickname":"Vinh","manufacturer":"Tesla","model":"Model S","year":"2018"}
+        });
+
+        axiosInstance.request(config);
+        // this.setState({responseData: res.data});
+        Alert.alert('Car Added!');
+    }
+
     render() {
         // connect to backend
         this.getData();
+
+        //TESTING POST
+        //this.postData();
 
         return (
             <View style={styles.container}>
@@ -105,7 +133,7 @@ export default class Vehicles extends Component {
                             <View style={{width: "33%"}}>
                                 <Button
                                 title="Add"
-                                onPress={() => Alert.alert('Car Added!')}
+                                onPress={this.postData}
                                 />
                             </View>
                             <View style={{width: "33%"}}>

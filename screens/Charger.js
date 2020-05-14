@@ -28,7 +28,7 @@ export default class Vehicles extends Component {
             evse: this.state.chargerData[index]["evse_id"],
             voltage: this.state.chargerData[index]["voltage"],
             output: this.state.chargerData[index]["output"],
-            plug_type: this.state.chargerData[index]["plug_type"],
+            plug_type: this.state.chargerData[index]["plugType"],
             provider: this.state.chargerData[index]["provider"],
             zip: this.state.chargerData[index]["zip"]
         })
@@ -39,7 +39,7 @@ export default class Vehicles extends Component {
             evse: this.state.chargerData[this.state.index]["evse_id"],
             voltage: this.state.chargerData[this.state.index]["voltage"],
             output: this.state.chargerData[this.state.index]["output"],
-            plug_type: this.state.chargerData[this.state.index]["plug_type"],
+            plug_type: this.state.chargerData[this.state.index]["plugType"],
             provider: this.state.chargerData[this.state.index]["provider"],
             zip: this.state.chargerData[this.state.index]["zip"]
         })
