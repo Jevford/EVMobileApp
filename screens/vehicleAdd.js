@@ -2,17 +2,11 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import vehicleAdd from './screens/vehicleAdd';
 import axiosInstance from '../components/axiosInstance';
+
 import Background from '../components/Background'
 
-// const Stack = createStackNavigator();
-
 export default class Vehicles extends Component {
-    
-
     state = {
         carData: '',
         responseData: '',
@@ -96,7 +90,7 @@ export default class Vehicles extends Component {
         // connect to backend
         this.getData();
 
-        // TESTING POST
+        //TESTING POST
         // this.postData();
 
         return (
@@ -104,21 +98,6 @@ export default class Vehicles extends Component {
                 <Header title='Vehicles'/>
                 <Background/>
                 <View style={styles.container}>
-
-                    <View style={styles.container}>
-                        <Text style={styles.headingText}>Select a Vehicle</Text>
-                        <Text style={styles.headingText}>{this.state.status}</Text>
-                        <Picker
-                        selectedValue={this.state.car}
-                        style={{height: 75, width: 200}}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setCars(itemValue, itemIndex)
-                        }>
-                        <Picker.Item label="Emon's Car" value="E" />
-                        <Picker.Item label="Mary's Car" value="M" />
-                        <Picker.Item label="Joseph's Car" value="J" />
-                        </Picker>
-                    </View>
 
                     <View style={styles.container}>
                         <Text style={styles.headingText}>Vehicle Information</Text>
@@ -167,7 +146,7 @@ export default class Vehicles extends Component {
                     </View>
 
                 </View>
-            </View>
+            </View> 
         );
     }
 }
