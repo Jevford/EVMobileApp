@@ -6,6 +6,7 @@ import Header from '../components/Header';
 // import { createStackNavigator } from '@react-navigation/stack';
 // import vehicleAdd from './screens/vehicleAdd';
 import axiosInstance from '../components/axiosInstance';
+import axios from 'axios';
 import Background from '../components/Background'
 
 // const Stack = createStackNavigator();
@@ -62,61 +63,29 @@ export default class Vehicles extends Component {
         }
     }
 
-    // postData = async () => {
-    //     const data = {
-    //         collection: 'cars',
-    //         data: {"nickname":"Vinh", "manufacturer":"Tesla", "model":"Model S", "year":"2018"}
-    //     }
-
-    //     const config = {
-    //         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    //     }
-
-    //     let res = await axiosInstance.post('/update.php', data, config)
-    //         .then((data) => {
-    //             console.log(data);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         })
-        
-    //     // this.setState({responseData: res.data});
-    //     Alert.alert('Car Added!');
-    // }
-
-    // postData = async () => {
-    //     var config = axiosInstance({
-    //         url: '/update.php',
-    //         method: 'post',
-    //         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //         data: {
-    //             collection: 'cars',
-    //             data: {"nickname":"Vinh", "manufacturer":"Tesla", "model":"Model S", "year":"2018"}
-    //         }
-    //     });
-
-    //     let res = await axiosInstance.request(config);
-    //     this.setState({responseData: res.data});
-    //     Alert.alert('Car Added!');
-    // }
-
     postData = async () => {
-        let res = await axiosInstance.post('/update.php', {
-                collection: 'cars',
-                data: {"nickname":"Vinh", "manufacturer":"Tesla", "model":"Model S", "year":"2018"}
+        const insert = {"nickname":"OH", "manufacturer":"MY", "model":"GOD", "year":"2019"}
+        let insertData = JSON.stringify(insert);
+        const data = `collection=cars&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
-        // let res = await axiosInstance.request(config);
-        this.setState({responseData: res.data});
+        await axiosInstance.post('/update.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        
         Alert.alert('Car Added!');
     }
 
     render() {
         // connect to backend
         this.getData();
-
-        // TESTING POST
-        // this.postData();
 
         return (
             <View style={styles.container}>
