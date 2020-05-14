@@ -6,6 +6,7 @@ import Header from '../components/Header';
 // import { createStackNavigator } from '@react-navigation/stack';
 // import vehicleAdd from './screens/vehicleAdd';
 import axiosInstance from '../components/axiosInstance';
+import axios from 'axios'
 import Background from '../components/Background'
 
 // const Stack = createStackNavigator();
@@ -100,15 +101,35 @@ export default class Vehicles extends Component {
     //     Alert.alert('Car Added!');
     // }
 
-    postData = async () => {
-        let res = await axiosInstance.post('/update.php', {
-                collection: 'cars',
-                data: {"nickname":"Vinh", "manufacturer":"Tesla", "model":"Model S", "year":"2018"}
-        });
+    postData = () => {
 
-        // let res = await axiosInstance.request(config);
-        this.setState({responseData: res.data});
-        Alert.alert('Car Added!');
+        let data = {
+            collection: 'cars',
+            data: {
+                nickname: 'Drail', 
+                manufacturer: 'Tesla', 
+                model: 'Model S', 
+                year: '2018' 
+            }
+        }
+
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+
+        axiosInstance.post('/update.php', 'collection=cars&data={?nickname=Drail&manufacturer=Tesla&model=ModelS&year=2018}', {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+            .then((res) => {
+                this.setState({responseData: res.data});
+                Alert.alert(res.status.toString())
+                // Alert.alert('Car Added!');
+            })
+
+            .catch((err) => {
+                Alert.alert(err.toString())
+            })
+
     }
 
     render() {

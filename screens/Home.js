@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
-// import client from '../components/mqttInstance';
+import client from '../components/mqttInstance';
 
 import Header from '../components/Header'
 import Background from '../components/Background'
@@ -158,6 +158,25 @@ export default class Home extends Component {
                 vehicleStatusText: "Charging",
                 chargeText: "Stop Charging"
             })
+
+            // Alert.alert(client.connected.toString()) 
+            // // client.reconnect()
+
+            // client.on('connect', function () {
+            //     Alert.alert("Connected")
+            //     client.subscribe('presence', function (err) {
+            //         if (!err) {
+            //         client.publish('presence', 'Hello Professor Navarro and Eli')
+            //         }
+            //     })
+            // })
+            
+            // client.on('message', function (topic, message) {
+            //   // message is Buffer
+            //   Alert.alert("Recieved: " + message.toString())
+            //   client.end()
+            // })
+
         }
         else{
             this.setState({
