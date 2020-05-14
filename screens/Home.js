@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
+import client from '../components/mqttInstance';
 
 import Header from '../components/Header'
 import Background from '../components/Background'
