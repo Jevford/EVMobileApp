@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
-import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
+import { TextInput } from 'react-native';
 import Header from '../components/Header';
 import axiosInstance from '../components/axiosInstance';
 
@@ -39,12 +39,6 @@ export default class Vehicles extends Component {
         })
     }
 
-    getStatus = () => {
-        this.setState({
-            status: this.state.responseData[0]["status"]
-        })
-    }
-
     getData = async () => {
         if (this.state.carData === ''){
             let res = await axiosInstance.get(
@@ -71,25 +65,7 @@ export default class Vehicles extends Component {
         Alert.alert('Car Added!');
     }
 
-    // postData = async () => {
-    //     var config = axiosInstance({
-    //         url: '/update.php',
-    //         method: 'post',
-    //         data: {
-    //             collection: 'cars',
-    //             data: {"nickname":"Vinh", "manufacturer":"Tesla", "model":"Model S", "year":"2018"}
-    //         }
-    //     });
-
-    //     let res = axiosInstance.request(config);
-    //     this.setState({responseData: res.data});
-    //     Alert.alert('Car Added!');
-    // }
-
     render() {
-        // connect to backend
-        this.getData();
-
         //TESTING POST
         // this.postData();
 
@@ -103,43 +79,45 @@ export default class Vehicles extends Component {
                         <Text style={styles.headingText}>Vehicle Information</Text>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Nickname</Text>
-                            <Text style={styles.infoTextRight}>{this.state.nickname}</Text>
+                            <TextInput
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                                onChangeText={text => onChangeText(text)}
+                                value={value}
+                            />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Make</Text>
-                            <Text style={styles.infoTextRight}>{this.state.make}</Text>
+                            <TextInput
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                                onChangeText={text => onChangeText(text)}
+                                value={value}
+                            />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Model</Text>
-                            <Text style={styles.infoTextRight}>{this.state.model}</Text>
+                            <TextInput
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                                onChangeText={text => onChangeText(text)}
+                                value={value}
+                            />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Year</Text>
-                            <Text style={styles.infoTextRight}>{this.state.year}</Text>
+                            <TextInput
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                                onChangeText={text => onChangeText(text)}
+                                value={value}
+                            />
                         </View>
                     </View>
 
                     <View style={styles.optionsContainer}>
                         <Text style={styles.headingText}>Vehicle Options</Text>
                         <View style={styles.buttonContainer}>
-                            <View style={{width: "33%"}}>
+                            <View style={{width: "100%"}}>
                                 <Button
-                                title="Remove"
-                                color="#f04646"
-                                onPress={() => Alert.alert('Car Removed')}
-                                />
-                            </View>
-                            <View style={{width: "33%"}}>
-                                <Button
-                                title="Add"
+                                title="Save"
                                 onPress={this.postData}
-                                />
-                            </View>
-                            <View style={{width: "33%"}}>
-                                <Button
-                                title="Edit"
-                                color="#a8329e"
-                                onPress={() => Alert.alert('Edit your Vehicle parameters')}
                                 />
                             </View>
                         </View>
