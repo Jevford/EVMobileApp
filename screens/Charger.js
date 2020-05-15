@@ -56,6 +56,33 @@ export default class Vehicles extends Component {
         }
     }
 
+    postData = async () => {
+        const insert = {
+            "evse_id":"US*B25*E3SS*PPK", 
+            "voltage":"LV 1", 
+            "output":"18 Amps", 
+            "plugType":"J1772",
+            "provider":"SoCal Edison",
+            "zip":"91612"
+        }
+        let insertData = JSON.stringify(insert);
+        const data = `collection=chargers&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/update.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        
+        Alert.alert('Charger Added!');
+    }
+
     render() {
         // connect to backend
         this.getData();
@@ -125,7 +152,7 @@ export default class Vehicles extends Component {
                                 <View style={{width: "33%"}}>
                                     <Button
                                     title="Add"
-                                    onPress={() => Alert.alert('Charger Added!')}
+                                    onPress={this.postData}
                                     />
                                 </View>
                                 <View style={{width: "33%"}}>
