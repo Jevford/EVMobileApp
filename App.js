@@ -15,12 +15,6 @@ import vehicleAdd from './screens/vehicleAdd';
 const Drawer = createDrawerNavigator();
 
 export default function App() {
-  // used for vehicleAdd
-  const [nickname, setNickname] = React.useState('nickname');
-  const [make, setMake] = React.useState('Make');
-  const [model, setModel] = React.useState('Model');
-  const [year, setYear] = React.useState('Year');
-
   return (
     <NavigationContainer>
       <Drawer.Navigator 
