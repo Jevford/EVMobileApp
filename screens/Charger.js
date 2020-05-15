@@ -72,7 +72,7 @@ export default class Vehicles extends Component {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
-        await axiosInstance.post('/update.php', data, config)
+        await axiosInstance.post('/insert.php', data, config)
             .then((data) => {
                 console.log(data);
             })
