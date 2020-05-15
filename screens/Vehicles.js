@@ -85,9 +85,9 @@ export default class Vehicles extends Component {
             // </Stack.Navigator>
 
             <View style={styles.container}>
-            <Header title='Vehicles'/>
-            <Background/>
-            <View style={styles.container}>
+                <Header title='Vehicles'/>
+                <Background/>
+                <View style={styles.container}>
 
                 <View style={styles.container}>
                     <Text style={styles.headingText}>Select a Vehicle</Text>
@@ -97,9 +97,9 @@ export default class Vehicles extends Component {
                     onValueChange={(itemValue, itemIndex) =>
                         this.setCars(itemValue, itemIndex)
                     }>
-                    <Picker.Item label="Emon's Car" value="E" />
-                    <Picker.Item label="Mary's Car" value="M" />
-                    <Picker.Item label="Joseph's Car" value="J" />
+                        <Picker.Item label="Emon's Car" value="E" />
+                        <Picker.Item label="Mary's Car" value="M" />
+                        <Picker.Item label="Joseph's Car" value="J" />
                     </Picker>
                 </View>
 

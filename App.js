@@ -10,10 +10,17 @@ import Performance from './screens/Performance';
 import Charger from './screens/Charger';
 import Vehicles from './screens/Vehicles';
 import Preferences from './screens/Preferences';
+import vehicleAdd from './screens/vehicleAdd';
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+  // used for vehicleAdd
+  const [nickname, setNickname] = React.useState('nickname');
+  const [make, setMake] = React.useState('Make');
+  const [model, setModel] = React.useState('Model');
+  const [year, setYear] = React.useState('Year');
+
   return (
     <NavigationContainer>
       <Drawer.Navigator 
@@ -55,7 +62,14 @@ export default function App() {
         />
         <Drawer.Screen 
           name="Vehicles" 
-          component={Vehicles} 
+          component={Vehicles}
+          options={({ navigation }) => ({
+            drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
+          })}
+        />
+        <Drawer.Screen // for development
+          name="vehicleAdd" 
+          component={vehicleAdd}
           options={({ navigation }) => ({
             drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
           })}
