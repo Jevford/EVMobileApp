@@ -10,6 +10,7 @@ import Performance from './screens/Performance';
 import Charger from './screens/Charger';
 import Vehicles from './screens/Vehicles';
 import Preferences from './screens/Preferences';
+import vehicleAdd from './screens/vehicleAdd';
 
 const Drawer = createDrawerNavigator();
 
@@ -55,7 +56,14 @@ export default function App() {
         />
         <Drawer.Screen 
           name="Vehicles" 
-          component={Vehicles} 
+          component={Vehicles}
+          options={({ navigation }) => ({
+            drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
+          })}
+        />
+        <Drawer.Screen // for development
+          name="vehicleAdd" 
+          component={vehicleAdd}
           options={({ navigation }) => ({
             drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
           })}

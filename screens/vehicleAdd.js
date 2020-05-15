@@ -1,77 +1,46 @@
-import React, {Component} from 'react';
-import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
-import { TextInput } from 'react-native';
+import React, {Component, useState} from 'react';
+import {Alert, Button, View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import Header from '../components/Header';
 import axiosInstance from '../components/axiosInstance';
-
 import Background from '../components/Background'
 
 export default class Vehicles extends Component {
     state = {
-        carData: '',
-        responseData: '',
-        status: '',
-        index: 0,
-        car: '',
         nickname: '',
         make: '',
         model: '',
         year: ''
-    };
-
-    setCars = (value, index) => {
-        this.setState({
-            index: index,
-            car: value,
-            nickname: this.state.carData[index]["nickname"],
-            make: this.state.carData[index]["manufacturer"],
-            model: this.state.carData[index]["model"],
-            year: this.state.carData[index]["year"]
-        })
-    }
-
-    initCars = () => {
-        this.setState({
-            nickname: this.state.carData[this.state.index]["nickname"],
-            make: this.state.carData[this.state.index]["manufacturer"],
-            model: this.state.carData[this.state.index]["model"],
-            year: this.state.carData[this.state.index]["year"]
-        })
-    }
-
-    getData = async () => {
-        if (this.state.carData === ''){
-            let res = await axiosInstance.get(
-                '/api.php',
-                {params : {version: 1, collection : 'cars'}}
-                )
-            this.setState({carData: res.data});
-            this.initCars();
-        }
     }
 
     postData = async () => {
-        let res = await axiosInstance.post(
-            '/update.php',
-            {
-                nickname:'Vinh',
-                manufacturer:'Tesla',
-                model:'Model S',
-                year:'2018'
-            },
-            {data: {collection: 'cars'}}
-        )
-        this.setState({responseData: res.data});
+        const insert = {
+            "nickname":this.state.nickname, 
+            "manufacturer":this.state.make, 
+            "model":this.state.model, 
+            "year":this.state.year
+        }
+        let insertData = JSON.stringify(insert);
+        const data = `collection=cars&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/update.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        
         Alert.alert('Car Added!');
     }
 
     render() {
-        //TESTING POST
-        // this.postData();
-
         return (
             <View style={styles.container}>
-                <Header title='Vehicles'/>
+                <Header title='Add a Vehicle'/>
                 <Background/>
                 <View style={styles.container}>
 
@@ -80,43 +49,39 @@ export default class Vehicles extends Component {
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Nickname</Text>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                                onChangeText={text => onChangeText(text)}
-                                value={value}
+                                style={styles.input}
+                                onChangeText={(val) => this.setState({nickname: val})}
+                                value={this.state.nickname}
                             />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Make</Text>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                                onChangeText={text => onChangeText(text)}
-                                value={value}
+                                style={styles.input}
+                                onChangeText={(val) => this.setState({make: val})}
+                                value={this.state.make}
                             />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Model</Text>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                                onChangeText={text => onChangeText(text)}
-                                value={value}
+                                style={styles.input}
+                                onChangeText={(val) => this.setState({model: val})}
+                                value={this.state.model}
                             />
                         </View>
                         <View style={styles.infoView}>
                             <Text style={styles.infoTextLeft}>Year</Text>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                                onChangeText={text => onChangeText(text)}
-                                value={value}
+                                style={styles.input}
+                                onChangeText={(val) => this.setState({year: val})}
+                                value={this.state.year}
                             />
                         </View>
-                    </View>
-
-                    <View style={styles.optionsContainer}>
-                        <Text style={styles.headingText}>Vehicle Options</Text>
                         <View style={styles.buttonContainer}>
-                            <View style={{width: "100%"}}>
+                            <View style={{width: 300}}>
                                 <Button
-                                title="Save"
+                                title="Add"
                                 onPress={this.postData}
                                 />
                             </View>
@@ -137,18 +102,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     optionsContainer: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
     },
     buttonContainer: {
-        marginTop: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flex: 1,
+        marginTop: 100,
+        paddingBottom: 20,
+    },
+    button: {
+        fontSize: 24,
+        alignItems: "center",
+        backgroundColor: "blue",
+        borderWidth: 1,
+        padding: 10,
+        width: 300,
+        height: 40,
     },
     headingText: {
-        paddingTop: 10,
+        paddingTop: 100,
+        paddingBottom: 30,
         fontSize: 24,
         color: '#999999',
     },
@@ -159,9 +133,14 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         fontSize: 18,
     },
-    infoTextRight: {
+    input: {
         flex: 1,
+        borderWidth: 1,
+        borderColor: '#777',
         textAlign: 'right',
+        padding: 8,
+        margin: 10,
+        width: 200,
         paddingTop: 15,
         paddingRight: 16,
         fontSize: 18,
