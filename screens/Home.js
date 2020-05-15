@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
-import client from '../components/mqttInstance';
+// import client from '../components/mqttInstance';
+import Client from '../mqtt/mqttInstance';
 
 import Header from '../components/Header'
 import Background from '../components/Background'
@@ -66,6 +67,7 @@ export default class Home extends Component {
         };
     }
     
+    mqttClient = new Client()
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
@@ -151,40 +153,28 @@ export default class Home extends Component {
         }
     }
 
+
     setChargeOption = () => {
-        if(this.state.chargeText === "Charge Now"){
+
+        if(this.state.chargeText === "Charge Now") {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Charging",
                 chargeText: "Stop Charging"
             })
-
-            // Alert.alert(client.connected.toString()) 
-            // // client.reconnect()
-
-            // client.on('connect', function () {
-            //     Alert.alert("Connected")
-            //     client.subscribe('presence', function (err) {
-            //         if (!err) {
-            //         client.publish('presence', 'Hello Professor Navarro and Eli')
-            //         }
-            //     })
-            // })
             
-            // client.on('message', function (topic, message) {
-            //   // message is Buffer
-            //   Alert.alert("Recieved: " + message.toString())
-            //   client.end()
-            // })
-
+            this.mqttClient.toggleCharger()
         }
         else{
+            this.mqttClient.toggleCharger()
+
             this.setState({
                 vehicleStatusImg: Idle,
                 vehicleStatusText: "Not Charging",
                 chargeText: "Charge Now"
             })
         }
+
     }
 
     getData = async () => {

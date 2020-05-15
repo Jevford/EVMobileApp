@@ -1,7 +1,7 @@
 const config = {
-    protocal: 'tcp://',
+    protocal: 'wss://',
     host: 'm10.cloudmqtt.com',
-    port: 17934,
+    port: 37934,
     username: 'dkpljrty',
     password: 'ZJDsxMVKRjoR'
 }
