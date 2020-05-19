@@ -4,7 +4,6 @@ import {Picker} from '@react-native-community/picker'; // https://github.com/rea
 import Header from '../components/Header';
 // import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import vehicleAdd from '../screens/vehicleAdd';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
 
@@ -54,24 +53,11 @@ export default class Vehicles extends Component {
         }
     }
 
-    postData = async () => {
-        const insert = {"nickname":"myCar", "manufacturer":"Tesla", "model":"Model X", "year":"2019"}
-        let insertData = JSON.stringify(insert);
-        const data = `collection=cars&data=${insertData}`;
-
-        const config = axiosInstance({
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        });
-
-        await axiosInstance.post('/insert.php', data, config)
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        
-        Alert.alert('Car Added!');
+    carList = (index) => {
+        return( Object.keys(this.state.carData).map( (x,i) => { 
+            var car_label = `Car ${parseInt(x)+1}`;
+            // var label = this.state.carData[index]["nickname"];
+            return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
     }
 
     render() {
@@ -97,9 +83,7 @@ export default class Vehicles extends Component {
                     onValueChange={(itemValue, itemIndex) =>
                         this.setCars(itemValue, itemIndex)
                     }>
-                        <Picker.Item label="Emon's Car" value="E" />
-                        <Picker.Item label="Mary's Car" value="M" />
-                        <Picker.Item label="Joseph's Car" value="J" />
+                        {this.carList(this.state.index)}
                     </Picker>
                 </View>
 
@@ -136,7 +120,7 @@ export default class Vehicles extends Component {
                         <View style={{width: "33%"}}>
                             <Button
                             title="Add"
-                            onPress={this.postData}
+                            onPress={() => Alert.alert('Car Removed')} // redirect to vehicleAdd
                             />
                         </View>
                         <View style={{width: "33%"}}>

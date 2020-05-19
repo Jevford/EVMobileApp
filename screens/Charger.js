@@ -25,7 +25,7 @@ export default class Vehicles extends Component {
         this.setState({
             index: index,
             charger: value,
-            evse: this.state.chargerData[index]["evse_id"],
+            evse: this.state.chargerData[index]["evseid"],
             voltage: this.state.chargerData[index]["voltage"],
             output: this.state.chargerData[index]["output"],
             plug_type: this.state.chargerData[index]["plugType"],
@@ -36,7 +36,7 @@ export default class Vehicles extends Component {
 
     initChargers = () => {
         this.setState({
-            evse: this.state.chargerData[this.state.index]["evse_id"],
+            evse: this.state.chargerData[this.state.index]["evseid"],
             voltage: this.state.chargerData[this.state.index]["voltage"],
             output: this.state.chargerData[this.state.index]["output"],
             plug_type: this.state.chargerData[this.state.index]["plugType"],
@@ -54,6 +54,12 @@ export default class Vehicles extends Component {
             this.setState({chargerData: res.data});
             this.initChargers();
         }
+    }
+
+    chargerList = () => {
+        return( Object.keys(this.state.chargerData).map( (x,i) => { 
+            var charger_label = `Charger ${parseInt(x)+1}`;
+            return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
 
     postData = async () => {
@@ -101,9 +107,7 @@ export default class Vehicles extends Component {
                             onValueChange={(itemValue, itemIndex) =>
                                 this.setChargers(itemValue, itemIndex)
                             }>
-                            <Picker.Item label="Emon's Charger" value="E" />
-                            <Picker.Item label="Mary's Charger" value="M" />
-                            <Picker.Item label="Joseph's Charger" value="J" />
+                                {this.chargerList()}
                             </Picker>
                         </View>
 
