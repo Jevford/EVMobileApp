@@ -2,12 +2,8 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-// import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
-
-const Stack = createStackNavigator();
 
 export default class Vehicles extends Component {
     state = {
@@ -65,11 +61,6 @@ export default class Vehicles extends Component {
         this.getData();
 
         return (
-            // <Stack.Navigator>
-            //     <Stack.Screen name="Vehicles" component={this.vehiclePage} />
-            //     <Stack.Screen name="vehicleAdd" component={vehicleAdd} />
-            // </Stack.Navigator>
-
             <View style={styles.container}>
                 <Header title='Vehicles'/>
                 <Background/>
@@ -120,7 +111,7 @@ export default class Vehicles extends Component {
                         <View style={{width: "33%"}}>
                             <Button
                             title="Add"
-                            onPress={() => Alert.alert('Car Removed')} // redirect to vehicleAdd
+                            onPress={() => this.props.navigation.navigate('vehicleAdd')}
                             />
                         </View>
                         <View style={{width: "33%"}}>
@@ -154,6 +145,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 20,
+        marginHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
