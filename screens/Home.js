@@ -33,7 +33,7 @@ export default class Home extends Component {
     constructor(){
         super();
         this.state = { 
-            vehicleStatusImg: Idle,
+            vehicleStatusImg: Charging,
             vehicleStatusText: "Not Charging",
             chargeText: "Charge Now",
             dbOptions: '',
@@ -68,6 +68,7 @@ export default class Home extends Component {
     }
     
     mqttClient = new Client()
+    evseID = this.mqttClient.deviceID 
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
@@ -154,29 +155,59 @@ export default class Home extends Component {
     }
 
 
-    setChargeOption = () => {
+    setChargeOption = async () => {
 
-        if(this.state.chargeText === "Charge Now") {
+        await this.mqttClient.toggleCharger()
+
+        if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 1) {
+            this.setState({
+                vehicleStatusImg: Charging,
+                vehicleStatusText: "Connected But Not Charging",
+                chargeText: "Stop Charging"
+            })
+        }
+        else if(this.state.chargeText === "Stop Charging" && this.mqttClient.chargeState == 1) {
+            this.setState({
+                vehicleStatusImg: Charging,
+                vehicleStatusText: "Connected But Not Charging",
+                chargeText: "Charge Now"
+            })
+        }
+        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 2) {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Charging",
                 chargeText: "Stop Charging"
             })
-            
-            this.mqttClient.toggleCharger()
         }
-        else{
-            this.mqttClient.toggleCharger()
-
+        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 3) {
+            this.setState({
+                vehicleStatusImg: Idle,
+                vehicleStatusText: "Charger Not Plugged In",
+                chargeText: "Charge Now"
+            })
+        }
+        else if(!this.mqttClient.connectFlag) {
+            this.setState({
+                vehicleStatusImg: Idle,
+                vehicleStatusText: "Unable to Communicate to Charger ",
+                chargeText: "Charge Now"
+            })
+            Alert.alert(
+                'Charger Not Found',
+                `Your Registered Charger Does Not Seem To Be Connected Online.`
+                )
+            }
+        else {
             this.setState({
                 vehicleStatusImg: Idle,
                 vehicleStatusText: "Not Charging",
                 chargeText: "Charge Now"
             })
         }
-
+        // this.mqttClient.requestChargeState()
     }
-
+        
     getData = async () => {
         if (this.state.dbOptions === ''){
             let res = await axiosInstance.get(
@@ -200,7 +231,7 @@ export default class Home extends Component {
                 <Background/>
                 <View style={styles.container}>
                     <View style={styles.container}>
-                        <Text style={styles.vehicleText}> Connected Charger: {evseID} </Text>
+                        <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text>
                         <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
                         <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>
                     </View>
@@ -262,7 +293,6 @@ export default class Home extends Component {
     }
 }
 
-const evseID = "EVTSX1"
 
 let styles = StyleSheet.create({
     container: {

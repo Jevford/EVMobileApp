@@ -7,21 +7,27 @@ var mqtt = require('@taoqf/react-native-mqtt')
   export default class Client {
         constructor(){
             this.deviceID = 'evse_sim1',
+
             this.topics = [
                 'out/devices/' + this.deviceID + '/1/SimpleMeteringServer/#',
                 'out/devices/' + this.deviceID + '/1/OnOff/#',
             ],
+
             this.mqttURI = config.protocal + config.host + ':' + config.port.toString() + '/',
             this.client = mqtt.connect(this.mqttURI, {
                 clientId: this.deviceID,
                 username: config.username,
                 password: config.password
             })
+            
+            this.chargeState = 0
+
             this.connectFlag = false
             if(!this.connectFlag){
                 this.connectCharger()
                 this.client.publish('EVIE', 'Connection established between mobile app and mqtt broker.')
-            } 
+                this.requestChargeState()
+            }
         }
 
         connectCharger = () => {
@@ -45,14 +51,17 @@ var mqtt = require('@taoqf/react-native-mqtt')
 
             this.client.on('message', (topic, message) => {
                 if (topic == rec){
-                    Alert.alert("reqChargeState = Message: " + message)
-                    return message
-                } else {
-                    Alert.alert("Charge State Request Failed: " + topic)
-                    return -1
+                    if(message == 1){ 
+                        this.chargeState = 1
+                    }
+                    else if(message == 2){ 
+                        this.chargeState = 2
+                    }
+                    else if(message == 3){ 
+                        this.chargeState = 3
+                    }
                 }
             })
-            // this.client.end()
         }
 
         toggleCharger = () => {
@@ -64,10 +73,10 @@ var mqtt = require('@taoqf/react-native-mqtt')
                 if (topic == rec){
                     // Alert.alert("Toggle = Message: " + message)
                 } else {
-                    Alert.alert("Charge State Request Failed: " + topic)
+                    // Alert.alert("Charge State Request Failed: " + topic)
                 }
             })
-            // this.client.end()
+            this.requestChargeState()
         }
 
   }
