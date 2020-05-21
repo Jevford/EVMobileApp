@@ -16,13 +16,17 @@ var mqtt = require('@taoqf/react-native-mqtt')
                 clientId: this.deviceID,
                 username: config.username,
                 password: config.password
-            }) 
-            this.connectCharger()
-            this.client.publish('EVIE', 'Connection established between mobile app and mqtt broker.')
+            })
+            this.connectFlag = false
+            if(!this.connectFlag){
+                this.connectCharger()
+                this.client.publish('EVIE', 'Connection established between mobile app and mqtt broker.')
+            } 
         }
 
         connectCharger = () => {
             this.client.on('connect', () => {
+                this.connectFlag = true
                 this.client.subscribe(this.topics, (err) => {
                     if (!err) {
                         // this.client.publish('EVIE', 'Connection established between mobile app and mqtt broker.')
