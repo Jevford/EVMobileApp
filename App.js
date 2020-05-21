@@ -12,6 +12,7 @@ import Charger from './screens/Charger';
 import Vehicles from './screens/Vehicles';
 import Preferences from './screens/Preferences';
 import vehicleAdd from './screens/vehicleAdd';
+import chargerAdd from './screens/chargerAdd';
 import RegisterCharger from './screens/RegisterCharger';
 
 const Drawer = createDrawerNavigator();
@@ -33,7 +34,42 @@ function LoginStack() {
   )
 }
 
+function chargerStack() {
+  return(
+    <Stack.Navigator initialRouteName="Charger">
+      <Stack.Screen 
+        name="Charger" 
+        component={Charger}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen 
+        name="chargerAdd" 
+        component={chargerAdd}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function vehicleStack() {
+  return(
+    <Stack.Navigator initialRouteName="Vehicles">
+      <Stack.Screen 
+        name="Vehicles" 
+        component={Vehicles}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen 
+        name="vehicleAdd" 
+        component={vehicleAdd}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  )
+}
+
 export default function App() {
+
   return (
     <NavigationContainer>
       <Drawer.Navigator 
@@ -56,42 +92,35 @@ export default function App() {
           name="Home" 
           component={Home}
           options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <Feather name="home" size={40} color="#2f804a" />
+            drawerIcon: () => <Feather name="home" size={40} color="#2f804a" />
           })}
         />
-        <Drawer.Screen 
+        {/* <Drawer.Screen 
           name="Performance" 
           component={Performance} 
           options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <FontAwesome name="bar-chart" size={35} color="#2f804a" />
+            drawerIcon: () => <FontAwesome name="bar-chart" size={35} color="#2f804a" />
           })}
-        />
+        /> */}
         <Drawer.Screen 
           name="Charger" 
-          component={Charger} 
+          component={chargerStack} 
           options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <FontAwesome5 name="charging-station" size={35} color="#2f804a" />
+            drawerIcon: () => <FontAwesome5 name="charging-station" size={35} color="#2f804a" />
           })}
         />
         <Drawer.Screen 
           name="Vehicles" 
-          component={Vehicles}
+          children={vehicleStack}
           options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
-          })}
-        />
-        <Drawer.Screen // for development
-          name="vehicleAdd" 
-          component={vehicleAdd}
-          options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <FontAwesome5 name="car" size={40} color="#2f804a" />
+            drawerIcon: () => <FontAwesome5 name="car" size={40} color="#2f804a" />
           })}
         />
         <Drawer.Screen 
           name="Preferences" 
           component={Preferences} 
           options={({ navigation }) => ({
-            drawerIcon: ({tintColor}) => <FontAwesome name="sliders" size={45} color="#2f804a" />
+            drawerIcon: () => <FontAwesome name="sliders" size={45} color="#2f804a" />
           })}
           />
         <Drawer.Screen 

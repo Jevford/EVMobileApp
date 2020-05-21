@@ -26,7 +26,7 @@ export default class vehicleAdd extends Component {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
-        await axiosInstance.post('/update.php', data, config)
+        await axiosInstance.post('/insert.php', data, config)
             .then((data) => {
                 console.log(data);
             })
@@ -35,6 +35,7 @@ export default class vehicleAdd extends Component {
             })
         
         Alert.alert('Car Added!');
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -79,7 +80,14 @@ export default class vehicleAdd extends Component {
                             />
                         </View>
                         <View style={styles.buttonContainer}>
-                            <View style={{width: 300}}>
+                            <View style={{width: "50%"}}>
+                                <Button
+                                title="Go Back"
+                                color="#f04646"
+                                onPress={() => this.props.navigation.goBack()}
+                                />
+                            </View>
+                            <View style={{width: "50%"}}>
                                 <Button
                                 title="Add"
                                 onPress={this.postData}
@@ -108,7 +116,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
+        flexDirection: 'row',
         marginTop: 100,
+        marginHorizontal: 10,
         paddingBottom: 20,
     },
     button: {

@@ -4,8 +4,6 @@ import {Picker} from '@react-native-community/picker'; // https://github.com/rea
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import axiosInstance from '../components/axiosInstance';
-
-
 import Background from '../components/Background'
 
 export default class Vehicles extends Component {
@@ -25,7 +23,7 @@ export default class Vehicles extends Component {
         this.setState({
             index: index,
             charger: value,
-            evse: this.state.chargerData[index]["evse_id"],
+            evse: this.state.chargerData[index]["evseid"],
             voltage: this.state.chargerData[index]["voltage"],
             output: this.state.chargerData[index]["output"],
             plug_type: this.state.chargerData[index]["plugType"],
@@ -36,7 +34,7 @@ export default class Vehicles extends Component {
 
     initChargers = () => {
         this.setState({
-            evse: this.state.chargerData[this.state.index]["evse_id"],
+            evse: this.state.chargerData[this.state.index]["evseid"],
             voltage: this.state.chargerData[this.state.index]["voltage"],
             output: this.state.chargerData[this.state.index]["output"],
             plug_type: this.state.chargerData[this.state.index]["plugType"],
@@ -56,33 +54,38 @@ export default class Vehicles extends Component {
         }
     }
 
-    postData = async () => {
-        Alert.alert(this.state.evse)
-        const insert = {
-            "evseid":`IceJJFish`, 
-            "voltage":`${this.state.voltage}`, 
-            "output":`${this.state.output}`, 
-            "plugType":`${this.state.plug_type}`,
-            "provider":`${this.state.provider}`,
-            "zip":`${this.state.zip}`
-        }
-        let insertData = JSON.stringify(insert);
-        const data = `collection=chargers&data=${insertData}`;
-
-        const config = axiosInstance({
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        });
-
-        await axiosInstance.post('/update.php', data, config)
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        
-        Alert.alert('Charger Added!');
+    chargerList = () => {
+        return( Object.keys(this.state.chargerData).map( (x,i) => { 
+            var charger_label = `Charger ${parseInt(x)+1}`;
+            return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
+
+    // postData = async () => {
+    //     const insert = {
+    //         "evse_id":"US*B25*E3SS*PPK", 
+    //         "voltage":"LV 1", 
+    //         "output":"18 Amps", 
+    //         "plugType":"J1772",
+    //         "provider":"SoCal Edison",
+    //         "zip":"91612"
+    //     }
+    //     let insertData = JSON.stringify(insert);
+    //     const data = `collection=chargers&data=${insertData}`;
+
+    //     const config = axiosInstance({
+    //         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    //     });
+
+    //     await axiosInstance.post('/insert.php', data, config)
+    //         .then((data) => {
+    //             console.log(data);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         })
+        
+    //     Alert.alert('Charger Added!');
+    // }
 
     render() {
         // connect to backend
@@ -102,9 +105,7 @@ export default class Vehicles extends Component {
                             onValueChange={(itemValue, itemIndex) =>
                                 this.setChargers(itemValue, itemIndex)
                             }>
-                            <Picker.Item label="Emon's Charger" value="E" />
-                            <Picker.Item label="Mary's Charger" value="M" />
-                            <Picker.Item label="Joseph's Charger" value="J" />
+                                {this.chargerList()}
                             </Picker>
                         </View>
 
@@ -153,7 +154,7 @@ export default class Vehicles extends Component {
                                 <View style={{width: "33%"}}>
                                     <Button
                                     title="Add"
-                                    onPress={this.postData}
+                                    onPress={() => this.props.navigation.navigate('chargerAdd')}
                                     />
                                 </View>
                                 <View style={{width: "33%"}}>
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 20,
+        marginHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },

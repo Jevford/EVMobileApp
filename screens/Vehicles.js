@@ -2,13 +2,8 @@ import React, {Component} from 'react';
 import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
-// import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import vehicleAdd from '../screens/vehicleAdd';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
-
-const Stack = createStackNavigator();
 
 export default class Vehicles extends Component {
     state = {
@@ -54,28 +49,11 @@ export default class Vehicles extends Component {
         }
     }
 
-    postData = async () => {
-        const insert = {
-            "nickname":`${this.state.nickname}`, 
-            "manufacturer":`${this.state.make}`, 
-            "model":`${this.state.model}`, 
-            "year":`${this.state.year}`}
-        let insertData = JSON.stringify(insert);
-        const data = `collection=cars&data=${insertData}`;
-
-        const config = axiosInstance({
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        });
-
-        await axiosInstance.post('/update.php', data, config)
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        
-        Alert.alert('Car Added!');
+    carList = (index) => {
+        return( Object.keys(this.state.carData).map( (x,i) => { 
+            var car_label = `Car ${parseInt(x)+1}`;
+            // var label = this.state.carData[index]["nickname"];
+            return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
     }
 
     render() {
@@ -83,11 +61,6 @@ export default class Vehicles extends Component {
         this.getData();
 
         return (
-            // <Stack.Navigator>
-            //     <Stack.Screen name="Vehicles" component={this.vehiclePage} />
-            //     <Stack.Screen name="vehicleAdd" component={vehicleAdd} />
-            // </Stack.Navigator>
-
             <View style={styles.container}>
                 <Header title='Vehicles'/>
                 <Background/>
@@ -101,9 +74,7 @@ export default class Vehicles extends Component {
                     onValueChange={(itemValue, itemIndex) =>
                         this.setCars(itemValue, itemIndex)
                     }>
-                        <Picker.Item label="Emon's Car" value="E" />
-                        <Picker.Item label="Mary's Car" value="M" />
-                        <Picker.Item label="Joseph's Car" value="J" />
+                        {this.carList(this.state.index)}
                     </Picker>
                 </View>
 
@@ -140,7 +111,7 @@ export default class Vehicles extends Component {
                         <View style={{width: "33%"}}>
                             <Button
                             title="Add"
-                            onPress={this.postData}
+                            onPress={() => this.props.navigation.navigate('vehicleAdd')}
                             />
                         </View>
                         <View style={{width: "33%"}}>
@@ -174,6 +145,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 20,
+        marginHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
