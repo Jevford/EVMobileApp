@@ -57,13 +57,14 @@ export default class Vehicles extends Component {
     }
 
     postData = async () => {
+        Alert.alert(this.state.evse)
         const insert = {
-            "evse_id":"US*B25*E3SS*PPK", 
-            "voltage":"LV 1", 
-            "output":"18 Amps", 
-            "plugType":"J1772",
-            "provider":"SoCal Edison",
-            "zip":"91612"
+            "evseid":`IceJJFish`, 
+            "voltage":`${this.state.voltage}`, 
+            "output":`${this.state.output}`, 
+            "plugType":`${this.state.plug_type}`,
+            "provider":`${this.state.provider}`,
+            "zip":`${this.state.zip}`
         }
         let insertData = JSON.stringify(insert);
         const data = `collection=chargers&data=${insertData}`;

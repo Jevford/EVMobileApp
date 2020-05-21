@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { MaterialIcons, EvilIcons } from '@expo/vector-icons';
-import { useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Header({ title }){
 
@@ -12,7 +12,7 @@ export default function Header({ title }){
             <View style={styles.header}>
                 <MaterialIcons name='menu' size={50} onPress={() => navigation.openDrawer()} style={styles.menuIcon} />
                 <Text style={styles.title}>{ title }</Text>
-                <EvilIcons name='user' size={50} style={styles.userIcon} />
+                <EvilIcons name='user' size={50} style={styles.userIcon} onPress={() => navigation.navigate('Register New Profile')}/>
             </View>
         </View>
     )

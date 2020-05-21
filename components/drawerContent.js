@@ -4,7 +4,6 @@ import {
     DrawerContentScrollView,
     DrawerItemList,
   } from '@react-navigation/drawer';
-import { MaterialIcons, EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 
 
 import background from '../assets/green.jpg'

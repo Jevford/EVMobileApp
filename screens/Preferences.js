@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Platform, Alert} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import axiosInstance from '../components/axiosInstance';
 import CustomMarkerLeft from '../components/CustomLeftMarker';
@@ -107,6 +107,36 @@ export default class Preferences extends Component {
         }
     }
 
+    postData = async () => {
+        const insert = {
+            "environment": this.state.envValue.toString(), 
+            "society": this.state.socValue.toString(), 
+            "cost": this.state.costValue.toString(), 
+            "vehicleInfo": "Tesla Model S",
+            "deviceInfo": "Android",
+            "userLocation": "Irvine",
+            "userServiceProvider": "SoCalEdison",
+            "userCommutSchedule": "6am-2pm"
+        }
+
+        let insertData = JSON.stringify(insert);
+        const data = `collection=userDeviceProfile&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/update.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        
+        Alert.alert('Preferences Saved');
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -156,7 +186,9 @@ export default class Preferences extends Component {
                         <Text style={styles.descriptionText}>{this.state.socText}</Text>
                     </View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={this.postData}
+                >
                     <View>
                         <Text style={styles.saveBtn}> Save Preferences </Text>
                     </View>

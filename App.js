@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomDrawerContent from './components/drawerContent';
-import { FontAwesome5, FontAwesome, Feather } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome, Feather, AntDesign } from '@expo/vector-icons';
 
 import Home from './screens/Home';
 import Performance from './screens/Performance';
@@ -11,8 +12,26 @@ import Charger from './screens/Charger';
 import Vehicles from './screens/Vehicles';
 import Preferences from './screens/Preferences';
 import vehicleAdd from './screens/vehicleAdd';
+import RegisterCharger from './screens/RegisterCharger';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function LoginStack() {
+  return (
+      <Stack.Navigator
+      headerMode = { false }
+        screenOptions = {{
+          headerShown: false
+        }}
+      >
+        <Stack.Screen
+          name = "Register" 
+          component={RegisterCharger}
+        />
+      </Stack.Navigator>
+  )
+}
 
 export default function App() {
   return (
@@ -32,7 +51,7 @@ export default function App() {
           }
         }}
         drawerContent={(props) => <CustomDrawerContent {...props}/>}
-      >
+        >
         <Drawer.Screen 
           name="Home" 
           component={Home}
@@ -74,15 +93,26 @@ export default function App() {
           options={({ navigation }) => ({
             drawerIcon: ({tintColor}) => <FontAwesome name="sliders" size={45} color="#2f804a" />
           })}
+          />
+        <Drawer.Screen 
+          name="Register New Profile" 
+          component={LoginStack}
+          options={({ navigation }) => ({
+            drawerIcon: () => <AntDesign name="adduser" size={42} color="#2f804a" />
+          })}
         />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
 
+
 const styles = StyleSheet.create({
   contentOptions: {
     fontSize: 16,
     fontWeight: 'bold'
+  },
+  clearLabel: {
+    color: 'transparent'
   }
 })

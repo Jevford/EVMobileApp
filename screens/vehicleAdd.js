@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
 
-export default class Vehicles extends Component {
+export default class vehicleAdd extends Component {
     state = {
         nickname: '',
         make: '',

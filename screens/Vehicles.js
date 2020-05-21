@@ -55,7 +55,11 @@ export default class Vehicles extends Component {
     }
 
     postData = async () => {
-        const insert = {"nickname":"myCar", "manufacturer":"Tesla", "model":"Model X", "year":"2019"}
+        const insert = {
+            "nickname":`${this.state.nickname}`, 
+            "manufacturer":`${this.state.make}`, 
+            "model":`${this.state.model}`, 
+            "year":`${this.state.year}`}
         let insertData = JSON.stringify(insert);
         const data = `collection=cars&data=${insertData}`;
 
