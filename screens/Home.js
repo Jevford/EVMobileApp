@@ -6,7 +6,6 @@ import Client from '../mqtt/mqttInstance';
 
 import Header from '../components/Header'
 import Background from '../components/Background'
-import background from '../assets/green.jpg'
 
 // Vehicle Status Images
 import Idle from '../assets/homeIcons/unplug.png'
@@ -33,7 +32,7 @@ export default class Home extends Component {
     constructor(){
         super();
         this.state = { 
-            vehicleStatusImg: Charging,
+            vehicleStatusImg: Idle,
             vehicleStatusText: "Not Charging",
             chargeText: "Charge Now",
             dbOptions: '',
@@ -194,8 +193,8 @@ export default class Home extends Component {
                 chargeText: "Charge Now"
             })
             Alert.alert(
-                'Charger Not Found',
-                `Your Registered Charger Does Not Seem To Be Connected Online.`
+                'You Are Not Connected Online',
+                `This due to not being able to successfuly connect to the mqtt broker.\nPlease try restarting the app.`
                 )
             }
         else {
@@ -204,8 +203,11 @@ export default class Home extends Component {
                 vehicleStatusText: "Not Charging",
                 chargeText: "Charge Now"
             })
+            Alert.alert(
+                "Your Charger Is Not Connected Online",
+                "Please Make Sure Your Charger Is On And Able To Access The Internet"
+            )
         }
-        // this.mqttClient.requestChargeState()
     }
         
     getData = async () => {

@@ -8,7 +8,7 @@ import left from '../assets/back.png'
 import right from '../assets/right-arrow.png'
 import starEmpty from '../assets/star_empty.png'
 import starFill from '../assets/star_fill.png'
-import money from '../assets/money.png'
+import money from '../assets/homeIcons/cost/lv5.png'
 import tree from '../assets/tree.png'
 import graph from '../assets/graph.png'
 
