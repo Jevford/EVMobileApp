@@ -17,7 +17,7 @@ export default class Vehicles extends Component {
 
     postData = async () => {
         const insert = {
-            "evse_id":this.state.evse, 
+            "evseid":this.state.evse, 
             "voltage":this.state.voltage, 
             "output":this.state.output, 
             "plugType":this.state.plug_type,
