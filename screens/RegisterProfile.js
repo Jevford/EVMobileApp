@@ -15,6 +15,8 @@ export default function RegisterProfile({navigation}){
     const [selectedValue, setSelectedValue] = useState("AM");
     const [selectedValue2, setSelectedValue2] = useState("AM");
     
+    // const axios Post Implementation
+
 
     return(
         <View style={styles.container}>
@@ -29,6 +31,7 @@ export default function RegisterProfile({navigation}){
                         onChangeText={(val) => setidText(val)}
                         value={idText}
                         placeholder={"Username"}
+                        placeholderTextColor="black"
                     />
                 </View>
                 <View style={styles.infoView}>
@@ -38,6 +41,7 @@ export default function RegisterProfile({navigation}){
                         onChangeText={(val) => setZipcode(val)}
                         value={zipcode}
                         placeholder={"Zipcode"}
+                        placeholderTextColor="black"
                     />
                 </View>
                 <View style={styles.infoView}>
@@ -64,6 +68,7 @@ export default function RegisterProfile({navigation}){
                             onChangeText={(val) => setStartTime(val)}
                             value={selectedStartTime}
                             placeholder={"12:00"}
+                            placeholderTextColor="black"
                         />
                     </View>
                     <View style={styles.inputView}>
@@ -85,6 +90,7 @@ export default function RegisterProfile({navigation}){
                             onChangeText={(val) => setEndTime(val)}
                             value={selectedEndTime}
                             placeholder={"12:00"}
+                            placeholderTextColor="black"
                         />
                     </View>
                     <View style={styles.inputView}>

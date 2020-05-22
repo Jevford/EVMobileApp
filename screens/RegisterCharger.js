@@ -23,6 +23,7 @@ export default function RegisterCharger({navigation}){
                         style={styles.input}
                         onChangeText={(val) => setidText(val)}
                         placeholder={"EVSE ID"}
+                        placeholderTextColor="black"
                     />
                 </View>
                 <TouchableOpacity 
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         position: 'absolute',
-        top: 390,
+        bottom: -150,
         width: 500,
         height: 500,
     },
