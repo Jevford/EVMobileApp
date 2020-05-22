@@ -14,6 +14,7 @@ import Preferences from './screens/Preferences';
 import vehicleAdd from './screens/vehicleAdd';
 import chargerAdd from './screens/chargerAdd';
 import RegisterCharger from './screens/RegisterCharger';
+import RegisterProfile from './screens/RegisterProfile';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -21,14 +22,19 @@ const Stack = createStackNavigator();
 function LoginStack() {
   return (
       <Stack.Navigator
+      initialRouteName = "RegisterEVSEID"
       headerMode = { false }
         screenOptions = {{
           headerShown: false
         }}
       >
         <Stack.Screen
-          name = "Register" 
+          name = "RegisterEVSEID" 
           component={RegisterCharger}
+        />
+        <Stack.Screen
+          name = "RegisterProfile" 
+          component={RegisterProfile}
         />
       </Stack.Navigator>
   )

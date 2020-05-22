@@ -1,28 +1,46 @@
 import React, {Component, useState} from 'react';
-import {Alert, Button, View, Text, TextInput, StyleSheet, Image} from 'react-native';
+import {Alert, Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterCharger({navigation}) {
+export default function RegisterCharger({navigation}){
+    
+    const [selectedValue, setSelectedValue] = useState("java");
+    var [idText, setidText] = useState("");
+    
+
     return(
         <View style={styles.container}>
             <Background/>
             <Image source={Logo} style={styles.logo}/>
             <Image source={EVIE} style={styles.evie}/>
-            <Text>Hello World</Text>
-            <Button
-                title="Go to Drawer"
-                color="#f04646"
-                onPress={() => navigation.navigate('Home')}
-            />
-            <View style={styles.infoView}>
-                <Text style={styles.infoTextLeft}>Nickname</Text>
-                <TextInput
-                    style={styles.input}
-                    // onChangeText={(val) => this.setState({nickname: val})}
-                    value={"Hello"}
-                />
+            <View style={styles.inputContainer}>
+                <View style={styles.infoView}>
+                    <Text style={styles.inputText}>Enter Your EVSE ID</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(val) => setidText(val)}
+                        placeholder={"EVSE ID"}
+                    />
+                </View>
+                <TouchableOpacity 
+                    style={styles.btnCancel}
+                    onPress={() => navigation.navigate("Home")}
+                >
+                    <View>
+                        <Text style={styles.cancelText}>Cancel</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.btnSubmit}
+                    onPress={() => navigation.navigate("RegisterProfile")}
+                >
+                    <View>
+                        <Text style={styles.submitText}>Next</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -36,20 +54,42 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'transparent',
     },
+    inputContainer: {
+        borderWidth: 1,
+        paddingTop: 10,
+        paddingBottom: 69,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        backgroundColor: "rgba(110, 231, 110, 0.85)",
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
+        elevation: 10
+    },
     input: {
         justifyContent: 'space-around',
         borderWidth: 3,
         borderRadius: 10,
-        borderColor: '#65CB87',
+        borderColor: 'black',
         textAlign: 'left',
         padding: 8,
-        margin: 10,
-        width: 200,
+        margin: 5,
+        width: 300,
         fontSize: 18,
+        fontWeight: 'bold',
+        color: "black"
     },
     infoView: {
         alignItems: 'center',
+        backgroundColor: "transparent"
         // justifyContent: 'center'
+    },
+    inputText: {
+        fontSize: 20,
+        left: -60,
+        color: "black",
+        fontWeight: "bold"
     },
     logo: {
         position: 'absolute',
@@ -63,5 +103,33 @@ const styles = StyleSheet.create({
         left: -69,
         width: 500,
         height: 500,
+    },
+    btnCancel: {
+        position: 'absolute',
+        top: 100,
+        left: 26,
+        padding: 10,
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: "red"
+    },
+    btnSubmit: {
+        position: 'absolute',
+        top: 100,
+        right: 25,
+        padding: 10,
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: "green"
+    },
+    cancelText: {
+        color: "red",
+        fontSize: 20,
+        fontWeight: "bold"
+    },
+    submitText: {
+        color: "green",
+        fontSize: 20,
+        fontWeight: "bold"
     }
 })
