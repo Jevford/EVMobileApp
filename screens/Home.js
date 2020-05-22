@@ -65,13 +65,18 @@ export default class Home extends Component {
             loadOptionsFlag: false
         };
     }
-    
+
     mqttClient = new Client()
-    evseID = this.mqttClient.deviceID 
+    evseID = this.mqttClient.deviceID
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
     
+    componentDidMount = () => {
+        this.mqttClient.requestChargeState()
+        this.getData()
+    }
+
     random = () => {
         return Math.floor(Math.random() * this.state.dbOptions.length);
     }
@@ -205,7 +210,7 @@ export default class Home extends Component {
             })
             Alert.alert(
                 "Your Charger Is Not Connected Online",
-                "Please Make Sure Your Charger Is On And Able To Access The Internet"
+                "Please make sure your charger is on and able to access the internet"
             )
         }
     }
@@ -225,7 +230,7 @@ export default class Home extends Component {
     }
 
     render() {
-        this.getData();
+        // this.getData();
 
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
