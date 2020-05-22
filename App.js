@@ -111,7 +111,7 @@ export default function App() {
         />
         <Drawer.Screen 
           name="Vehicles" 
-          children={vehicleStack}
+          component={vehicleStack}
           options={({ navigation }) => ({
             drawerIcon: () => <FontAwesome5 name="car" size={40} color="#2f804a" />
           })}
