@@ -22,14 +22,14 @@ const Stack = createStackNavigator();
 function LoginStack() {
   return (
       <Stack.Navigator
-      initialRouteName = "RegisterEVSEID"
+      initialRouteName = "RegisterCharger"
       headerMode = { false }
         screenOptions = {{
           headerShown: false
         }}
       >
         <Stack.Screen
-          name = "RegisterEVSEID" 
+          name = "RegisterCharger" 
           component={RegisterCharger}
         />
         <Stack.Screen

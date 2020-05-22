@@ -10,6 +10,7 @@ export default function RegisterProfile({navigation}){
     const [idText, setidText] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [provider, setProvider] = useState("SoCalEdison");
+    const [plan, setPlan] = useState("");
     const [selectedStartTime, setStartTime] = useState("");
     const [selectedEndTime, setEndTime] = useState("");
     const [selectedValue, setSelectedValue] = useState("AM");
@@ -62,6 +63,16 @@ export default function RegisterProfile({navigation}){
                     </View>
                 </View>
                 <View style={styles.infoView}>
+                    <Text style={styles.inputPlanText}>Enter Your Energy Plan</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(val) => setPlan(val)}
+                        value={plan}
+                        placeholder={"Energy Plan"}
+                        placeholderTextColor="black"
+                    />
+                </View>
+                <View style={styles.infoView}>
                     <View style={styles.startTimeView}>
                         <TextInput
                             style={styles.input}
@@ -107,7 +118,7 @@ export default function RegisterProfile({navigation}){
                 </View>
                 <TouchableOpacity 
                     style={styles.btnCancel}
-                    onPress={() => navigation.navigate("RegisterEVSEID")}
+                    onPress={() => navigation.navigate("RegisterCharger")}
                 >
                     <View>
                         <Text style={styles.cancelText}>Go Back</Text>
@@ -139,12 +150,12 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderWidth: 1,
-        top: 25,
+        top: 15,
         paddingTop: 10,
-        paddingBottom: 100,
+        paddingBottom: 80,
         paddingHorizontal: 20,
         borderRadius: 10,
-        backgroundColor: "rgba(110, 231, 110, 0.85)",
+        backgroundColor: "rgba(110, 231, 110, 0.75)",
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
@@ -227,6 +238,12 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: "bold"
     },
+    inputPlanText: {
+        fontSize: 20,
+        left: -40,
+        color: "black",
+        fontWeight: "bold"
+    },
     inputProviderText: {
         fontSize: 20,
         left: -40,
@@ -248,7 +265,7 @@ const styles = StyleSheet.create({
     },
     btnCancel: {
         position: 'absolute',
-        bottom: 30,
+        bottom: 20,
         left: 28,
         padding: 10,
         borderWidth: 2,
@@ -257,7 +274,7 @@ const styles = StyleSheet.create({
     },
     btnSubmit: {
         position: 'absolute',
-        bottom: 30,
+        bottom: 20,
         right: 25,
         padding: 10,
         borderWidth: 2,

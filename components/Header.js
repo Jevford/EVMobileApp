@@ -12,7 +12,7 @@ export default function Header({ title }){
             <View style={styles.header}>
                 <MaterialIcons name='menu' size={50} onPress={() => navigation.openDrawer()} style={styles.menuIcon} />
                 <Text style={styles.title}>{ title }</Text>
-                <EvilIcons name='user' size={50} style={styles.userIcon} onPress={() => navigation.navigate('RegisterEVSEID')}/>
+                {/* <EvilIcons name='user' size={50} style={styles.userIcon} onPress={() => navigation.navigate('RegisterCharger')}/> */}
             </View>
         </View>
     )
