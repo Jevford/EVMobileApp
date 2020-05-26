@@ -26,7 +26,7 @@ export default class Vehicles extends Component {
             evse: this.state.chargerData[index]["evseid"],
             voltage: this.state.chargerData[index]["voltage"],
             output: this.state.chargerData[index]["output"],
-            plug_type: this.state.chargerData[index]["plugType"],
+            plug_type: this.state.chargerData[index]["plugtype"],
             provider: this.state.chargerData[index]["provider"],
             zip: this.state.chargerData[index]["zip"]
         })
@@ -37,7 +37,7 @@ export default class Vehicles extends Component {
             evse: this.state.chargerData[this.state.index]["evseid"],
             voltage: this.state.chargerData[this.state.index]["voltage"],
             output: this.state.chargerData[this.state.index]["output"],
-            plug_type: this.state.chargerData[this.state.index]["plugType"],
+            plug_type: this.state.chargerData[this.state.index]["plugtype"],
             provider: this.state.chargerData[this.state.index]["provider"],
             zip: this.state.chargerData[this.state.index]["zip"]
         })
@@ -59,33 +59,6 @@ export default class Vehicles extends Component {
             var charger_label = `Charger ${parseInt(x)+1}`;
             return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
-
-    // postData = async () => {
-    //     const insert = {
-    //         "evse_id":"US*B25*E3SS*PPK", 
-    //         "voltage":"LV 1", 
-    //         "output":"18 Amps", 
-    //         "plugType":"J1772",
-    //         "provider":"SoCal Edison",
-    //         "zip":"91612"
-    //     }
-    //     let insertData = JSON.stringify(insert);
-    //     const data = `collection=chargers&data=${insertData}`;
-
-    //     const config = axiosInstance({
-    //         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    //     });
-
-    //     await axiosInstance.post('/insert.php', data, config)
-    //         .then((data) => {
-    //             console.log(data);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         })
-        
-    //     Alert.alert('Charger Added!');
-    // }
 
     render() {
         // connect to backend
