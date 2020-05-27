@@ -56,7 +56,7 @@ export default class Vehicles extends Component {
 
     chargerList = () => {
         return( Object.keys(this.state.chargerData).map( (x,i) => { 
-            var charger_label = `Charger ${parseInt(x)+1}`;
+            var charger_label = this.state.chargerData[parseInt(x)]["evseid"];
             return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
 

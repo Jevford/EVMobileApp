@@ -51,9 +51,24 @@ export default class Vehicles extends Component {
 
     carList = (index) => {
         return( Object.keys(this.state.carData).map( (x,i) => { 
-            var car_label = `Car ${parseInt(x)+1}`;
-            // var label = this.state.carData[index]["nickname"];
+            var car_label = this.state.carData[parseInt(x)]["nickname"];
             return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
+    }
+
+    // not currently used
+    componentDidMount() {
+        this.getData();
+        this.willFocusSubscription = this.props.navigation.addListener(
+          'willFocus',
+          () => {
+            this.getData();
+          }
+        );
+      }
+    
+    // not currently used
+    componentWillUnmount() {
+        this.willFocusSubscription.remove();
     }
 
     render() {
