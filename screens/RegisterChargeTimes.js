@@ -5,12 +5,8 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterProfile({navigation}){
+export default function RegisterChargeTimes({navigation}){
     
-    const [idText, setidText] = useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [provider, setProvider] = useState("SoCalEdison");
-    const [plan, setPlan] = useState("");
     const [selectedStartTime, setStartTime] = useState("");
     const [selectedEndTime, setEndTime] = useState("");
     const [selectedValue, setSelectedValue] = useState("AM");
@@ -25,44 +21,7 @@ export default function RegisterProfile({navigation}){
             <Image source={Logo} style={styles.logo}/>
             <Image source={EVIE} style={styles.evie}/>
             <View style={styles.inputContainer}>
-                <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter A Username</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(val) => setidText(val)}
-                        value={idText}
-                        placeholder={"Username"}
-                        placeholderTextColor="black"
-                    />
-                </View>
-                <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter Your Zipcode</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(val) => setZipcode(val)}
-                        value={zipcode}
-                        placeholder={"Zipcode"}
-                        placeholderTextColor="black"
-                    />
-                </View>
-                <View style={styles.infoView}>
-                    <View style={styles.startTimeView}>
-                        <View style={styles.inputProvider}/>
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputProviderText}>Select Energy Provider</Text>
-                        <Picker
-                            selectedValue={provider}
-                            style={styles.providerPickerView}
-                            onValueChange={(itemValue, itemIndex) => setProvider(itemValue)}
-                        >
-                            <Picker.Item label="SoCalEdison" value="SoCalEdison"/>
-                            <Picker.Item label="PG&E" value="PG&E" />
-                            <Picker.Item label="SDG&E" value="SDG&E" />
-                        </Picker>
-                    </View>
-                </View>
-                <View style={styles.infoView}>
+                {/* <View style={styles.infoView}>
                     <Text style={styles.inputPlanText}>Enter Your Energy Plan</Text>
                     <TextInput
                         style={styles.input}
@@ -71,7 +30,7 @@ export default function RegisterProfile({navigation}){
                         placeholder={"Energy Plan"}
                         placeholderTextColor="black"
                     />
-                </View>
+                </View> */}
                 <View style={styles.infoView}>
                     <View style={styles.startTimeView}>
                         <TextInput
@@ -127,12 +86,14 @@ export default function RegisterProfile({navigation}){
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
-                        navigation.popToTop()
-                        navigation.navigate("Home")
+                        if(selectedStartTime != "" && selectedEndTime != ""){
+                            navigation.popToTop()
+                            navigation.navigate("Home")
+                        }
                     }}
                 >
                     <View>
-                        <Text style={styles.submitText}>Next</Text>
+                        <Text style={styles.submitText}>Submit</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -153,7 +114,7 @@ const styles = StyleSheet.create({
         top: 15,
         paddingTop: 10,
         paddingBottom: 80,
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
         borderRadius: 10,
         backgroundColor: "rgba(110, 231, 110, 0.75)",
         shadowColor: '#000',
@@ -170,20 +131,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         padding: 8,
         margin: 5,
-        width: 300,
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: "black"
-    },
-    inputProvider: {
-        justifyContent: 'space-around',
-        borderWidth: 3,
-        borderRadius: 10,
-        borderColor: 'black',
-        textAlign: 'left',
-        padding: 23,
-        margin: 5,
-        width: 300,
+        width: 200,
         fontSize: 18,
         fontWeight: 'bold',
         color: "black"
@@ -200,7 +148,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         padding: 8,
         margin: 5,
-        left: -10,
+        left: 40,
         width: 100,
         fontSize: 18,
         fontWeight: 'bold',
@@ -214,7 +162,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         padding: 8,
         margin: 5,
-        left: -17,
+        left: 37,
         width: 100,
         fontSize: 18,
         fontWeight: 'bold',
@@ -234,13 +182,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
         fontSize: 20,
-        left: -60,
-        color: "black",
-        fontWeight: "bold"
-    },
-    inputPlanText: {
-        fontSize: 20,
-        left: -40,
+        left: -18,
         color: "black",
         fontWeight: "bold"
     },
@@ -266,7 +208,7 @@ const styles = StyleSheet.create({
     btnCancel: {
         position: 'absolute',
         bottom: 20,
-        left: 28,
+        left: 14,
         padding: 10,
         borderWidth: 2,
         borderRadius: 10,
@@ -275,7 +217,7 @@ const styles = StyleSheet.create({
     btnSubmit: {
         position: 'absolute',
         bottom: 20,
-        right: 25,
+        right: 15,
         padding: 10,
         borderWidth: 2,
         borderRadius: 10,

@@ -1,13 +1,23 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterCharger({navigation}){
+export default function RegisterCar({navigation}){
     
-    var [idText, setidText] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [manufacturer, setManufacturer] = useState("");
+    const [model, setModel] = useState("");
+    const [year, setYear] = useState("");
+    const [selectedStartTime, setStartTime] = useState("");
+    const [selectedEndTime, setEndTime] = useState("");
+    const [selectedValue, setSelectedValue] = useState("AM");
+    const [selectedValue2, setSelectedValue2] = useState("AM");
     
+    // const axios Post Implementation
+
 
     return(
         <View style={styles.container}>
@@ -16,30 +26,60 @@ export default function RegisterCharger({navigation}){
             <Image source={EVIE} style={styles.evie}/>
             <View style={styles.inputContainer}>
                 <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter Your EVSE ID</Text>
+                    <Text style={styles.inputText}>Car Nickname</Text>
                     <TextInput
                         style={styles.input}
-                        value={idText}
-                        onChangeText={(val) => setidText(val)}
-                        placeholder={"EVSE ID"}
+                        value={nickname}
+                        onChangeText={(val) => setNickname(val)}
+                        placeholder={"Nickname"}
+                        placeholderTextColor="black"
+                    />
+                </View>
+                <View style={styles.infoView}>
+                    <Text style={styles.inputText}>Car Manufacturer</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={manufacturer}
+                        onChangeText={(val) => setManufacturer(val)}
+                        placeholder={"Manufacturer"}
+                        placeholderTextColor="black"
+                    />
+                </View>
+                <View style={styles.infoView}>
+                    <Text style={styles.inputText}>Car Model</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={model}
+                        onChangeText={(val) => setModel(val)}
+                        placeholder={"Model"}
+                        placeholderTextColor="black"
+                    />
+                </View>
+                <View style={styles.infoView}>
+                    <Text style={styles.inputText}>Car Year</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={year}
+                        onChangeText={(val) => setYear(val)}
+                        placeholder={"Year"}
                         placeholderTextColor="black"
                     />
                 </View>
                 <TouchableOpacity 
                     style={styles.btnCancel}
-                    onPress={() => navigation.navigate("LoginPage")}
+                    onPress={() => navigation.navigate("RegisterPlan")}
                 >
                     <View>
-                        <Text style={styles.cancelText}>Cancel</Text>
+                        <Text style={styles.cancelText}>Back</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
-                        if(idText != ""){
-                            navigation.navigate("RegisterUser")
-                        }}
-                    }
+                        if(nickname != "" && manufacturer != "" && model != "" && year != ""){
+                            navigation.navigate("RegisterChargeTimes")
+                        }
+                    }}
                 >
                     <View>
                         <Text style={styles.submitText}>Next</Text>
@@ -60,8 +100,9 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderWidth: 1,
+        top: 15,
         paddingTop: 10,
-        paddingBottom: 69,
+        paddingBottom: 80,
         paddingHorizontal: 20,
         borderRadius: 10,
         backgroundColor: "rgba(110, 231, 110, 0.75)",
@@ -69,7 +110,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  
-        elevation: 10
+        elevation: 13
     },
     input: {
         justifyContent: 'space-around',
@@ -87,17 +128,17 @@ const styles = StyleSheet.create({
     infoView: {
         alignItems: 'center',
         backgroundColor: "transparent"
-        // justifyContent: 'center'
     },
     inputText: {
+        alignSelf: "flex-start",
         fontSize: 20,
-        left: -60,
+        left: 7,
         color: "black",
         fontWeight: "bold"
     },
     logo: {
         position: 'absolute',
-        bottom: -150,
+        top: 390,
         width: 500,
         height: 500,
     },
@@ -110,8 +151,8 @@ const styles = StyleSheet.create({
     },
     btnCancel: {
         position: 'absolute',
-        top: 100,
-        left: 26,
+        bottom: 20,
+        left: 28,
         padding: 10,
         borderWidth: 2,
         borderRadius: 10,
@@ -119,7 +160,7 @@ const styles = StyleSheet.create({
     },
     btnSubmit: {
         position: 'absolute',
-        top: 100,
+        bottom: 20,
         right: 25,
         padding: 10,
         borderWidth: 2,

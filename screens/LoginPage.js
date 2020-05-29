@@ -1,12 +1,13 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterCharger({navigation}){
+export default function LoginPage({navigation}){
     
-    var [idText, setidText] = useState("");
+    var [username, setUsername] = useState("");
+    var [password, setPassword] = useState("");
     
 
     return(
@@ -16,33 +17,46 @@ export default function RegisterCharger({navigation}){
             <Image source={EVIE} style={styles.evie}/>
             <View style={styles.inputContainer}>
                 <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter Your EVSE ID</Text>
+                    <Text style={styles.inputText}>Username</Text>
                     <TextInput
                         style={styles.input}
-                        value={idText}
-                        onChangeText={(val) => setidText(val)}
-                        placeholder={"EVSE ID"}
+                        value={username}
+                        onChangeText={(val) => setUsername(val)}
+                        placeholder={"Username"}
+                        placeholderTextColor="black"
+                    />
+                </View>
+                <View style={styles.infoView}>
+                    <Text style={styles.inputText}>Password</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={password}
+                        onChangeText={(val) => setPassword(val)}
+                        secureTextEntry={true}
+                        placeholder={"Password"}
                         placeholderTextColor="black"
                     />
                 </View>
                 <TouchableOpacity 
-                    style={styles.btnCancel}
-                    onPress={() => navigation.navigate("LoginPage")}
+                    style={styles.btnCreateAccount}
+                    onPress={() => navigation.navigate("RegisterCharger")}
                 >
                     <View>
-                        <Text style={styles.cancelText}>Cancel</Text>
+                        <Text style={styles.createAccountText}>Create An Account</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                    style={styles.btnSubmit}
+                    style={styles.btnLogin}
                     onPress={() => {
-                        if(idText != ""){
-                            navigation.navigate("RegisterUser")
-                        }}
-                    }
+                        if (username != "" && password != ""){
+                            setUsername("")
+                            setPassword("")
+                            navigation.navigate("Home")
+                        }
+                    }}
                 >
                     <View>
-                        <Text style={styles.submitText}>Next</Text>
+                        <Text style={styles.loginText}>Login</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -61,7 +75,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         borderWidth: 1,
         paddingTop: 10,
-        paddingBottom: 69,
+        paddingBottom: 75,
         paddingHorizontal: 20,
         borderRadius: 10,
         backgroundColor: "rgba(110, 231, 110, 0.75)",
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
         fontSize: 20,
-        left: -60,
+        left: -100,
         color: "black",
         fontWeight: "bold"
     },
@@ -108,30 +122,30 @@ const styles = StyleSheet.create({
         width: 500,
         height: 500,
     },
-    btnCancel: {
+    btnCreateAccount: {
         position: 'absolute',
-        top: 100,
+        top: 190,
         left: 26,
         padding: 10,
         borderWidth: 2,
         borderRadius: 10,
-        borderColor: "red"
+        borderColor: "green"
     },
-    btnSubmit: {
+    btnLogin: {
         position: 'absolute',
-        top: 100,
+        top: 190,
         right: 25,
         padding: 10,
         borderWidth: 2,
         borderRadius: 10,
         borderColor: "green"
     },
-    cancelText: {
-        color: "red",
+    createAccountText: {
+        color: "green",
         fontSize: 20,
         fontWeight: "bold"
     },
-    submitText: {
+    loginText: {
         color: "green",
         fontSize: 20,
         fontWeight: "bold"

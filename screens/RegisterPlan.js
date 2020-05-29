@@ -5,46 +5,18 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterProfile({navigation}){
+export default function RegisterPlan({navigation}){
     
-    const [idText, setidText] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [provider, setProvider] = useState("SoCalEdison");
     const [plan, setPlan] = useState("");
-    const [selectedStartTime, setStartTime] = useState("");
-    const [selectedEndTime, setEndTime] = useState("");
-    const [selectedValue, setSelectedValue] = useState("AM");
-    const [selectedValue2, setSelectedValue2] = useState("AM");
     
-    // const axios Post Implementation
-
-
     return(
         <View style={styles.container}>
             <Background/>
             <Image source={Logo} style={styles.logo}/>
             <Image source={EVIE} style={styles.evie}/>
             <View style={styles.inputContainer}>
-                <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter A Username</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(val) => setidText(val)}
-                        value={idText}
-                        placeholder={"Username"}
-                        placeholderTextColor="black"
-                    />
-                </View>
-                <View style={styles.infoView}>
-                    <Text style={styles.inputText}>Enter Your Zipcode</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(val) => setZipcode(val)}
-                        value={zipcode}
-                        placeholder={"Zipcode"}
-                        placeholderTextColor="black"
-                    />
-                </View>
                 <View style={styles.infoView}>
                     <View style={styles.startTimeView}>
                         <View style={styles.inputProvider}/>
@@ -66,59 +38,25 @@ export default function RegisterProfile({navigation}){
                     <Text style={styles.inputPlanText}>Enter Your Energy Plan</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={(val) => setPlan(val)}
                         value={plan}
+                        onChangeText={(val) => setPlan(val)}
                         placeholder={"Energy Plan"}
                         placeholderTextColor="black"
                     />
                 </View>
                 <View style={styles.infoView}>
-                    <View style={styles.startTimeView}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(val) => setStartTime(val)}
-                            value={selectedStartTime}
-                            placeholder={"12:00"}
-                            placeholderTextColor="black"
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputText}>Charge Start Time</Text>
-                        <Picker
-                            selectedValue={selectedValue}
-                            style={styles.pickerView}
-                            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                        >
-                            <Picker.Item label="AM" value="AM"/>
-                            <Picker.Item label="PM" value="PM" />
-                        </Picker>
-                    </View>
-                </View>
-                <View style={styles.infoView}>
-                    <View style={styles.startTimeView}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(val) => setEndTime(val)}
-                            value={selectedEndTime}
-                            placeholder={"12:00"}
-                            placeholderTextColor="black"
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputText}>Charge End Time</Text>
-                        <Picker
-                            selectedValue={selectedValue2}
-                            style={styles.pickerView2}
-                            onValueChange={(itemValue, itemIndex) => setSelectedValue2(itemValue)}
-                        >
-                            <Picker.Item label="AM" value="AM"/>
-                            <Picker.Item label="PM" value="PM" />
-                        </Picker>
-                    </View>
+                    <Text style={styles.inputText}>Enter Your Zipcode</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={zipcode}
+                        onChangeText={(val) => setZipcode(val)}
+                        placeholder={"Zipcode"}
+                        placeholderTextColor="black"
+                    />
                 </View>
                 <TouchableOpacity 
                     style={styles.btnCancel}
-                    onPress={() => navigation.navigate("RegisterCharger")}
+                    onPress={() => navigation.navigate("RegisterUser")}
                 >
                     <View>
                         <Text style={styles.cancelText}>Back</Text>
@@ -127,8 +65,9 @@ export default function RegisterProfile({navigation}){
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
-                        navigation.popToTop()
-                        navigation.navigate("Home")
+                        if(zipcode != "" && plan != ""){
+                            navigation.navigate("RegisterCar")
+                        }
                     }}
                 >
                     <View>
@@ -150,7 +89,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderWidth: 1,
-        top: 15,
+        top: 35,
         paddingTop: 10,
         paddingBottom: 80,
         paddingHorizontal: 20,

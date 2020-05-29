@@ -13,8 +13,12 @@ import Vehicles from './screens/Vehicles';
 import Preferences from './screens/Preferences';
 import vehicleAdd from './screens/vehicleAdd';
 import chargerAdd from './screens/chargerAdd';
+import LoginPage from './screens/LoginPage';
 import RegisterCharger from './screens/RegisterCharger';
-import RegisterProfile from './screens/RegisterProfile';
+import RegisterUser from './screens/RegisterUser';
+import RegisterPlan from './screens/RegisterPlan';
+import RegisterCar from './screens/RegisterCar';
+import RegisterChargeTimes from './screens/RegisterChargeTimes';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -22,19 +26,35 @@ const Stack = createStackNavigator();
 function LoginStack() {
   return (
       <Stack.Navigator
-      initialRouteName = "RegisterCharger"
+      initialRouteName = "LoginPage"
       headerMode = { false }
         screenOptions = {{
           headerShown: false
         }}
       >
         <Stack.Screen
+          name = "LoginPage" 
+          component={LoginPage}
+        />
+        <Stack.Screen
           name = "RegisterCharger" 
           component={RegisterCharger}
         />
         <Stack.Screen
-          name = "RegisterProfile" 
-          component={RegisterProfile}
+          name = "RegisterUser" 
+          component={RegisterUser}
+        />
+        <Stack.Screen
+          name = "RegisterPlan" 
+          component={RegisterPlan}
+        />
+        <Stack.Screen
+          name = "RegisterCar" 
+          component={RegisterCar}
+        />
+        <Stack.Screen
+          name = "RegisterChargeTimes" 
+          component={RegisterChargeTimes}
         />
       </Stack.Navigator>
   )
@@ -79,7 +99,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator 
-        initialRouteName="Home"
+        initialRouteName="Register New Profile"
         overlayColor="transparent"
         drawerStyle={{
           backgroundColor: '#edf0ee'
