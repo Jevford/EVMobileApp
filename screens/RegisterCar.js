@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
@@ -11,10 +10,6 @@ export default function RegisterCar({navigation}){
     const [manufacturer, setManufacturer] = useState("");
     const [model, setModel] = useState("");
     const [year, setYear] = useState("");
-    const [selectedStartTime, setStartTime] = useState("");
-    const [selectedEndTime, setEndTime] = useState("");
-    const [selectedValue, setSelectedValue] = useState("AM");
-    const [selectedValue2, setSelectedValue2] = useState("AM");
     
     // const axios Post Implementation
 

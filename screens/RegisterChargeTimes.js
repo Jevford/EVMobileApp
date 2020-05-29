@@ -21,23 +21,13 @@ export default function RegisterChargeTimes({navigation}){
             <Image source={Logo} style={styles.logo}/>
             <Image source={EVIE} style={styles.evie}/>
             <View style={styles.inputContainer}>
-                {/* <View style={styles.infoView}>
-                    <Text style={styles.inputPlanText}>Enter Your Energy Plan</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(val) => setPlan(val)}
-                        value={plan}
-                        placeholder={"Energy Plan"}
-                        placeholderTextColor="black"
-                    />
-                </View> */}
                 <View style={styles.infoView}>
                     <View style={styles.startTimeView}>
                         <TextInput
                             style={styles.input}
                             onChangeText={(val) => setStartTime(val)}
                             value={selectedStartTime}
-                            placeholder={"12:00"}
+                            placeholder={"Start"}
                             placeholderTextColor="black"
                         />
                     </View>
@@ -59,7 +49,7 @@ export default function RegisterChargeTimes({navigation}){
                             style={styles.input}
                             onChangeText={(val) => setEndTime(val)}
                             value={selectedEndTime}
-                            placeholder={"12:00"}
+                            placeholder={"End"}
                             placeholderTextColor="black"
                         />
                     </View>
