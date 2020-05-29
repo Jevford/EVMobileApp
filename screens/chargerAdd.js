@@ -41,7 +41,7 @@ export default class Vehicles extends Component {
             })
         
         Alert.alert('Charger Added!');
-        this.props.navigation.goBack();
+        this.props.navigation.reset({routes: [{ name: 'Charger' }],});
     }
 
     render() {

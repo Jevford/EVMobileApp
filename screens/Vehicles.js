@@ -55,26 +55,12 @@ export default class Vehicles extends Component {
             return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
     }
 
-    // not currently used
-    componentDidMount() {
-        this.getData();
-        this.willFocusSubscription = this.props.navigation.addListener(
-          'willFocus',
-          () => {
-            this.getData();
-          }
-        );
-      }
-    
-    // not currently used
-    componentWillUnmount() {
-        this.willFocusSubscription.remove();
+    // get backend data
+    componentDidMount = () => {
+        this.getData()
     }
 
     render() {
-        // connect to backend
-        this.getData();
-
         return (
             <View style={styles.container}>
                 <Header title='Vehicles'/>
@@ -126,7 +112,7 @@ export default class Vehicles extends Component {
                         <View style={{width: "33%"}}>
                             <Button
                             title="Add"
-                            onPress={() => this.props.navigation.navigate('vehicleAdd')}
+                            onPress={() => this.props.navigation.navigate('vehicleAdd')} //{getData: this.getData}
                             />
                         </View>
                         <View style={{width: "33%"}}>

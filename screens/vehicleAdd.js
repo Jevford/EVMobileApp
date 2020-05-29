@@ -35,7 +35,7 @@ export default class vehicleAdd extends Component {
             })
         
         Alert.alert('Car Added!');
-        this.props.navigation.goBack();
+        this.props.navigation.reset({routes: [{ name: 'Vehicles' }],});
     }
 
     render() {

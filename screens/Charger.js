@@ -60,10 +60,12 @@ export default class Vehicles extends Component {
             return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
 
-    render() {
-        // connect to backend
-        this.getData();
+    // get backend data
+    componentDidMount = () => {
+        this.getData()
+    }
 
+    render() {
         return (
             <View style={styles.container}>
                 <Header title='Charger'/>
