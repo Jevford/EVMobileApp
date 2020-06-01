@@ -90,22 +90,22 @@ export default class Home extends Component {
             myOptions: {
                 option1: {
                     label: this.state.dbOptions[selection1]["label"],
-                    charge: this.state.dbOptions[selection1]["charge"],
-                    ready: this.state.dbOptions[selection1]["ready"],
+                    charge: this.state.dbOptions[selection1]["chargeTime"] + " hours",
+                    ready: this.state.dbOptions[selection1]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection1]["save"]],
                     tree: this.trees[this.state.dbOptions[selection1]["tree"]]
                 },
                 option2: {
                     label: this.state.dbOptions[selection2]["label"],
-                    charge: this.state.dbOptions[selection2]["charge"],
-                    ready: this.state.dbOptions[selection2]["ready"],
+                    charge: this.state.dbOptions[selection2]["chargeTime"] + " hours",
+                    ready: this.state.dbOptions[selection2]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection2]["save"]],
                     tree: this.trees[this.state.dbOptions[selection2]["tree"]]
                 },
                 option3: {
                     label: this.state.dbOptions[selection3]["label"],
-                    charge: this.state.dbOptions[selection3]["charge"],
-                    ready: this.state.dbOptions[selection3]["ready"],
+                    charge: this.state.dbOptions[selection3]["chargeTime"] + " hours",
+                    ready: this.state.dbOptions[selection3]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection3]["save"]],
                     tree: this.trees[this.state.dbOptions[selection3]["tree"]]
                 }
@@ -115,6 +115,29 @@ export default class Home extends Component {
             option3flag: false,
             loadOptionsFlag: true
         })
+    }
+
+    labelOptions = () => {
+        for(i = 0; i < this.state.dbOptions.length; ++i) {
+            let label = this.state.dbOptions[i]["label"];
+            label = label.toString();
+            if(label == "0,0,1")
+                this.state.dbOptions[i]["label"] = "Save Money";
+            if(label == "0,1,0")
+                this.state.dbOptions[i]["label"] = "Save Environment";
+            if(label == "0,1,1")
+                this.state.dbOptions[i]["label"] = "Save Money and Environment";
+            if(label == "1,0,0")
+                this.state.dbOptions[i]["label"] = "Reduce Societal Impact";
+            if(label == "1,0,1")
+                this.state.dbOptions[i]["label"] = "Reduce Soc Impact and Save Env";
+            if(label == "1,1,0")
+                this.state.dbOptions[i]["label"] = "Reduce Soc Impact and Save Money";
+            if(label == "1,1,1")
+                this.state.dbOptions[i]["label"] = "Balanced Savings";
+            if (label == "0,0,0")
+                this.state.dbOptions[i]["label"] = "Charge Now"; // this should not be used
+        }
     }
 
     styleOption = (flag) => {
@@ -223,6 +246,7 @@ export default class Home extends Component {
             )
     
             this.setState({dbOptions: res.data});
+            this.labelOptions();
             if(!this.state.loadOptionsFlag){
                 this.refreshOptions();
             }

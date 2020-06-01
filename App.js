@@ -121,13 +121,13 @@ export default function App() {
             drawerIcon: () => <Feather name="home" size={40} color="#2f804a" />
           })}
         />
-        {/* <Drawer.Screen 
+        <Drawer.Screen 
           name="Performance" 
           component={Performance} 
           options={({ navigation }) => ({
             drawerIcon: () => <FontAwesome name="bar-chart" size={35} color="#2f804a" />
           })}
-        /> */}
+        />
         <Drawer.Screen 
           name="Charger" 
           component={chargerStack} 

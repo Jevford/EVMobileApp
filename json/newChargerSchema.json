@@ -1,0 +1,92 @@
+[
+    {
+        "charger": {
+            "evse_id": "US*A23*E45B*78C",
+            "voltage": "LV 2",
+            "output": "30 Amps",
+            "plug_type": "J1772",
+            "provider": "SoCalEdison",
+            "plan": "Plan A",
+            "zip": "91612",
+            "users": [
+                {
+                    "firstname": "Emon",
+                    "lastname": "Sahaba",
+                    "username": "esahaba",
+                    "password": "calplug2020",
+                    "starttime": "12:00AM",
+                    "endtime": "6:00AM",
+                    "actualendtime": "5:50AM",
+                    "cars": [
+                        {
+                            "nickname": "Eevee",
+                            "manufacturer": "Tesla",
+                            "model": "Model S",
+                            "year": "2016"
+                        }
+                    ]
+                }
+            ]
+        }   
+    },
+    {
+        "charger": {
+            "evse_id": "US*F34*EADT*W2W",
+            "voltage": "LV 1",
+            "output": "16 Amps",
+            "plug_type": "J1772",
+            "provider": "SDG&E",
+            "plan": "Plan B",
+            "zip": "90201",
+            "users": [
+                {
+                    "firstname": "Mary",
+                    "lastname": "Ann",
+                    "username": "mann",
+                    "password": "calplug2020",
+                    "starttime": "12:00AM",
+                    "endtime": "6:00AM",
+                    "actualendtime": "6:00AM",
+                    "cars": [
+                        {
+                            "nickname": "Flareon",
+                            "manufacturer": "Volkswagen",
+                            "model": "e-Golf",
+                            "year": "2019"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "charger": {
+            "evse_id": "US*S81*EXEB*5W9",
+            "voltage": "LV 2",
+            "output": "24 Amps",
+            "plug_type": "J1772",
+            "provider": "PG&E",
+            "plan": "Plan C",
+            "zip": "92657",
+            "users": [
+                {
+                    "firstname": "Joseph",
+                    "lastname": "Johnson",
+                    "username": "jjohnson",
+                    "password": "calplug2020",
+                    "starttime": "12:00AM",
+                    "endtime": "6:00AM",
+                    "actualendtime": "6:08AM",
+                    "cars": [
+                        {
+                            "nickname": "Jolteon",
+                            "manufacturer": "BMW",
+                            "model": "iX3",
+                            "year": "2020"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
