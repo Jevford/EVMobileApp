@@ -46,10 +46,10 @@ export default class Vehicles extends Component {
 
     render() {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Header title='Add a Charger'/>
-                    <Background/>
+            <View style={styles.container}>
+                <Header title='Add a Charger'/>
+                <Background/>
+                <ScrollView>
                     <View style={styles.container}>
 
                         <View style={styles.container}>
@@ -118,10 +118,9 @@ export default class Vehicles extends Component {
                                 </View>
                             </View>
                         </View>
-
                     </View>
-                </View>
-            </ScrollView> 
+                </ScrollView>
+            </View>
         );
     }
 }
