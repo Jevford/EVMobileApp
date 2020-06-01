@@ -358,7 +358,7 @@ let styles = StyleSheet.create({
     },
     vehicleText: {
         paddingTop: 15,
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowRadius: 2,
