@@ -163,21 +163,16 @@ export default class Home extends Component {
 
         await this.mqttClient.toggleCharger()
 
-        if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 1) {
+        // If you are using the evse_sim1 python script to test, the logic for the charge states are different
+        // Currently using charge states provided by the physical sim board
+        if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 2) {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Connected But Not Charging",
                 chargeText: "Stop Charging"
             })
         }
-        else if(this.state.chargeText === "Stop Charging" && this.mqttClient.chargeState == 1) {
-            this.setState({
-                vehicleStatusImg: Charging,
-                vehicleStatusText: "Connected But Not Charging",
-                chargeText: "Charge Now"
-            })
-        }
-        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 2) {
+        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 1) {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Charging",
@@ -187,14 +182,21 @@ export default class Home extends Component {
         else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 3) {
             this.setState({
                 vehicleStatusImg: Idle,
-                vehicleStatusText: "Charger Not Plugged In",
+                vehicleStatusText: "Charger Is Not Plugged In",
+                chargeText: "Charge Now"
+            })
+        }
+        else if(this.state.chargeText === "Stop Charging") {
+            this.setState({
+                vehicleStatusImg: Charging,
+                vehicleStatusText: "Connected But Not Charging",
                 chargeText: "Charge Now"
             })
         }
         else if(!this.mqttClient.connectFlag) {
             this.setState({
                 vehicleStatusImg: Idle,
-                vehicleStatusText: "Unable to Communicate to Charger ",
+                vehicleStatusText: "Unable to Communicate with the Charger ",
                 chargeText: "Charge Now"
             })
             Alert.alert(

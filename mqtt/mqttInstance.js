@@ -6,7 +6,11 @@ var mqtt = require('@taoqf/react-native-mqtt')
 
   export default class Client {
         constructor(){
-            this.deviceID = 'evse_sim1',
+            // evse_sim python script deviceID
+            // this.deviceID = 'evse_sim1',  
+
+            // Physical Charger Sim Board deviceID
+            this.deviceID = '240AC4110540',
 
             this.topics = [
                 'out/devices/' + this.deviceID + '/1/SimpleMeteringServer/#',
@@ -21,6 +25,7 @@ var mqtt = require('@taoqf/react-native-mqtt')
             })
             
             this.chargeState = 0
+            this.chargerRelayState = 0
 
             this.connectFlag = false
             if(!this.connectFlag){
@@ -64,9 +69,24 @@ var mqtt = require('@taoqf/react-native-mqtt')
             })
         }
 
-        toggleCharger = () => {
-            let req = 'in/devices/' + this.deviceID + '/1/OnOff/Toggle'
-            let rec = 'out/devices/' + this.deviceID + '/1/OnOff/Toggle'
+        toggleChargerOn = () => {
+            let req = 'in/devices/' + this.deviceID + '/1/OnOff/On'
+            let rec = 'out/devices/' + this.deviceID + '/1/OnOff/On'
+            this.client.publish(req, '{"method": "post","params":{}}')
+
+            this.client.on('message', (topic, message) => {
+                if (topic == rec){
+                    // Alert.alert("Toggle = Message: " + message)
+                } else {
+                    // Alert.alert("Charge State Request Failed: " + topic)
+                }
+            })
+            this.requestChargeState()
+        }
+
+        toggleChargerOff = () => {
+            let req = 'in/devices/' + this.deviceID + '/1/OnOff/Off'
+            let rec = 'out/devices/' + this.deviceID + '/1/OnOff/Off'
             this.client.publish(req, '{"method": "post","params":{}}')
 
             this.client.on('message', (topic, message) => {
