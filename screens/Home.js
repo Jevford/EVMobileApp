@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground, Dimensions, Alert} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, Alert} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
 // import client from '../components/mqttInstance';
 import Client from '../mqtt/mqttInstance';
@@ -181,21 +181,28 @@ export default class Home extends Component {
         }
     }
 
+    toggleButtonFunction = async () => {
+        if(this.mqttClient.chargerRelayState == 0)
+            await this.mqttClient.toggleChargerOn()
+        else if(this.mqttClient.chargerRelayState == 1)
+            await this.mqttClient.toggleChargerOff()
+    }
+
 
     setChargeOption = async () => {
 
-        await this.mqttClient.toggleCharger()
+        this.toggleButtonFunction()
 
         // If you are using the evse_sim1 python script to test, the logic for the charge states are different
         // Currently using charge states provided by the physical sim board
-        if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 2) {
+        if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 1) {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Connected But Not Charging",
                 chargeText: "Stop Charging"
             })
         }
-        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 1) {
+        else if(this.state.chargeText === "Charge Now" && this.mqttClient.chargeState == 2) {
             this.setState({
                 vehicleStatusImg: Charging,
                 vehicleStatusText: "Charging",
@@ -246,7 +253,6 @@ export default class Home extends Component {
                 '/api.php',
                 {params : {version: 1, collection : 'options'}}
             )
-    
             this.setState({dbOptions: res.data});
             this.labelOptions();
             if(!this.state.loadOptionsFlag){
@@ -263,12 +269,12 @@ export default class Home extends Component {
                 <Header title='Home'/>
                 <Background/>
                 <View style={styles.container}>
-                    <View style={styles.container}>
+                    <View style={styles.containerCharger}>
                         <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text>
                         <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
                         <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>
                     </View>
-                    <View style={styles.container}>
+                    <View style={styles.containerChargerOptions}>
                         <Text style={styles.chargingOptionsText}> Your Charging Options </Text>
                         <TouchableOpacity
                             style={this.styleOption(this.state.option1flag)}
@@ -316,7 +322,7 @@ export default class Home extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.setChargeOption}>
                             <View>
-                                <Text style={styles.chargingOptionsText}> {this.state.chargeText} </Text>
+                                <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -330,27 +336,25 @@ export default class Home extends Component {
 let styles = StyleSheet.create({
     container: {
         flex: 1,
+        top: -40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        height: Dimensions.get('window').height
+    },
+    containerCharger: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
     },
-    backContainer: {
-        position: 'absolute',
+    containerChargerOptions: {
+        flex: 1,
         top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0
-    },
-    image2: {
-        width: 0,
-    },  
-    image: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height + 50,
-        resizeMode: 'stretch',
+        alignItems: 'center',
         justifyContent: 'center',
-        opacity: 0.3
-    },  
+        backgroundColor: 'transparent',
+    },
     vehicleStatus: {
         width: 290,
         height: 160,
@@ -370,7 +374,6 @@ let styles = StyleSheet.create({
         borderStyle: 'solid',
     },
     chargingOptionsText: {
-        paddingTop: 20,
         paddingBottom: 10,
         fontSize: 24,
         color: '#65CB87',
@@ -388,6 +391,14 @@ let styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowRadius: 5
     },  
+    chargeToggleButton: {
+        paddingTop: 10,
+        fontSize: 24,
+        color: '#65CB87',
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowRadius: 2
+    },
     SelectionText: {
         position: 'absolute',
         left:10,

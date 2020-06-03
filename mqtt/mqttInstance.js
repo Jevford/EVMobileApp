@@ -42,7 +42,8 @@ var mqtt = require('@taoqf/react-native-mqtt')
                     if (!err) {
                         // this.client.publish('EVIE', 'Connection established between mobile app and mqtt broker.')
                     } else {
-                        Alert.alert("Conncetion Error: " + err.message.toString())
+                        // Alert.alert("Conncetion Error: " + err.message.toString())
+                        // this.connectCharger()
                     }
                 })
             })
@@ -77,6 +78,7 @@ var mqtt = require('@taoqf/react-native-mqtt')
             this.client.on('message', (topic, message) => {
                 if (topic == rec){
                     // Alert.alert("Toggle = Message: " + message)
+                    this.chargerRelayState = 1
                 } else {
                     // Alert.alert("Charge State Request Failed: " + topic)
                 }
@@ -92,6 +94,7 @@ var mqtt = require('@taoqf/react-native-mqtt')
             this.client.on('message', (topic, message) => {
                 if (topic == rec){
                     // Alert.alert("Toggle = Message: " + message)
+                    this.chargerRelayState = 0
                 } else {
                     // Alert.alert("Charge State Request Failed: " + topic)
                 }
