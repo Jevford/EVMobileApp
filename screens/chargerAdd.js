@@ -8,21 +8,24 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default class Vehicles extends Component {
     state = {
         evse: '',
-        voltage: '',
-        output: '',
-        plug_type: '',
+        level: '',
+        current: '',
+        type: '',
         provider: '',
-        zip: ''
+        zip: '',
     }
 
     postData = async () => {
         const insert = {
             "evseid":this.state.evse, 
-            "voltage":this.state.voltage, 
-            "output":this.state.output, 
-            "plugType":this.state.plug_type,
-            "provider":this.state.provider,
-            "zip":this.state.zip
+            "defaultEVSELevel":this.state.level, 
+            "maxcircuitcurrent":this.state.current, 
+            "EVinterfacetype":this.state.type,
+            "electricalprovider":this.state.provider.replace("&", "%26"),
+            "zip":parseInt(this.state.zip),
+            "chargerState": "Not Charging", // default value
+            "completionStatus": "N/A", // default value
+            "chargerOption": "Charge Now" // default value
         }
 
         let insertData = JSON.stringify(insert);
@@ -63,27 +66,27 @@ export default class Vehicles extends Component {
                                 />
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Voltage</Text>
+                                <Text style={styles.infoTextLeft}>Default EVSE Level</Text>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={(val) => this.setState({voltage: val})}
-                                    value={this.state.voltage}
+                                    onChangeText={(val) => this.setState({level: val})}
+                                    value={this.state.level}
                                 />
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Output</Text>
+                                <Text style={styles.infoTextLeft}>Max Current</Text>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={(val) => this.setState({output: val})}
-                                    value={this.state.output}
+                                    onChangeText={(val) => this.setState({current: val})}
+                                    value={this.state.current}
                                 />
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Plug Type</Text>
+                                <Text style={styles.infoTextLeft}>EV Interface Type</Text>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={(val) => this.setState({plug_type: val})}
-                                    value={this.state.plug_type}
+                                    onChangeText={(val) => this.setState({type: val})}
+                                    value={this.state.type}
                                 />
                             </View>
                             <View style={styles.infoView}>

@@ -12,9 +12,9 @@ export default class Vehicles extends Component {
         index: 0,
         charger: '',
         evse: '',
-        voltage: '',
-        output: '',
-        plug_type: '',
+        level: '',
+        current: '',
+        type: '',
         provider: '',
         zip: ''
     };
@@ -24,10 +24,10 @@ export default class Vehicles extends Component {
             index: index,
             charger: value,
             evse: this.state.chargerData[index]["evseid"],
-            voltage: this.state.chargerData[index]["voltage"],
-            output: this.state.chargerData[index]["output"],
-            plug_type: this.state.chargerData[index]["plugtype"],
-            provider: this.state.chargerData[index]["provider"],
+            level: this.state.chargerData[index]["defaultEVSELevel"],
+            current: this.state.chargerData[index]["maxcircuitcurrent"],
+            type: this.state.chargerData[index]["EVinterfacetype"],
+            provider: this.state.chargerData[index]["electricalprovider"],
             zip: this.state.chargerData[index]["zip"]
         })
     }
@@ -35,10 +35,10 @@ export default class Vehicles extends Component {
     initChargers = () => {
         this.setState({
             evse: this.state.chargerData[this.state.index]["evseid"],
-            voltage: this.state.chargerData[this.state.index]["voltage"],
-            output: this.state.chargerData[this.state.index]["output"],
-            plug_type: this.state.chargerData[this.state.index]["plugtype"],
-            provider: this.state.chargerData[this.state.index]["provider"],
+            level: this.state.chargerData[this.state.index]["defaultEVSELevel"],
+            current: this.state.chargerData[this.state.index]["maxcircuitcurrent"],
+            type: this.state.chargerData[this.state.index]["EVinterfacetype"],
+            provider: this.state.chargerData[this.state.index]["electricalprovider"],
             zip: this.state.chargerData[this.state.index]["zip"]
         })
     }
@@ -91,16 +91,16 @@ export default class Vehicles extends Component {
                                 <Text style={styles.infoTextRight}>{this.state.evse}</Text>
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Voltage</Text>
-                                <Text style={styles.infoTextRight}>{this.state.voltage}</Text>
+                                <Text style={styles.infoTextLeft}>Default EVSE Level</Text>
+                                <Text style={styles.infoTextRight}>{this.state.level}</Text>
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Output</Text>
-                                <Text style={styles.infoTextRight}>{this.state.output}</Text>
+                                <Text style={styles.infoTextLeft}>Max Current</Text>
+                                <Text style={styles.infoTextRight}>{this.state.current}</Text>
                             </View>
                             <View style={styles.infoView}>
-                                <Text style={styles.infoTextLeft}>Plug Type</Text>
-                                <Text style={styles.infoTextRight}>{this.state.plug_type}</Text>
+                                <Text style={styles.infoTextLeft}>EV Interface Type</Text>
+                                <Text style={styles.infoTextRight}>{this.state.type}</Text>
                             </View>
                         </View>
 

@@ -19,16 +19,6 @@ export default class Vehicles extends Component {
     };
 
     setCars = (value, index) => {
-        // this.setState({
-        //     index: index,
-        //     car: value,
-        //     carData: this.state.userData[index]["user"],
-        //     nickname: this.state.carData["nickname"],
-        //     make: this.state.carData["manufacturer"],
-        //     model: this.state.carData["model"],
-        //     year: this.state.carData["year"]
-        // })
-
         this.setState({
             index: index,
             car: value,
@@ -40,14 +30,6 @@ export default class Vehicles extends Component {
     }
 
     initCars = () => {
-        // this.setState({
-        //     carData: this.state.userData[this.state.index]["user"][this.state.index],
-        //     nickname: this.state.carData["nickname"],
-        //     make: this.state.carData["manufacturer"],
-        //     model: this.state.carData["model"],
-        //     year: this.state.carData["year"]
-        // })
-
         this.setState({
             nickname: this.state.carData[this.state.index]["nickname"],
             make: this.state.carData[this.state.index]["manufacturer"],
@@ -67,14 +49,7 @@ export default class Vehicles extends Component {
         }
     }
 
-    carList = (index) => {
-        // return( Object.keys(this.state.userData).map( (x) => {
-        //     return( this.state.userData[parseInt(x)]["cars"].map( (car) => {
-        //         var car_label = car.nickname;
-        //         return( <Picker.Item label={car_label} key={x} value={car.nickname}  />)
-        //     }));
-            
-        // } ));
+    carList = () => {
         return( Object.keys(this.state.carData).map( (x,i) => { 
             var car_label = this.state.carData[parseInt(x)]["nickname"];
             return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
