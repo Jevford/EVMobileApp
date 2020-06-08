@@ -26,6 +26,7 @@ import tree2 from '../assets/homeIcons/tree/lv2.png'
 import tree3 from '../assets/homeIcons/tree/lv3.png'
 import tree4 from '../assets/homeIcons/tree/lv4.png'
 import tree5 from '../assets/homeIcons/tree/lv5.png'
+import { round } from 'react-native-reanimated';
 
 
 export default class Home extends Component {
@@ -38,6 +39,7 @@ export default class Home extends Component {
             dbOptions: '',
             myOptions: {
                 option1: {
+                    id: 0,
                     label: '',
                     charge: '',
                     ready: '',
@@ -45,6 +47,7 @@ export default class Home extends Component {
                     tree: tree0
                 },
                 option2: {
+                    id: 0,
                     label: '',
                     charge: '',
                     ready: '',
@@ -52,6 +55,7 @@ export default class Home extends Component {
                     tree: tree0
                 },
                 option3: {
+                    id: 0,
                     label: '',
                     charge: '',
                     ready: '',
@@ -81,6 +85,12 @@ export default class Home extends Component {
         return Math.floor(Math.random() * this.state.dbOptions.length);
     }
 
+    floatToInt = (num) => {
+        if (num >= 4.5)
+            return 5;
+        return Math.round(num);
+    }
+
     refreshOptions = () => {
         let selection1 = this.random();
         let selection2 = this.random();
@@ -89,25 +99,28 @@ export default class Home extends Component {
         this.setState({
             myOptions: {
                 option1: {
-                    label: this.state.dbOptions[selection1]["label"],
-                    charge: this.state.dbOptions[selection1]["chargeTime"] + " minutes",
-                    ready: this.state.dbOptions[selection1]["readyBy"] + " AM",
-                    save: this.piggybanks[this.state.dbOptions[selection1]["save"]],
-                    tree: this.trees[this.state.dbOptions[selection1]["tree"]]
+                    id: this.state.dbOptions[selection1]["evseID"],
+                    label: this.state.dbOptions[selection1]["characteristic"],
+                    charge: this.state.dbOptions[selection1]["chargeTime"].toFixed(2) + " hours",
+                    ready: this.state.dbOptions[selection1]["scheduleEndTime"] + " o'clock",
+                    save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection1]["save"])],
+                    tree: this.trees[this.floatToInt(this.state.dbOptions[selection1]["tree"])]
                 },
                 option2: {
-                    label: this.state.dbOptions[selection2]["label"],
-                    charge: this.state.dbOptions[selection2]["chargeTime"] + " minutes",
-                    ready: this.state.dbOptions[selection2]["readyBy"] + " AM",
-                    save: this.piggybanks[this.state.dbOptions[selection2]["save"]],
-                    tree: this.trees[this.state.dbOptions[selection2]["tree"]]
+                    id: this.state.dbOptions[selection2]["evseID"],
+                    label: this.state.dbOptions[selection2]["characteristic"],
+                    charge: this.state.dbOptions[selection2]["chargeTime"].toFixed(2) + " hours",
+                    ready: this.state.dbOptions[selection2]["scheduleEndTime"] + " o'clock",
+                    save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection2]["save"])],
+                    tree: this.trees[this.floatToInt(this.state.dbOptions[selection2]["tree"])]
                 },
                 option3: {
-                    label: this.state.dbOptions[selection3]["label"],
-                    charge: this.state.dbOptions[selection3]["chargeTime"] + " minutes",
-                    ready: this.state.dbOptions[selection3]["readyBy"] + " AM",
-                    save: this.piggybanks[this.state.dbOptions[selection3]["save"]],
-                    tree: this.trees[this.state.dbOptions[selection3]["tree"]]
+                    id: this.state.dbOptions[selection3]["evseID"],
+                    label: this.state.dbOptions[selection3]["characteristic"],
+                    charge: this.state.dbOptions[selection3]["chargeTime"].toFixed(2) + " hours",
+                    ready: this.state.dbOptions[selection3]["scheduleEndTime"] + " o'clock",
+                    save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection3]["save"])],
+                    tree: this.trees[this.floatToInt(this.state.dbOptions[selection3]["tree"])]
                 }
             },
             option1flag: false,
@@ -115,28 +128,27 @@ export default class Home extends Component {
             option3flag: false,
             loadOptionsFlag: true
         })
+        console.log(this.floatToInt(0.5));
     }
 
-    labelOptions = () => {
+    labelOptions = () => { // env, cos, soc
         for(i = 0; i < this.state.dbOptions.length; ++i) {
-            let label = this.state.dbOptions[i]["label"];
-            label = label.toString();
-            if(label == "0,0,1")
-                this.state.dbOptions[i]["label"] = "Save Money";
-            if(label == "0,1,0")
-                this.state.dbOptions[i]["label"] = "Save Environment";
-            if(label == "0,1,1")
-                this.state.dbOptions[i]["label"] = "Save Money and Environment";
-            if(label == "1,0,0")
-                this.state.dbOptions[i]["label"] = "Reduce Societal Impact";
-            if(label == "1,0,1")
-                this.state.dbOptions[i]["label"] = "Reduce Soc Impact and Save Env";
-            if(label == "1,1,0")
-                this.state.dbOptions[i]["label"] = "Reduce Soc Impact and Save Money";
-            if(label == "1,1,1")
-                this.state.dbOptions[i]["label"] = "Balanced Savings";
-            if (label == "0,0,0")
-                this.state.dbOptions[i]["label"] = "Charge Now"; // this should not be used
+            let label = this.state.dbOptions[i]["characteristic"];
+            // label = label.toString();
+            if(label[0] > 0.5)
+                this.state.dbOptions[i]["characteristic"] = "Save Environment";
+            else if(label[1] > 0.5)
+                this.state.dbOptions[i]["characteristic"] = "Save Money";
+            else if(label[2] > 0.5)
+                this.state.dbOptions[i]["characteristic"] = "Reduce Societal Impact";
+            else if(label[0] > 0.33 && label[1] > 0.33)
+                this.state.dbOptions[i]["characteristic"] = "Save Money and Environment";
+            else if(label[0] > 0.33 && label[2] > 0.33)
+                this.state.dbOptions[i]["characteristic"] = "Reduce Soc Impact and Save Env";
+            else if(label[1] > 0.33 && label[2] > 0.33)
+                this.state.dbOptions[i]["characteristic"] = "Reduce Soc Impact and Save Money";
+            else
+                this.state.dbOptions[i]["characteristic"] = "Balanced Savings";
         }
     }
 
@@ -251,7 +263,7 @@ export default class Home extends Component {
         if (this.state.dbOptions === ''){
             let res = await axiosInstance.get(
                 '/api.php',
-                {params : {version: 1, collection : 'options'}}
+                {params : {version : 1, collection : 'chargeSchedule'}}
             )
             this.setState({dbOptions: res.data});
             this.labelOptions();
@@ -261,9 +273,45 @@ export default class Home extends Component {
         }
     }
 
-    render() {
-        // this.getData();
+    postData = async () => {
+        const insert = {
+            "evseID": this.mqttClient.deviceID
+        }
 
+        let id;
+        if (this.state.option1flag) {
+            id = this.state.myOptions.option1.id;
+        }
+        else if (this.state.option2flag) {
+            id = this.state.myOptions.option2.id;
+        }
+        else if (this.state.option3flag) {
+            id = this.state.myOptions.option3.id;
+        }
+
+        const param = {
+            "evseID": id 
+        }
+
+        let insertData = JSON.stringify(insert);
+        let paramData = JSON.stringify(param);
+        const data = `collection=chargeSchedule&param=${paramData}&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/update.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
+
+    render() {
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
                 <Header title='Home'/>
@@ -321,7 +369,11 @@ export default class Home extends Component {
                                 <Text style={styles.refreshText}>Refresh My Options</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.setChargeOption}>
+                        <TouchableOpacity onPress={() => {
+                                                    this.setChargeOption()
+                                                    if (this.state.option1flag || this.state.option2flag || this.state.option3flag)
+                                                        this.postData()
+                                                }}>
                             <View>
                                 <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
                             </View>
@@ -433,14 +485,14 @@ let styles = StyleSheet.create({
         position: 'absolute',
         width: 40,
         height: 40,
-        marginLeft: 210,
+        marginLeft: 230,
         top: 15,
     },
     selectionImgTree: {
         position:'absolute',
         width: 42,
         height: 42,
-        marginLeft: 260,
+        marginLeft: 280,
         top: 15,
     }
 })
