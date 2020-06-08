@@ -1,11 +1,48 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import axiosInstance from '../components/axiosInstance';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterChargeTimes({navigation}){
+const postData = async (user, make, model, zip, provider, startTime, endTime) => {
+    const insert = {
+        "username":user, 
+        "make":make, 
+        "model":model, 
+        "cost":33,
+        "society":33,
+        "environment":33,
+        "zip": zip, 
+        "electricalprovider": provider.replace("&", "%26"), 
+        "starttime": startTime, 
+        "endtime": endTime 
+    }
+
+    let insertData = JSON.stringify(insert);
+    const data = `collection=userprofiles&data=${insertData}`;
+
+    const config = axiosInstance({
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    });
+
+    await axiosInstance.post('/insert.php', data, config)
+        .then((data) => {
+            // console.log(data);
+        })
+        .catch((err) => {
+            // console.log(err);
+        })
+}
+
+export default function RegisterChargeTimes({route, navigation}){
+
+    const { user } = route.params;
+    const { zipcode } = route.params;
+    const { provider } = route.params;
+    const { make } = route.params;
+    const { model } = route.params;
     
     const [selectedStartTime, setStartTime] = useState("");
     const [selectedEndTime, setEndTime] = useState("");
@@ -67,7 +104,7 @@ export default function RegisterChargeTimes({navigation}){
                 </View>
                 <TouchableOpacity 
                     style={styles.btnCancel}
-                    onPress={() => navigation.navigate("RegisterCharger")}
+                    onPress={() => navigation.navigate("RegisterCar")}
                 >
                     <View>
                         <Text style={styles.cancelText}>Back</Text>
@@ -77,6 +114,18 @@ export default function RegisterChargeTimes({navigation}){
                     style={styles.btnSubmit}
                     onPress={() => {
                         if(selectedStartTime != "" && selectedEndTime != ""){
+                            let starttime = selectedStartTime + " " + selectedValue
+                            let endtime = selectedEndTime + " " + selectedValue2
+
+                            postData(
+                                user, 
+                                make, 
+                                model, 
+                                zipcode,
+                                provider,
+                                starttime,
+                                endtime
+                            )
                             navigation.popToTop()
                             navigation.navigate("Home")
                         }

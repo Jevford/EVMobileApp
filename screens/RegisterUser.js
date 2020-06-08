@@ -9,9 +9,9 @@ export default function RegisterProfile({navigation}){
     
     var [firstName, setFirstName] = useState("")
     var [lastName, setLastName] = useState("")
-    var [username, setUsername] = useState("");
-    var [password, setPassword] = useState("");
-    var [confirmPassword, setConfirmPassword] = useState("");
+    var [username, setUsername] = useState("")
+    var [password, setPassword] = useState("")
+    var [confirmPassword, setConfirmPassword] = useState("")
     
     
     return(
@@ -95,7 +95,9 @@ export default function RegisterProfile({navigation}){
                         style={styles.btnSubmit}
                         onPress={() => {
                             if(firstName != "" && lastName != "" && username != "" && password != "" && confirmPassword != "" && password == confirmPassword){
-                                navigation.navigate("RegisterPlan")
+                                navigation.navigate("RegisterPlan", {
+                                    user: username
+                                })
                             }
                         }}
                     >

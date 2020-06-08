@@ -4,8 +4,12 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterCar({navigation}){
+export default function RegisterCar({route, navigation}){
     
+    const { user } = route.params;
+    const { zipcode } = route.params;
+    const { provider } = route.params;
+
     const [nickname, setNickname] = useState("");
     const [manufacturer, setManufacturer] = useState("");
     const [model, setModel] = useState("");
@@ -72,7 +76,13 @@ export default function RegisterCar({navigation}){
                     style={styles.btnSubmit}
                     onPress={() => {
                         if(nickname != "" && manufacturer != "" && model != "" && year != ""){
-                            navigation.navigate("RegisterChargeTimes")
+                            navigation.navigate("RegisterChargeTimes", {
+                                user: user,
+                                zipcode: zipcode,
+                                provider: provider,
+                                make: manufacturer,
+                                model: model
+                            })
                         }
                     }}
                 >

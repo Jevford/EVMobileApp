@@ -90,21 +90,21 @@ export default class Home extends Component {
             myOptions: {
                 option1: {
                     label: this.state.dbOptions[selection1]["label"],
-                    charge: this.state.dbOptions[selection1]["chargeTime"] + " hours",
+                    charge: this.state.dbOptions[selection1]["chargeTime"] + " minutes",
                     ready: this.state.dbOptions[selection1]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection1]["save"]],
                     tree: this.trees[this.state.dbOptions[selection1]["tree"]]
                 },
                 option2: {
                     label: this.state.dbOptions[selection2]["label"],
-                    charge: this.state.dbOptions[selection2]["chargeTime"] + " hours",
+                    charge: this.state.dbOptions[selection2]["chargeTime"] + " minutes",
                     ready: this.state.dbOptions[selection2]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection2]["save"]],
                     tree: this.trees[this.state.dbOptions[selection2]["tree"]]
                 },
                 option3: {
                     label: this.state.dbOptions[selection3]["label"],
-                    charge: this.state.dbOptions[selection3]["chargeTime"] + " hours",
+                    charge: this.state.dbOptions[selection3]["chargeTime"] + " minutes",
                     ready: this.state.dbOptions[selection3]["readyBy"] + " AM",
                     save: this.piggybanks[this.state.dbOptions[selection3]["save"]],
                     tree: this.trees[this.state.dbOptions[selection3]["tree"]]

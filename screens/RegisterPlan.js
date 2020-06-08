@@ -5,8 +5,9 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterPlan({navigation}){
+export default function RegisterPlan({route, navigation}){
     
+    const { user } = route.params;
     const [zipcode, setZipcode] = useState("");
     const [provider, setProvider] = useState("SoCalEdison");
     const [plan, setPlan] = useState("");
@@ -66,7 +67,11 @@ export default function RegisterPlan({navigation}){
                     style={styles.btnSubmit}
                     onPress={() => {
                         if(zipcode != "" && plan != ""){
-                            navigation.navigate("RegisterCar")
+                            navigation.navigate("RegisterCar", {
+                                user: user,
+                                zipcode: zipcode,
+                                provider: provider
+                            })
                         }
                     }}
                 >
