@@ -37,7 +37,9 @@ export default function RegisterCharger({navigation}){
                     style={styles.btnSubmit}
                     onPress={() => {
                         if(idText != ""){
-                            navigation.navigate("RegisterUser")
+                            navigation.navigate("RegisterUser", {
+                                evseID: idText
+                            })
                         }}
                     }
                 >

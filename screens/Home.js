@@ -270,6 +270,7 @@ export default class Home extends Component {
                 <Background/>
                 <View style={styles.container}>
                     <View style={styles.containerCharger}>
+                        {/* <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text> */}
                         <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text>
                         <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
                         <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>

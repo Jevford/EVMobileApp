@@ -7,6 +7,7 @@ import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
 const postData = async (user, make, model, zip, provider, startTime, endTime) => {
+    provider = provider.replace("&", "%26")
     const insert = {
         "username":user, 
         "make":make, 
@@ -15,7 +16,7 @@ const postData = async (user, make, model, zip, provider, startTime, endTime) =>
         "society":33,
         "environment":33,
         "zip": zip, 
-        "electricalprovider": provider.replace("&", "%26"), 
+        "electricalprovider": provider, 
         "starttime": startTime, 
         "endtime": endTime 
     }
@@ -29,15 +30,16 @@ const postData = async (user, make, model, zip, provider, startTime, endTime) =>
 
     await axiosInstance.post('/insert.php', data, config)
         .then((data) => {
-            // console.log(data);
+            console.log(data);
         })
         .catch((err) => {
-            // console.log(err);
+            console.log(err);
         })
 }
 
 export default function RegisterChargeTimes({route, navigation}){
 
+    const { evseID } = route.params;
     const { user } = route.params;
     const { zipcode } = route.params;
     const { provider } = route.params;
@@ -127,7 +129,9 @@ export default function RegisterChargeTimes({route, navigation}){
                                 endtime
                             )
                             navigation.popToTop()
-                            navigation.navigate("Home")
+                            navigation.navigate("Home", {
+                                evseID: evseID
+                            })
                         }
                     }}
                 >
