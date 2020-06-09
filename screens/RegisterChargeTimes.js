@@ -14,7 +14,7 @@ const postData = async (user, make, model, zip, provider, startTime, endTime) =>
         "model":model, 
         "cost":33,
         "society":33,
-        "environment":33,
+        "environment":34,
         "zip": zip, 
         "electricalprovider": provider, 
         "starttime": startTime, 
