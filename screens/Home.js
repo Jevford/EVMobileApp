@@ -36,8 +36,10 @@ export default class Home extends Component {
             vehicleStatusText: "Not Charging",
             chargeText: "Charge Now",
             dbOptions: '',
+            characteristicArray: [],
             myOptions: {
                 option1: {
+                    index: -1,
                     id: 0,
                     label: '',
                     charge: '',
@@ -46,6 +48,7 @@ export default class Home extends Component {
                     tree: tree0
                 },
                 option2: {
+                    index: -1,
                     id: 0,
                     label: '',
                     charge: '',
@@ -54,6 +57,7 @@ export default class Home extends Component {
                     tree: tree0
                 },
                 option3: {
+                    index: -1,
                     id: 0,
                     label: '',
                     charge: '',
@@ -105,6 +109,7 @@ export default class Home extends Component {
         this.setState({
             myOptions: {
                 option1: {
+                    index: selection1,
                     id: this.state.dbOptions[selection1]["scheduleID"],
                     label: this.state.dbOptions[selection1]["characteristic"],
                     charge: this.state.dbOptions[selection1]["chargeTime"].toFixed(2) + " hours",
@@ -113,6 +118,7 @@ export default class Home extends Component {
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection1]["tree"])]
                 },
                 option2: {
+                    index: selection2,
                     id: this.state.dbOptions[selection2]["scheduleID"],
                     label: this.state.dbOptions[selection2]["characteristic"],
                     charge: this.state.dbOptions[selection2]["chargeTime"].toFixed(2) + " hours",
@@ -121,6 +127,7 @@ export default class Home extends Component {
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection2]["tree"])]
                 },
                 option3: {
+                    index: selection3,
                     id: this.state.dbOptions[selection3]["scheduleID"],
                     label: this.state.dbOptions[selection3]["characteristic"],
                     charge: this.state.dbOptions[selection3]["chargeTime"].toFixed(2) + " hours",
@@ -140,7 +147,8 @@ export default class Home extends Component {
     labelOptions = () => { // env, cos, soc
         for(i = 0; i < this.state.dbOptions.length; ++i) {
             let label = this.state.dbOptions[i]["characteristic"];
-            // label = label.toString();
+            this.state.characteristicArray.push(label);
+
             if(label[0] > 0.5)
                 this.state.dbOptions[i]["characteristic"] = "Save Environment";
             else if(label[1] > 0.5)
@@ -316,6 +324,77 @@ export default class Home extends Component {
             })
     }
 
+    postToChargerSchema = async () => {
+        let scheduleID, env, cos, soc, chargetime, readyby, tree, save;
+
+        if (this.state.option1flag) {
+            let index = this.state.myOptions.option1.index;
+            scheduleID = this.state.myOptions.option1.id;
+            env = this.state.characteristicArray[index][0];
+            cos = this.state.characteristicArray[index][1];
+            soc = this.state.characteristicArray[index][2];
+            chargetime = this.state.dbOptions[index]["chargeTime"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
+            tree = this.state.dbOptions[index]["tree"];
+            save = this.state.dbOptions[index]["save"];
+        }
+        else if (this.state.option2flag) {
+            let index = this.state.myOptions.option2.index;
+            scheduleID = this.state.myOptions.option2.id;
+            env = this.state.characteristicArray[index][0];
+            cos = this.state.characteristicArray[index][1];
+            soc = this.state.characteristicArray[index][2];
+            chargetime = this.state.dbOptions[index]["chargeTime"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
+            tree = this.state.dbOptions[index]["tree"];
+            save = this.state.dbOptions[index]["save"];
+        }
+        else if (this.state.option3flag) {
+            let index = this.state.myOptions.option3.index;
+            scheduleID = this.state.myOptions.option3.id;
+            env = this.state.characteristicArray[index][0];
+            cos = this.state.characteristicArray[index][1];
+            soc = this.state.characteristicArray[index][2];
+            chargetime = this.state.dbOptions[index]["chargeTime"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
+            tree = this.state.dbOptions[index]["tree"];
+            save = this.state.dbOptions[index]["save"];
+        }
+
+        let timestamp = new Date().toISOString();
+        const insert = {
+            "evseID": this.mqttClient.deviceID,
+            "scheduleID": scheduleID,
+            "ecoPref": env,
+            "cosPref": cos,
+            "scoPref": soc,
+            "capacity": 7600,
+            "chargeTime": chargetime,
+            "readyby": readyby,
+            "tree": tree,
+            "save": save,
+            "LV1Vehicle": 0,
+            "LV2Vehicle": 1,
+            "currentchargerstatus": "Charging",
+            "connectionLatestTestTime": timestamp
+        }
+
+        let insertData = JSON.stringify(insert);
+        const data = `collection=chargerSchema&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/insert.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     render() {
         console.log(this.props) 
@@ -381,6 +460,7 @@ export default class Home extends Component {
                                                     this.setChargeOption()
                                                     if (this.state.option1flag || this.state.option2flag || this.state.option3flag)
                                                         this.updateChargerSchedule()
+                                                    this.postToChargerSchema()
                                                 }}>
                             <View>
                                 <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
