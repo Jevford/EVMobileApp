@@ -25,33 +25,6 @@ export default class Preferences extends Component {
         }
     }
 
-    postData = async () => {
-        const insert = {
-            "environment":this.state.envValue.toString(), 
-            "society":this.state.socValue.toString(), 
-            "cost":this.state.costValue.toString(), 
-            "vehicleInfo":"BMW_i8",
-            "deviceInfo":"Android",
-            "userLocation":"San Diego",
-            "userServiceProvider":"SoCal Edison",
-            "userCommutSchedule":"8am-6pm"
-        }
-        let insertData = JSON.stringify(insert);
-        const data = `collection=userDeviceProfile&data=${insertData}`;
-
-        const config = axiosInstance({
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        });
-
-        await axiosInstance.post('/update.php', data, config)
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }
-
     setSliderValues = (s1, s2) => {
         let env = s2 - s1;
         let soc = 100 - (s1 + env);

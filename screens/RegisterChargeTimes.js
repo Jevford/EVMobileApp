@@ -130,7 +130,7 @@ export default function RegisterChargeTimes({route, navigation}){
                             )
                             navigation.popToTop()
                             navigation.navigate("Home", {
-                                evseID: evseID
+                                evseID: "Fock"
                             })
                         }
                     }}

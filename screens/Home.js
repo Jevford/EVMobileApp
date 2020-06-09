@@ -26,12 +26,11 @@ import tree2 from '../assets/homeIcons/tree/lv2.png'
 import tree3 from '../assets/homeIcons/tree/lv3.png'
 import tree4 from '../assets/homeIcons/tree/lv4.png'
 import tree5 from '../assets/homeIcons/tree/lv5.png'
-import { round } from 'react-native-reanimated';
 
 
 export default class Home extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = { 
             vehicleStatusImg: Idle,
             vehicleStatusText: "Not Charging",
@@ -71,10 +70,17 @@ export default class Home extends Component {
     }
 
     mqttClient = new Client()
-    evseID = this.mqttClient.deviceID
+    // evseID = this.mqttClient.deviceID
+    evseID = this.props.route.params.evseID ? this.props.route.params.evseID : this.mqttClient.deviceID
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
+
+    // initializeUserInfo = () => {
+
+    //     const { params } = navigation.state
+    //     this.evseID = params ? params.evseID : "FOCK"
+    // }
     
     componentDidMount = () => {
         this.mqttClient.requestChargeState()
@@ -312,6 +318,8 @@ export default class Home extends Component {
 
 
     render() {
+        console.log(this.props) 
+
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
                 <Header title='Home'/>
