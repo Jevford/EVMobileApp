@@ -5,8 +5,10 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterProfile({navigation}){
+export default function RegisterProfile({route, navigation}){
     
+    const { evseID } = route.params
+
     var [firstName, setFirstName] = useState("")
     var [lastName, setLastName] = useState("")
     var [username, setUsername] = useState("")
@@ -96,6 +98,7 @@ export default function RegisterProfile({navigation}){
                         onPress={() => {
                             if(firstName != "" && lastName != "" && username != "" && password != "" && confirmPassword != "" && password == confirmPassword){
                                 navigation.navigate("RegisterPlan", {
+                                    evseID: evseID,
                                     user: username
                                 })
                             }

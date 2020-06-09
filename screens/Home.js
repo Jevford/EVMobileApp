@@ -411,6 +411,31 @@ export default class Home extends Component {
             .catch((err) => {
                 console.log(err);
             })
+
+        this.postToChargeRequest(timestamp, readyby)
+    }
+
+    postToChargeRequest = async (timestamp, readyby) => {
+        const insert = {
+            "timestamp": timestamp,
+            "endtime": readyby,
+            "scheduled": 0,
+        }
+
+        let insertData = JSON.stringify(insert);
+        const data = `collection=chargeRequest&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/insert.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 

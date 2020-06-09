@@ -6,7 +6,7 @@ import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
 export default function RegisterPlan({route, navigation}){
-    
+    const { evseID } = route.params;
     const { user } = route.params;
     const [zipcode, setZipcode] = useState("");
     const [provider, setProvider] = useState("SoCalEdison");
@@ -68,6 +68,7 @@ export default function RegisterPlan({route, navigation}){
                     onPress={() => {
                         if(zipcode != "" && plan != ""){
                             navigation.navigate("RegisterCar", {
+                                evseID: evseID,
                                 user: user,
                                 zipcode: zipcode,
                                 provider: provider

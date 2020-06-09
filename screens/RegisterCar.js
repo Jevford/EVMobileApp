@@ -6,6 +6,7 @@ import EVIE from '../assets/registerIcons/finalLogo.png';
 
 export default function RegisterCar({route, navigation}){
     
+    const { evseID } = route.params;
     const { user } = route.params;
     const { zipcode } = route.params;
     const { provider } = route.params;
@@ -77,6 +78,7 @@ export default function RegisterCar({route, navigation}){
                     onPress={() => {
                         if(nickname != "" && manufacturer != "" && model != "" && year != ""){
                             navigation.navigate("RegisterChargeTimes", {
+                                evseID: evseID,
                                 user: user,
                                 zipcode: zipcode,
                                 provider: provider,
