@@ -99,7 +99,7 @@ export default class Home extends Component {
         this.setState({
             myOptions: {
                 option1: {
-                    id: this.state.dbOptions[selection1]["evseID"],
+                    id: this.state.dbOptions[selection1]["scheduleID"],
                     label: this.state.dbOptions[selection1]["characteristic"],
                     charge: this.state.dbOptions[selection1]["chargeTime"].toFixed(2) + " hours",
                     ready: this.state.dbOptions[selection1]["scheduleEndTime"] + " o'clock",
@@ -107,7 +107,7 @@ export default class Home extends Component {
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection1]["tree"])]
                 },
                 option2: {
-                    id: this.state.dbOptions[selection2]["evseID"],
+                    id: this.state.dbOptions[selection2]["scheduleID"],
                     label: this.state.dbOptions[selection2]["characteristic"],
                     charge: this.state.dbOptions[selection2]["chargeTime"].toFixed(2) + " hours",
                     ready: this.state.dbOptions[selection2]["scheduleEndTime"] + " o'clock",
@@ -115,7 +115,7 @@ export default class Home extends Component {
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection2]["tree"])]
                 },
                 option3: {
-                    id: this.state.dbOptions[selection3]["evseID"],
+                    id: this.state.dbOptions[selection3]["scheduleID"],
                     label: this.state.dbOptions[selection3]["characteristic"],
                     charge: this.state.dbOptions[selection3]["chargeTime"].toFixed(2) + " hours",
                     ready: this.state.dbOptions[selection3]["scheduleEndTime"] + " o'clock",
@@ -290,7 +290,7 @@ export default class Home extends Component {
         }
 
         const param = {
-            "evseID": id 
+            "scheduleID": id 
         }
 
         let insertData = JSON.stringify(insert);
