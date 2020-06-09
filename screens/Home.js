@@ -310,6 +310,66 @@ export default class Home extends Component {
             })
     }
 
+    postToChargerSchema = async () => {
+        let scheduleID, env, cos, soc, chargetime, readyby, tree, save;
+
+        env = cos = soc = (33 * .01); // ideally, do a get method to userprofile collections and grab prefs from there
+
+        if (this.state.option1flag) {
+            scheduleID = this.state.myOptions.option1.id;
+            chargetime = this.state.dbOptions[0]["chargeTime"];
+            readyby = this.state.dbOptions[0]["scheduleEndTime"];
+            tree = this.state.dbOptions[0]["tree"];
+            save = this.state.dbOptions[0]["save"];
+        }
+        else if (this.state.option2flag) {
+            scheduleID = this.state.myOptions.option2.id;
+            chargetime = this.state.dbOptions[1]["chargeTime"];
+            readyby = this.state.dbOptions[1]["scheduleEndTime"];
+            tree = this.state.dbOptions[1]["tree"];
+            save = this.state.dbOptions[1]["save"];
+        }
+        else if (this.state.option3flag) {
+            scheduleID = this.state.myOptions.option3.id;
+            chargetime = this.state.dbOptions[2]["chargeTime"];
+            readyby = this.state.dbOptions[2]["scheduleEndTime"];
+            tree = this.state.dbOptions[2]["tree"];
+            save = this.state.dbOptions[2]["save"];
+        }
+
+        const insert = {
+            "evseID": this.mqttClient.deviceID,
+            "scheduleID": scheduleID,
+            "ecoPref": env,
+            "cosPref": cos,
+            "scoPref": soc,
+            "capacity": 7600,
+            "chargeTime": chargetime,
+            "readyby": readyby,
+            "tree": tree,
+            "save": save,
+            "LV1Vehicle": 0,
+            "LV2Vehicle": 1,
+            "currentchargerstatus": "Charging",
+            "connectionLatestTestTime": Date.now()
+        }
+
+        let insertData = JSON.stringify(insert);
+        const data = `collection=chargerSchema&data=${insertData}`;
+
+        const config = axiosInstance({
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        await axiosInstance.post('/insert.php', data, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     render() {
         return (
@@ -373,6 +433,7 @@ export default class Home extends Component {
                                                     this.setChargeOption()
                                                     if (this.state.option1flag || this.state.option2flag || this.state.option3flag)
                                                         this.updateChargerSchedule()
+                                                    this.postToChargerSchema()
                                                 }}>
                             <View>
                                 <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
