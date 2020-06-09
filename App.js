@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,6 +22,17 @@ import RegisterChargeTimes from './screens/RegisterChargeTimes';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+// AsyncStorage Initilization for Current User of Mobile App
+let USER_object = {
+  username: null
+};
+
+AsyncStorage.setItem('USER', JSON.stringify(USER_object), () => {
+  AsyncStorage.getItem('USER', (err, result) => {
+      console.log(result);
+  });
+});
 
 function LoginStack() {
   return (

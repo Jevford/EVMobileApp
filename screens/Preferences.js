@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform, Alert} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Platform, Alert, AsyncStorage} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import axiosInstance from '../components/axiosInstance';
 import CustomMarkerLeft from '../components/CustomLeftMarker';
@@ -13,8 +13,9 @@ export default class Preferences extends Component {
     constructor(){
         super();
         this.state = {
+            userInfo: {"username":null},
             costValue: 33,
-            envValue: 33,
+            envValue: 34,
             socValue: 33,
             costPriority: '[Medium]',
             envPriority: '[Medium]',
@@ -108,19 +109,32 @@ export default class Preferences extends Component {
     }
 
     postData = async () => {
-        const insert = {
-            "environment": this.state.envValue.toString(), 
-            "society": this.state.socValue.toString(), 
-            "cost": this.state.costValue.toString(), 
-            "vehicleInfo": "Tesla Model S",
-            "deviceInfo": "Android",
-            "userLocation": "Irvine",
-            "userServiceProvider": "SoCalEdison",
-            "userCommutSchedule": "6am-2pm"
-        }
 
+        // Getting the current Username
+        try {
+            const value = await AsyncStorage.getItem('USER');
+            if (value !== null) {
+              let obj = JSON.parse(value)
+              this.setState({userInfo: obj})
+            }
+          } catch (error) {
+            // Error retrieving data
+          }
+
+        const param = {
+            "username": this.state.userInfo.username
+        }
+        let paramData = JSON.stringify(param);
+
+        const insert = {
+            "cost": this.state.costValue, 
+            "society": this.state.socValue, 
+            "environment": this.state.envValue, 
+        }
         let insertData = JSON.stringify(insert);
-        const data = `collection=userDeviceProfile&data=${insertData}`;
+
+
+        const data = `collection=userprofiles&param=${paramData}&data=${insertData}`;
 
         const config = axiosInstance({
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -128,13 +142,12 @@ export default class Preferences extends Component {
 
         await axiosInstance.post('/update.php', data, config)
             .then((data) => {
-                console.log(data);
+                // For Debugging Purposes
+                // console.log(data);  
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             })
-        
-        Alert.alert('Preferences Saved');
     }
 
     render() {
@@ -190,7 +203,10 @@ export default class Preferences extends Component {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={this.postData}
+                    onPress={() => {
+                        this.postData()
+                        Alert.alert("Preferences have been saved")
+                    }} 
                 >
                     <View>
                         <Text style={styles.saveBtn}> Save Preferences </Text>

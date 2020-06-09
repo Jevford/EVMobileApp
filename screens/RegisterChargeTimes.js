@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, AsyncStorage} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
@@ -119,6 +119,7 @@ export default function RegisterChargeTimes({route, navigation}){
                             let starttime = selectedStartTime + " " + selectedValue
                             let endtime = selectedEndTime + " " + selectedValue2
 
+                            // Posting to userprofiles collection in CalPlug DB
                             postData(
                                 user, 
                                 make, 
@@ -128,6 +129,15 @@ export default function RegisterChargeTimes({route, navigation}){
                                 starttime,
                                 endtime
                             )
+
+                            // Setting new Username for AsyncStorage
+                            let USER_delta = {
+                                username: user
+                            }
+                            AsyncStorage.mergeItem('USER', JSON.stringify(USER_delta), () => {
+                                console.log("Username has been updated for USER")
+                            })
+
                             navigation.popToTop()
                             navigation.navigate("Home", {
                                 evseID: evseID,

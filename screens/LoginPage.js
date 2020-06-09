@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, AsyncStorage} from 'react-native';
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
@@ -49,6 +49,14 @@ export default function LoginPage({navigation}){
                     style={styles.btnLogin}
                     onPress={() => {
                         if (username != "" && password != ""){
+                            // Setting new Username to AsyncStorage
+                            let USER_delta = {
+                                username: username
+                            }
+                            AsyncStorage.mergeItem('USER', JSON.stringify(USER_delta), () => {
+                                console.log("Username has been updated for USER")
+                            })
+
                             setUsername("")
                             setPassword("")
                             navigation.navigate("Home")
