@@ -273,7 +273,7 @@ export default class Home extends Component {
         }
     }
 
-    postData = async () => {
+    updateChargerSchedule = async () => {
         const insert = {
             "evseID": this.mqttClient.deviceID
         }
@@ -372,7 +372,7 @@ export default class Home extends Component {
                         <TouchableOpacity onPress={() => {
                                                     this.setChargeOption()
                                                     if (this.state.option1flag || this.state.option2flag || this.state.option3flag)
-                                                        this.postData()
+                                                        this.updateChargerSchedule()
                                                 }}>
                             <View>
                                 <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
