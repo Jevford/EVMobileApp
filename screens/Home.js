@@ -74,17 +74,25 @@ export default class Home extends Component {
     }
 
     mqttClient = new Client()
-    // evseID = this.mqttClient.deviceID
-    evseID = this.props.route.params.evseID ? this.props.route.params.evseID : this.mqttClient.deviceID
+    evseID = this.mqttClient.deviceID
+    make = ""
+    model = ""
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
 
-    // initializeUserInfo = () => {
+    initializeUserInfo = () => {
+        if (this.props.route.params != undefined) {
+            this.evseID = this.props.route.params.evseID
 
-    //     const { params } = navigation.state
-    //     this.evseID = params ? params.evseID : "FOCK"
-    // }
+            this.make = this.props.route.params.make
+            this.make = this.make.toUpperCase()
+
+            this.model = this.props.route.params.model
+            this.model = this.model.toUpperCase()
+        }
+
+    }
     
     componentDidMount = () => {
         this.mqttClient.requestChargeState()
@@ -141,7 +149,6 @@ export default class Home extends Component {
             option3flag: false,
             loadOptionsFlag: true
         })
-        console.log(this.floatToInt(0.5));
     }
 
     labelOptions = () => { // env, cos, soc
@@ -325,7 +332,18 @@ export default class Home extends Component {
     }
 
     postToChargerSchema = async () => {
-        let scheduleID, env, cos, soc, chargetime, readyby, tree, save;
+        let scheduleID, env, cos, soc, chargetime, readyby, tree, save, capacity = 33000, lvl1 = 1, lvl2 = 0
+        if (make == "CHEVY" && model == "BOLT"){
+            lvl1 = 1
+            lvl2 = 0
+            capacity = Math.floor(Math.random() * 20000)
+        }
+
+        if (make == "TESLA" && model == "MODEL 3"){
+            lvl1 = 0
+            lvl2 = 1
+            capacity = Math.floor(Math.random() * 76000)
+        }
 
         if (this.state.option1flag) {
             let index = this.state.myOptions.option1.index;
@@ -367,14 +385,14 @@ export default class Home extends Component {
             "scheduleID": scheduleID,
             "ecoPref": env,
             "cosPref": cos,
-            "scoPref": soc,
-            "capacity": 7600,
+            "socPref": soc,
+            "capacity": capacity,
             "chargeTime": chargetime,
             "readyby": readyby,
             "tree": tree,
             "save": save,
-            "LV1Vehicle": 0,
-            "LV2Vehicle": 1,
+            "LV1Vehicle": lvl1,
+            "LV2Vehicle": lvl2,
             "currentchargerstatus": "Charging",
             "connectionLatestTestTime": timestamp
         }
