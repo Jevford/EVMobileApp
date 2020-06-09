@@ -333,13 +333,13 @@ export default class Home extends Component {
 
     postToChargerSchema = async () => {
         let scheduleID, env, cos, soc, chargetime, readyby, tree, save, capacity = 33000, lvl1 = 1, lvl2 = 0
-        if (make == "CHEVY" && model == "BOLT"){
+        if (this.make == "CHEVY" && this.model == "BOLT"){
             lvl1 = 1
             lvl2 = 0
             capacity = Math.floor(Math.random() * 20000)
         }
 
-        if (make == "TESLA" && model == "MODEL 3"){
+        if (this.make == "TESLA" && this.model == "MODEL 3"){
             lvl1 = 0
             lvl2 = 1
             capacity = Math.floor(Math.random() * 76000)
@@ -416,6 +416,7 @@ export default class Home extends Component {
 
     render() {
         console.log(this.props) 
+        this.initializeUserInfo();
 
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
