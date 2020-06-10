@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     providerPickerView: {
         padding: 8,
         margin: 5,
-        left: -50,
+        left: -45,
         fontSize: 18,
         fontWeight: 'bold',
         color: "black",

@@ -128,7 +128,7 @@ export default class Home extends Component {
                     id: this.state.dbOptions[selection1]["schedule_id"],
                     label: this.state.dbOptions[selection1]["characteristic"],
                     charge: this.state.dbOptions[selection1]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection1]["readyBy"] + ":00",
+                    ready: this.state.dbOptions[selection1]["scheduleEndTime"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection1]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection1]["tree"])]
                 },
@@ -137,7 +137,7 @@ export default class Home extends Component {
                     id: this.state.dbOptions[selection2]["schedule_id"],
                     label: this.state.dbOptions[selection2]["characteristic"],
                     charge: this.state.dbOptions[selection2]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection2]["readyBy"] + ":00",
+                    ready: this.state.dbOptions[selection2]["scheduleEndTime"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection2]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection2]["tree"])]
                 },
@@ -146,7 +146,7 @@ export default class Home extends Component {
                     id: this.state.dbOptions[selection3]["schedule_id"],
                     label: this.state.dbOptions[selection3]["characteristic"],
                     charge: this.state.dbOptions[selection3]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection3]["readyBy"] + ":00",
+                    ready: this.state.dbOptions[selection3]["scheduleEndTime"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection3]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection3]["tree"])]
                 }
@@ -328,7 +328,7 @@ export default class Home extends Component {
         }
 
         const param = {
-            "scheduleID": id 
+            "schedule_id": id 
         }
 
         let insertData = JSON.stringify(insert);
@@ -375,7 +375,7 @@ export default class Home extends Component {
             env = this.state.dbOptions[index]["eco_pref"];
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
-            readyby = this.state.dbOptions[index]["readyBy"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
             optimized = 1;
         }
         else if (this.state.option2flag) {
@@ -384,7 +384,7 @@ export default class Home extends Component {
             env = this.state.dbOptions[index]["eco_pref"];
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
-            readyby = this.state.dbOptions[index]["readyBy"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
             optimized = 1;
         }
         else if (this.state.option3flag) {
@@ -393,7 +393,7 @@ export default class Home extends Component {
             env = this.state.dbOptions[index]["eco_pref"];
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
-            readyby = this.state.dbOptions[index]["readyBy"];
+            readyby = this.state.dbOptions[index]["scheduleEndTime"];
             optimized = 1;
         }
 
