@@ -74,7 +74,9 @@ export default class Home extends Component {
     }
 
     mqttClient = new Client()
+    createdChargeRequestFlag = false;
     evseID = this.mqttClient.deviceID
+    readyByTime = 5
     make = ""
     model = ""
     vehicleImages = [Idle, Charging];
@@ -90,6 +92,11 @@ export default class Home extends Component {
 
             this.model = this.props.route.params.model
             this.model = this.model.toUpperCase()
+
+            let endtime = this.props.route.params.endtime
+            endtime = endtime.split(":")[0]
+            endtime = parseInt(endtime)
+            this.readyByTime = endtime
         }
 
     }
@@ -194,25 +201,32 @@ export default class Home extends Component {
     }
 
     setOptionFlag = (option) => {
-        if(option === 'option1'){
+        if(option === 'option1' && !this.state.option1flag){
             this.setState({
                 option1flag: true,
                 option2flag: false,
                 option3flag: false
             })
         }
-        else if(option === 'option2'){
+        else if(option === 'option2' && !this.state.option2flag){
             this.setState({
                 option1flag: false,
                 option2flag: true,
                 option3flag: false
             })
         }
-        else if(option === 'option3'){
+        else if(option === 'option3' && !this.state.option3flag){
             this.setState({
                 option1flag: false,
                 option2flag: false,
                 option3flag: true
+            })
+        }
+        else {
+            this.setState({
+                option1flag: false,
+                option2flag: false,
+                option3flag: false
             })
         }
     }
@@ -327,15 +341,17 @@ export default class Home extends Component {
 
         await axiosInstance.post('/update.php', data, config)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             })
     }
 
     postChargerSchema = async () => {
-        let scheduleID, env, cos, soc, readyby, totalcapacity = 20000, usablecapacity = 20000, level = 1
+        let scheduleID = "NULL", env = 0.0, cos = 0.0, soc = 0.0, readyby = 0, totalcapacity = 20000, usablecapacity = 20000, level = 1, connected = 0, optimized = 0
+
+        // Conditionals to check an LV 1 or LV 2 Car (Just checks for chevy bolt or tesla model 3 as of now)
         if (this.make == "CHEVY" && this.model == "BOLT"){
             level = 1
             usablecapacity = Math.floor(Math.random() * 20000)
@@ -347,6 +363,12 @@ export default class Home extends Component {
             usablecapacity = Math.floor(Math.random() * 76000)
         }
 
+        // Conditional to check if Charger is Connected Online
+        if (this.mqttClient.chargeState != 0) {
+            connected = 1
+        }
+
+        // Conditionals to pass which chosen option
         if (this.state.option1flag) {
             let index = this.state.myOptions.option1.index;
             scheduleID = this.state.myOptions.option1.id;
@@ -354,6 +376,7 @@ export default class Home extends Component {
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
             readyby = this.state.dbOptions[index]["readyBy"];
+            optimized = 1;
         }
         else if (this.state.option2flag) {
             let index = this.state.myOptions.option2.index;
@@ -362,6 +385,7 @@ export default class Home extends Component {
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
             readyby = this.state.dbOptions[index]["readyBy"];
+            optimized = 1;
         }
         else if (this.state.option3flag) {
             let index = this.state.myOptions.option3.index;
@@ -370,11 +394,14 @@ export default class Home extends Component {
             cos = this.state.dbOptions[index]["cos_pref"];
             soc = this.state.dbOptions[index]["soc_pref"];
             readyby = this.state.dbOptions[index]["readyBy"];
+            optimized = 1;
         }
 
-        let timestamp = new Date().toISOString();
+        
+
         const insert = {
-            "evse_id": this.mqttClient.deviceID,
+            // "evse_id": this.mqttClient.deviceID,
+            "evse_id": this.evseID,
             "schedule_id": scheduleID,
             "vehicleChargerlevel": level,
             "maxChargerCurrent": 40,
@@ -384,9 +411,9 @@ export default class Home extends Component {
             "soc_pref": soc,
             "vehicletotalcapacity": totalcapacity,
             "vehicleUsableCapacity": usablecapacity,
-            "optimized": 0,
+            "optimized": optimized,
             "readyBy": readyby,
-            "connected": 0,
+            "connected": connected,
             "charging": 0,
             "errorCode": 0,
             "currentChargeRate": 40
@@ -395,7 +422,9 @@ export default class Home extends Component {
 
         let insertData = JSON.stringify(insert);
         const data = `collection=chargerSchema&data=${insertData}`;
-        const del = `collection=chargerSchema&param={"evse_id":"${this.mqttClient.deviceID}"}`;
+        // const del = `collection=chargerSchema&param={"evse_id":"${this.mqttClient.deviceID}"}`;
+        const del = `collection=chargerSchema&param={"evse_id":"${this.evseID}"}`;
+        console.log("EVSEID: " + this.evseID)
 
         const config = axiosInstance({
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -403,10 +432,10 @@ export default class Home extends Component {
 
         await axiosInstance.post('/delete.php', del, config)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             })
         
         await axiosInstance.post('/insert.php', data, config)
@@ -417,37 +446,51 @@ export default class Home extends Component {
                 console.log(err);
             })
 
-        // this.postToChargeRequest(this.mqttClient.deviceID, timestamp, readyby)
     }
 
-    postToChargeRequest = async (id, timestamp, readyby) => {
+    postToChargeRequest = async () => {
+        let timestamp = new Date().toISOString();
+
         const insert = {
-            "evse_id": id,
             "timestamp": timestamp,
-            "endtime": readyby,
+            "endtime": this.readyByTime,
             "scheduled": 0,
+            "evse_id": this.evseID
         }
 
         let insertData = JSON.stringify(insert);
         const data = `collection=chargeRequest&data=${insertData}`;
+        const del = `collection=chargeRequest&param={"evse_id":"${this.evseID}"}`;
 
         const config = axiosInstance({
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
-        await axiosInstance.post('/insert.php', data, config)
+        await axiosInstance.post('/delete.php', del, config)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
+            })
+
+        await axiosInstance.post('/insert.php', data, config)
+            .then((data) => {
+                // console.log(data);
+            })
+            .catch((err) => {
+                // console.log(err);
             })
     }
 
 
     render() {
-        console.log(this.props) 
+        // console.log(this.props) 
         this.initializeUserInfo();
+        if (this.mqttClient.connectFlag && !this.createdChargeRequestFlag && this.mqttClient.chargeState != 0){
+            this.postToChargeRequest()
+            this.createdChargeRequestFlag = true
+        }
 
         return (
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
@@ -455,7 +498,6 @@ export default class Home extends Component {
                 <Background/>
                 <View style={styles.container}>
                     <View style={styles.containerCharger}>
-                        {/* <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text> */}
                         <Text style={styles.vehicleText}> Connected Charger: {this.evseID} </Text>
                         <Image source={this.state.vehicleStatusImg} style={styles.vehicleStatus}/>
                         <Text style={styles.vehicleText}>{this.state.vehicleStatusText}</Text>

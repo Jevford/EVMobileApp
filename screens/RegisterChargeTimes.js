@@ -142,7 +142,8 @@ export default function RegisterChargeTimes({route, navigation}){
                             navigation.navigate("Home", {
                                 evseID: evseID,
                                 make: make,
-                                model: model
+                                model: model,
+                                endtime: endtime
                             })
                         }
                     }}
