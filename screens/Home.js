@@ -118,28 +118,28 @@ export default class Home extends Component {
             myOptions: {
                 option1: {
                     index: selection1,
-                    id: this.state.dbOptions[selection1]["scheduleID"],
+                    id: this.state.dbOptions[selection1]["schedule_id"],
                     label: this.state.dbOptions[selection1]["characteristic"],
                     charge: this.state.dbOptions[selection1]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection1]["scheduleEndTime"] + " o'clock",
+                    ready: this.state.dbOptions[selection1]["readyBy"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection1]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection1]["tree"])]
                 },
                 option2: {
                     index: selection2,
-                    id: this.state.dbOptions[selection2]["scheduleID"],
+                    id: this.state.dbOptions[selection2]["schedule_id"],
                     label: this.state.dbOptions[selection2]["characteristic"],
                     charge: this.state.dbOptions[selection2]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection2]["scheduleEndTime"] + " o'clock",
+                    ready: this.state.dbOptions[selection2]["readyBy"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection2]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection2]["tree"])]
                 },
                 option3: {
                     index: selection3,
-                    id: this.state.dbOptions[selection3]["scheduleID"],
+                    id: this.state.dbOptions[selection3]["schedule_id"],
                     label: this.state.dbOptions[selection3]["characteristic"],
                     charge: this.state.dbOptions[selection3]["chargeTime"].toFixed(2) + " hours",
-                    ready: this.state.dbOptions[selection3]["scheduleEndTime"] + " o'clock",
+                    ready: this.state.dbOptions[selection3]["readyBy"] + ":00",
                     save: this.piggybanks[this.floatToInt(this.state.dbOptions[selection3]["save"])],
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection3]["tree"])]
                 }
@@ -153,21 +153,24 @@ export default class Home extends Component {
 
     labelOptions = () => { // env, cos, soc
         for(i = 0; i < this.state.dbOptions.length; ++i) {
-            let label = this.state.dbOptions[i]["characteristic"];
-            this.state.characteristicArray.push(label);
-
-            if(label[0] > 0.5)
+            if(this.state.dbOptions[i]["eco_pref"] > 0.5){
                 this.state.dbOptions[i]["characteristic"] = "Save Environment";
-            else if(label[1] > 0.5)
+            }    
+            else if(this.state.dbOptions[i]["cos_pref"] > 0.5){
                 this.state.dbOptions[i]["characteristic"] = "Save Money";
-            else if(label[2] > 0.5)
+            } 
+            else if(this.state.dbOptions[i]["soc_pref"] > 0.5){
                 this.state.dbOptions[i]["characteristic"] = "Reduce Societal Impact";
-            else if(label[0] > 0.33 && label[1] > 0.33)
+            }
+            else if(this.state.dbOptions[i]["eco_pref"] > 0.33 && this.state.dbOptions[i]["cos_pref"] > 0.33){
                 this.state.dbOptions[i]["characteristic"] = "Save Money and Environment";
-            else if(label[0] > 0.33 && label[2] > 0.33)
+            }
+            else if(this.state.dbOptions[i]["eco_pref"] > 0.33 && this.state.dbOptions[i]["soc_pref"] > 0.33){
                 this.state.dbOptions[i]["characteristic"] = "Reduce Soc Impact and Save Env";
-            else if(label[1] > 0.33 && label[2] > 0.33)
+            }
+            else if(this.state.dbOptions[i]["cos_pref"] > 0.33 && this.state.dbOptions[i]["soc_pref"] > 0.33){
                 this.state.dbOptions[i]["characteristic"] = "Reduce Soc Impact and Save Money";
+            }  
             else
                 this.state.dbOptions[i]["characteristic"] = "Balanced Savings";
         }
@@ -296,7 +299,7 @@ export default class Home extends Component {
 
     updateChargerSchedule = async () => {
         const insert = {
-            "evseID": this.mqttClient.deviceID
+            "evse_id": this.mqttClient.deviceID
         }
 
         let id;
@@ -331,79 +334,81 @@ export default class Home extends Component {
             })
     }
 
-    postToChargerSchema = async () => {
-        let scheduleID, env, cos, soc, chargetime, readyby, tree, save, capacity = 33000, lvl1 = 1, lvl2 = 0
+    postChargerSchema = async () => {
+        let scheduleID, env, cos, soc, readyby, totalcapacity = 20000, usablecapacity = 20000, level = 1
         if (this.make == "CHEVY" && this.model == "BOLT"){
-            lvl1 = 1
-            lvl2 = 0
-            capacity = Math.floor(Math.random() * 20000)
+            level = 1
+            usablecapacity = Math.floor(Math.random() * 20000)
         }
 
         if (this.make == "TESLA" && this.model == "MODEL 3"){
-            lvl1 = 0
-            lvl2 = 1
-            capacity = Math.floor(Math.random() * 76000)
+            level = 2
+            totalcapacity = 76000
+            usablecapacity = Math.floor(Math.random() * 76000)
         }
 
         if (this.state.option1flag) {
             let index = this.state.myOptions.option1.index;
             scheduleID = this.state.myOptions.option1.id;
-            env = this.state.characteristicArray[index][0];
-            cos = this.state.characteristicArray[index][1];
-            soc = this.state.characteristicArray[index][2];
-            chargetime = this.state.dbOptions[index]["chargeTime"];
-            readyby = this.state.dbOptions[index]["scheduleEndTime"];
-            tree = this.state.dbOptions[index]["tree"];
-            save = this.state.dbOptions[index]["save"];
+            env = this.state.dbOptions[index]["eco_pref"];
+            cos = this.state.dbOptions[index]["cos_pref"];
+            soc = this.state.dbOptions[index]["soc_pref"];
+            readyby = this.state.dbOptions[index]["readyBy"];
         }
         else if (this.state.option2flag) {
             let index = this.state.myOptions.option2.index;
             scheduleID = this.state.myOptions.option2.id;
-            env = this.state.characteristicArray[index][0];
-            cos = this.state.characteristicArray[index][1];
-            soc = this.state.characteristicArray[index][2];
-            chargetime = this.state.dbOptions[index]["chargeTime"];
-            readyby = this.state.dbOptions[index]["scheduleEndTime"];
-            tree = this.state.dbOptions[index]["tree"];
-            save = this.state.dbOptions[index]["save"];
+            env = this.state.dbOptions[index]["eco_pref"];
+            cos = this.state.dbOptions[index]["cos_pref"];
+            soc = this.state.dbOptions[index]["soc_pref"];
+            readyby = this.state.dbOptions[index]["readyBy"];
         }
         else if (this.state.option3flag) {
             let index = this.state.myOptions.option3.index;
             scheduleID = this.state.myOptions.option3.id;
-            env = this.state.characteristicArray[index][0];
-            cos = this.state.characteristicArray[index][1];
-            soc = this.state.characteristicArray[index][2];
-            chargetime = this.state.dbOptions[index]["chargeTime"];
-            readyby = this.state.dbOptions[index]["scheduleEndTime"];
-            tree = this.state.dbOptions[index]["tree"];
-            save = this.state.dbOptions[index]["save"];
+            env = this.state.dbOptions[index]["eco_pref"];
+            cos = this.state.dbOptions[index]["cos_pref"];
+            soc = this.state.dbOptions[index]["soc_pref"];
+            readyby = this.state.dbOptions[index]["readyBy"];
         }
 
         let timestamp = new Date().toISOString();
         const insert = {
-            "evseID": this.mqttClient.deviceID,
-            "scheduleID": scheduleID,
-            "ecoPref": env,
-            "cosPref": cos,
-            "socPref": soc,
-            "capacity": capacity,
-            "chargeTime": chargetime,
-            "readyby": readyby,
-            "tree": tree,
-            "save": save,
-            "LV1Vehicle": lvl1,
-            "LV2Vehicle": lvl2,
-            "currentchargerstatus": "Charging",
-            "connectionLatestTestTime": timestamp
+            "evse_id": this.mqttClient.deviceID,
+            "schedule_id": scheduleID,
+            "vehicleChargerlevel": level,
+            "maxChargerCurrent": 40,
+            "maxVehicleChargingCurrent": 40,
+            "eco_pref": env,
+            "cos_pref": cos,
+            "soc_pref": soc,
+            "vehicletotalcapacity": totalcapacity,
+            "vehicleUsableCapacity": usablecapacity,
+            "optimized": 0,
+            "readyBy": readyby,
+            "connected": 0,
+            "charging": 0,
+            "errorCode": 0,
+            "currentChargeRate": 40
         }
+
 
         let insertData = JSON.stringify(insert);
         const data = `collection=chargerSchema&data=${insertData}`;
+        const del = `collection=chargerSchema&param={"evse_id":"${this.mqttClient.deviceID}"}`;
 
         const config = axiosInstance({
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
+        await axiosInstance.post('/delete.php', del, config)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        
         await axiosInstance.post('/insert.php', data, config)
             .then((data) => {
                 console.log(data);
@@ -412,11 +417,12 @@ export default class Home extends Component {
                 console.log(err);
             })
 
-        this.postToChargeRequest(timestamp, readyby)
+        // this.postToChargeRequest(this.mqttClient.deviceID, timestamp, readyby)
     }
 
-    postToChargeRequest = async (timestamp, readyby) => {
+    postToChargeRequest = async (id, timestamp, readyby) => {
         const insert = {
+            "evse_id": id,
             "timestamp": timestamp,
             "endtime": readyby,
             "scheduled": 0,
@@ -504,7 +510,7 @@ export default class Home extends Component {
                                                     this.setChargeOption()
                                                     if (this.state.option1flag || this.state.option2flag || this.state.option3flag)
                                                         this.updateChargerSchedule()
-                                                    this.postToChargerSchema()
+                                                    this.postChargerSchema()
                                                 }}>
                             <View>
                                 <Text style={styles.chargeToggleButton}> {this.state.chargeText} </Text>
