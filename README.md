@@ -13,7 +13,7 @@ June 11, 2020
 
 # Set up and Running the Application
 
-Ask the Sponsor/Project lead or Refer to the EVIE Mobile App Documentation for more information.
+Ask the Sponsor/Project Lead to give the EVIE Mobile App Documentation for more specific information.
 
 # Ideas for Future Implementation
 
