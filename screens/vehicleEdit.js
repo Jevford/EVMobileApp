@@ -7,6 +7,7 @@ import Background from '../components/Background'
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default class vehicleAdd extends Component {
+    // Initialization of class vars in state object
     state = {
         nickname: '',
         make: '',
@@ -14,6 +15,7 @@ export default class vehicleAdd extends Component {
         year: ''
     }
 
+    // Method to post a vehicle record update into the database
     postData = async () => {
         const user = {"username":"demopass"}
         const insert = {
@@ -42,6 +44,7 @@ export default class vehicleAdd extends Component {
         this.props.navigation.reset({routes: [{ name: 'Vehicles' }],});
     }
 
+    // Main function that renders the page
     render() {
         return (
             <View style={styles.container}>

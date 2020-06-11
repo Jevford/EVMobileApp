@@ -1,11 +1,13 @@
-import React, {Component, useState} from 'react';
+import React, { useState } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Component that asks the user for Charger info
 export default function RegisterCharger({navigation}){
     
+    // idText is the evseID they input in this page
     var [idText, setidText] = useState("");
     
 
@@ -36,6 +38,7 @@ export default function RegisterCharger({navigation}){
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
+                        // Checks if the evseID input is filled, then navigates to RegisterUser page
                         if(idText != ""){
                             navigation.navigate("RegisterUser", {
                                 evseID: idText
@@ -52,6 +55,7 @@ export default function RegisterCharger({navigation}){
     );
 }
 
+// Stylesheet for components in this file, similar to CSS styling but React Native has some different naming conventions
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -89,7 +93,6 @@ const styles = StyleSheet.create({
     infoView: {
         alignItems: 'center',
         backgroundColor: "transparent"
-        // justifyContent: 'center'
     },
     inputText: {
         fontSize: 20,

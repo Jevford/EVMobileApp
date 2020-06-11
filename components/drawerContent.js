@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ImageBackground, Image} from 'react-native';
+import {ImageBackground} from 'react-native';
 import {
     DrawerContentScrollView,
     DrawerItemList,
@@ -7,7 +7,8 @@ import {
 
 
 import background from '../assets/green.jpg'
-  
+
+// This component styles the drawer stack with custom components and spacing/fonts
 export default function CustomDrawerContent(props) {
     return (
         <DrawerContentScrollView {...props}>

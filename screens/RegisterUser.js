@@ -1,14 +1,18 @@
 import React, {Component, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView} from 'react-native';
-import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
-export default function RegisterProfile({route, navigation}){
-    
+// Component that asks for User Credentials in account creation
+export default function RegisterUser({route, navigation}){
+    /*
+        route is used to pull parameter values given from previous pages
+        Seen Below, pulls the evseID given from RegisterCharger.js
+    */
     const { evseID } = route.params
 
+    // Class Component state variable initialization
     var [firstName, setFirstName] = useState("")
     var [lastName, setLastName] = useState("")
     var [username, setUsername] = useState("")

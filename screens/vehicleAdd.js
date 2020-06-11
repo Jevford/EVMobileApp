@@ -12,6 +12,7 @@ export default class vehicleAdd extends Component {
         year: ''
     }
 
+    // Posts a new record into cars collection in the database
     postData = async () => {
         const insert = {
             "nickname":this.state.nickname, 
@@ -38,6 +39,7 @@ export default class vehicleAdd extends Component {
         this.props.navigation.reset({routes: [{ name: 'Vehicles' }],});
     }
 
+    // Main function that renders the page
     render() {
         return (
             <View style={styles.container}>

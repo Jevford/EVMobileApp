@@ -1,10 +1,18 @@
+/*
+    Big Dog of all the screens in this app project
+    Don't fear it's fairly simple as it separates concerns in different function
+    Yes there's a ton of lines, no worries we like to space stuff around :D
+*/
+
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, Alert} from 'react-native';
 import axiosInstance from '../components/axiosInstance';
-// import client from '../components/mqttInstance';
 import Client from '../mqtt/mqttInstance';
 
+// Header component for displaying the hamburger menu and user icon
 import Header from '../components/Header'
+
+// Background component to show a nice background 
 import Background from '../components/Background'
 
 // Vehicle Status Images
@@ -27,8 +35,11 @@ import tree3 from '../assets/homeIcons/tree/lv3.png'
 import tree4 from '../assets/homeIcons/tree/lv4.png'
 import tree5 from '../assets/homeIcons/tree/lv5.png'
 
-
+/* 
+    Component that displays the user's connected charger, display status of charging state, selectable charging options, start charge button
+*/
 export default class Home extends Component {
+    // Constructor was needed here since you need access to react native prop parameters from different screens
     constructor(props){
         super(props);
         this.state = { 
@@ -73,16 +84,27 @@ export default class Home extends Component {
         };
     }
 
+    // Class variables that initialized beforehand
+    // Create a new mqttInstance object
     mqttClient = new Client()
+
+    // Boolean check to see if a chargeRequest was already posted to the database
     createdChargeRequestFlag = false;
+
+    // Initial evseID (Physical Charger's ID actually), used as backupup user did not specify or have a stored evseID in their profile record
     evseID = this.mqttClient.deviceID
+
+    // Default attributes in case of no data found in userprofile record in the database
     readyByTime = 5
     make = ""
     model = ""
+
+    // Lists of Images, made things easier by calling specific images by index instead of their import names
     vehicleImages = [Idle, Charging];
     piggybanks = [money0, money1, money2, money3, money4, money5];
     trees = [tree0, tree1, tree2, tree3, tree4, tree5];
 
+    // Initializes the user's information if a new account was created to reach the Home screen
     initializeUserInfo = () => {
         if (this.props.route.params != undefined) {
             this.evseID = this.props.route.params.evseID
@@ -94,28 +116,35 @@ export default class Home extends Component {
             this.model = this.model.toUpperCase()
 
             let endtime = this.props.route.params.endtime
+            // Parsing an endtime string (example: "8:00 AM") => (int) 8
             endtime = endtime.split(":")[0]
             endtime = parseInt(endtime)
             this.readyByTime = endtime
         }
-
     }
     
+    // Once a component is initialized (doesnt have to be shown on screen), calls these methods beforehand
     componentDidMount = () => {
+        // requests the state of the connected charger
         this.mqttClient.requestChargeState()
+
+        // Gets the charge options from chargerSchedule collection in the database
         this.getData()
     }
 
+    // Helpfer function to return a random index for the charge options acquired from the database
     random = () => {
         return Math.floor(Math.random() * this.state.dbOptions.length);
     }
 
+    // Conversion of a float to an int with 5 being the max returned int, used for determining the int value of a pref from the chareSchedule option
     floatToInt = (num) => {
         if (num >= 4.5)
             return 5;
         return Math.round(num);
     }
 
+    // Refreshes the options shown on the Home Page
     refreshOptions = () => {
         let selection1 = this.random();
         let selection2 = this.random();
@@ -151,14 +180,19 @@ export default class Home extends Component {
                     tree: this.trees[this.floatToInt(this.state.dbOptions[selection3]["tree"])]
                 }
             },
+
+            // Boolean flags set for options to false, so that they are not highlighted anymore
             option1flag: false,
             option2flag: false,
             option3flag: false,
+
+            // After a single refresh, makes this boolean var true, so that this.getData() does not refresh the options itself
             loadOptionsFlag: true
         })
     }
 
-    labelOptions = () => { // env, cos, soc
+    // Labels each option shown based on the pref value received from the schedule collection
+    labelOptions = () => { // env, cos, soc <- this is the order that prefs come in from the database
         for(i = 0; i < this.state.dbOptions.length; ++i) {
             if(this.state.dbOptions[i]["eco_pref"] > 0.5){
                 this.state.dbOptions[i]["characteristic"] = "Save Environment";
@@ -183,6 +217,7 @@ export default class Home extends Component {
         }
     }
 
+    // Method that highlights or makes transparent when an option is touched
     styleOption = (flag) => {
         let selectionColor = flag ? "#cdd1ce" : "transparent"; 
         return {
@@ -200,6 +235,7 @@ export default class Home extends Component {
             }
     }
 
+    // Determines which option was selected and sets their boolean value
     setOptionFlag = (option) => {
         if(option === 'option1' && !this.state.option1flag){
             this.setState({
@@ -223,6 +259,7 @@ export default class Home extends Component {
             })
         }
         else {
+            // This setSate means that a selected option was touched again, thus setting all options to false (transparent)
             this.setState({
                 option1flag: false,
                 option2flag: false,
@@ -231,6 +268,15 @@ export default class Home extends Component {
         }
     }
 
+    /* 
+        THIS NOT SUPPOSED TO BE HOW THE MOBILE APP WORKS FOR THE CHARGE BUTTON
+        For the purposes of our live demonstration, we made the mobile app send an mqtt topic to toggle the physical on/off
+        to show the lights turn on and off
+
+        The actual implementation of the charge button will simply send a signal to the coordinator to ask for the charger to start charging
+        Please remove this function once your team has interfaced with the coordinator
+        Best of Luck :)
+    */
     toggleButtonFunction = async () => {
         if(this.mqttClient.chargerRelayState == 0)
             await this.mqttClient.toggleChargerOn()
@@ -238,9 +284,14 @@ export default class Home extends Component {
             await this.mqttClient.toggleChargerOff()
     }
 
-
+    // Method that changes the label of the charger status display and the car icon
     setChargeOption = async () => {
 
+        /* 
+            Remove once interfaced with the Optimizer
+            You will need to figure out how to change the icon and label
+            Idea: read the charger state from the chargerSchema once the Optimizer has the capability to change a specific EVSEID record in the database
+        */
         this.toggleButtonFunction()
 
         // If you are using the evse_sim1 python script to test, the logic for the charge states are different
@@ -290,13 +341,15 @@ export default class Home extends Component {
                 vehicleStatusText: "Not Charging",
                 chargeText: "Charge Now"
             })
+            // Alert will appear because the charger was unable to send a topic through the MQTT broker to confirm it is connected online
             Alert.alert(
                 "Your Charger Is Not Connected Online",
                 "Please make sure your charger is on and able to access the internet"
             )
         }
     }
-        
+    
+    // Axios method to retrieve charge option from chargeSchedule collection
     getData = async () => {
         if (this.state.dbOptions === ''){
             let res = await axiosInstance.get(
@@ -311,6 +364,11 @@ export default class Home extends Component {
         }
     }
 
+    /* 
+        Axios method update a specific chargeSchema record with the current selection option's data
+        If you charge without selection an option, the prefs, readyby, and optimize attributes within this charger's record in the databse will be 0
+        Pretty much no selected option but the user clicks charge now, means to default charge without optimization
+    */
     updateChargerSchedule = async () => {
         const insert = {
             "evse_id": this.mqttClient.deviceID
@@ -348,6 +406,7 @@ export default class Home extends Component {
             })
     }
 
+    // Axios method that posts a chargerSchema record into the database
     postChargerSchema = async () => {
         let scheduleID = "NULL", env = 0.0, cos = 0.0, soc = 0.0, readyby = 0, totalcapacity = 20000, usablecapacity = 20000, level = 1, connected = 0, optimized = 0
 
@@ -400,7 +459,7 @@ export default class Home extends Component {
         
 
         const insert = {
-            // "evse_id": this.mqttClient.deviceID,
+            // "evse_id": this.mqttClient.deviceID, <- this was used as a default value if the evseID was not found
             "evse_id": this.evseID,
             "schedule_id": scheduleID,
             "vehicleChargerlevel": level,
@@ -422,14 +481,15 @@ export default class Home extends Component {
 
         let insertData = JSON.stringify(insert);
         const data = `collection=chargerSchema&data=${insertData}`;
-        // const del = `collection=chargerSchema&param={"evse_id":"${this.mqttClient.deviceID}"}`;
+        // const del = `collection=chargerSchema&param={"evse_id":"${this.mqttClient.deviceID}"}`; <- Same situation as mentioned above
         const del = `collection=chargerSchema&param={"evse_id":"${this.evseID}"}`;
-        console.log("EVSEID: " + this.evseID)
+        // console.log("EVSEID: " + this.evseID)
 
         const config = axiosInstance({
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
+        // This post call, deletes the former chargeSchema with the same evseID
         await axiosInstance.post('/delete.php', del, config)
             .then((data) => {
                 // console.log(data);
@@ -438,16 +498,21 @@ export default class Home extends Component {
                 // console.log(err);
             })
         
+        /* 
+            This post call inserts the new (updated) chargerSchema record....Yes I know you could use the axios.patch() method
+            Vinh didnt implement that in the database REST API calls :( , so do it this way on how to "update" records
+        */
         await axiosInstance.post('/insert.php', data, config)
             .then((data) => {
-                console.log(data);
+                // console.log(data);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             })
 
     }
 
+    // Axios method that "updates" a chargeRequest record in the database if the charger was confirmed to be connected online
     postToChargeRequest = async () => {
         let timestamp = new Date().toISOString();
 
@@ -466,6 +531,7 @@ export default class Home extends Component {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
 
+        // As you can see, this is how we "update", as mentioned in the previous method
         await axiosInstance.post('/delete.php', del, config)
             .then((data) => {
                 // console.log(data);
@@ -485,7 +551,7 @@ export default class Home extends Component {
 
 
     render() {
-        // console.log(this.props) 
+        // console.log(this.props) <- Used for debugging what was contained the props passed in the constructor
         this.initializeUserInfo();
         if (this.mqttClient.connectFlag && !this.createdChargeRequestFlag && this.mqttClient.chargeState != 0){
             this.postToChargeRequest()
@@ -565,7 +631,7 @@ export default class Home extends Component {
     }
 }
 
-
+// This is a long StyleSheet, but it's not hard to find the specific ids
 let styles = StyleSheet.create({
     container: {
         flex: 1,

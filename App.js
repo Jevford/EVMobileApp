@@ -1,3 +1,13 @@
+/*
+  App: EVIE Mobile App (Electric Vehicle Intelligent Environment)
+  Version: 1.0.0 ( June 10, 2020 )
+  Developers: Jevford Barro, Darrel Belen ( Class of 2020 )
+  Message to Future Developers: Hello and hope you enjoy playing with this app and making it even better :)
+
+  App.js is the root to when the mobile app is started ( The Main File that holds and runs everything together )
+*/
+
+// Import of Components, Screens, and Dependencies
 import * as React from 'react';
 import { StyleSheet, AsyncStorage } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -20,20 +30,22 @@ import RegisterPlan from './screens/RegisterPlan';
 import RegisterCar from './screens/RegisterCar';
 import RegisterChargeTimes from './screens/RegisterChargeTimes';
 
+// Creation of Drawer and Stack Navigators
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-// AsyncStorage Initilization for Current User of Mobile App
+// AsyncStorage Initilization for Current User of Mobile App ( Like local storage on web apps )
 let USER_object = {
   username: null
 };
 
 AsyncStorage.setItem('USER', JSON.stringify(USER_object), () => {
   AsyncStorage.getItem('USER', (err, result) => {
-      console.log(result);
+      // console.log(result); <- testing purposes
   });
 });
 
+// Login Stack that holds screens for the login pages
 function LoginStack() {
   return (
       <Stack.Navigator
@@ -71,6 +83,7 @@ function LoginStack() {
   )
 }
 
+// Charger Stack that holds charger related pages
 function chargerStack() {
   return(
     <Stack.Navigator initialRouteName="Charger">
@@ -88,6 +101,7 @@ function chargerStack() {
   )
 }
 
+// Vehicle stack that holds vehicle related pages
 function vehicleStack() {
   return(
     <Stack.Navigator initialRouteName="Vehicles">
@@ -105,8 +119,11 @@ function vehicleStack() {
   )
 }
 
+/* 
+  Main method where the mobile app start calling from ( Like the main method in Python or Java )
+  Holds all the stacks and drawer, some stacks are nested in the drawer
+*/
 export default function App() {
-
   return (
     <NavigationContainer>
       <Drawer.Navigator 
@@ -133,6 +150,7 @@ export default function App() {
           })}
         />
         <Drawer.Screen 
+          // This screen has not been fully implemented with functioning live graph and user charging performance details, pretty much a static screen
           name="Performance" 
           component={Performance} 
           options={({ navigation }) => ({
@@ -172,7 +190,10 @@ export default function App() {
   );
 }
 
-
+/* 
+  Local Stylesheet for Components within this file 
+  Think about it as CSS stylesheets, only limitation in React Native is that they are usually within the same file with the code
+*/
 const styles = StyleSheet.create({
   contentOptions: {
     fontSize: 16,

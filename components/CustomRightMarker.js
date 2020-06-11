@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Platform, TouchableHighlight } from 'react-native';
 
+// Creates a custom component for the right slider shown on the Preferences Page
 class CustomerRightMarker extends React.Component {
   render() {
     return (
@@ -25,6 +26,7 @@ class CustomerRightMarker extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   markerStyle: {
     ...Platform.select({

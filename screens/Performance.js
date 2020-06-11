@@ -1,9 +1,14 @@
+/* 
+  Currently just a static page
+  Future implementations: 
+   - Read db data about the user's charging stats and display their star rating for each pref
+   - Also a live graph for visually representing their charging stats
+*/
+
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, Platform, ScrollView} from 'react-native';
-import axios from 'axios';
 
-
-// import { Image, Platform, StyleSheet, ScrollView, Text, View } from 'react-native';
+// Importing image assets from assets directory
 import left from '../assets/back.png'
 import right from '../assets/right-arrow.png'
 import starEmpty from '../assets/star_empty.png'
@@ -15,7 +20,7 @@ import graph from '../assets/graph.png'
 import Header from '../components/Header';
 import Background from '../components/Background'
 
-
+// Component displays star ratings and graph of user's charging performance
 export default class Performance extends Component {
     render() {
         return (

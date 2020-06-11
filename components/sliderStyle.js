@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+// Stylesheet for the Slider on Preferences Page
+
+import {StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {

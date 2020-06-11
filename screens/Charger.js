@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
-import {Alert, Button, View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {Alert, Button, View, Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-community/picker'; // https://github.com/react-native-community/react-native-picker
 import Header from '../components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
 
-export default class Vehicles extends Component {
+// Component that shows the user all past connected chargers
+export default class Chargers extends Component {
+
+    // Initial class state vars
     state = {
         chargerData: '',
         index: 0,
@@ -19,6 +22,7 @@ export default class Vehicles extends Component {
         zip: ''
     };
 
+    // Sets the state vars to a charger record's data
     setChargers = (value, index) => {
         this.setState({
             index: index,
@@ -32,6 +36,7 @@ export default class Vehicles extends Component {
         })
     }
 
+    // Initial state vars once app retrieves the chargers from the charger collection in the database
     initChargers = () => {
         this.setState({
             evse: this.state.chargerData[this.state.index]["evseid"],
@@ -43,6 +48,7 @@ export default class Vehicles extends Component {
         })
     }
 
+    // Axios method that GETs charger records from the charger collection
     getData = async () => {
         if (this.state.chargerData === ''){
             let res = await axiosInstance.get(
@@ -54,13 +60,14 @@ export default class Vehicles extends Component {
         }
     }
 
+    // Creates a list of Picker Components that will be stored in the Picker View component within the render method
     chargerList = () => {
         return( Object.keys(this.state.chargerData).map( (x,i) => { 
             var charger_label = this.state.chargerData[parseInt(x)]["evseid"];
             return( <Picker.Item label={charger_label} key={x} value={i}  />)} ));
     }
 
-    // get backend data
+    // Retrieve charger records once the component is mounted (Charger Screen doesnt have to be seen to call this method)
     componentDidMount = () => {
         this.getData()
     }

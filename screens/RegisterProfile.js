@@ -5,8 +5,10 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Component that asks for User Profile Details
 export default function RegisterProfile({navigation}){
     
+    // Class state vars initialization
     const [idText, setidText] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [provider, setProvider] = useState("SoCalEdison");
@@ -16,9 +18,6 @@ export default function RegisterProfile({navigation}){
     const [selectedValue, setSelectedValue] = useState("AM");
     const [selectedValue2, setSelectedValue2] = useState("AM");
     
-    // const axios Post Implementation
-
-
     return(
         <View style={styles.container}>
             <Background/>

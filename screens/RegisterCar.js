@@ -4,21 +4,21 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Component asks the user for Car details
 export default function RegisterCar({route, navigation}){
     
+    // Pulls previous page param values through route
     const { evseID } = route.params;
     const { user } = route.params;
     const { zipcode } = route.params;
     const { provider } = route.params;
 
+    // Class state vars initialization
     const [nickname, setNickname] = useState("");
     const [manufacturer, setManufacturer] = useState("");
     const [model, setModel] = useState("");
     const [year, setYear] = useState("");
     
-    // const axios Post Implementation
-
-
     return(
         <View style={styles.container}>
             <Background/>
@@ -76,6 +76,7 @@ export default function RegisterCar({route, navigation}){
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
+                        // Checks that all input fields are not empty, then sends data to next page RegisterChargeTimes
                         if(nickname != "" && manufacturer != "" && model != "" && year != ""){
                             navigation.navigate("RegisterChargeTimes", {
                                 evseID: evseID,

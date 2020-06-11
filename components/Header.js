@@ -3,8 +3,10 @@ import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { MaterialIcons, EvilIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
+// Component that creates the Header seen in the mobile app (Hamburger Menu and User Icon)
 export default function Header({ title }){
 
+    // Components that are not made in App.js must use this navigation variable to change pages
     const navigation = useNavigation();
 
     return (

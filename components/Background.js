@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, Image, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import background from '../assets/green.jpg'
 
+// Component that shows the background image seen in each page of the app
 export default function Background(props){
     return (
         <View style={styles.backContainer}>

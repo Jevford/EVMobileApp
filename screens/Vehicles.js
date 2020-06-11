@@ -6,6 +6,7 @@ import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
 
 export default class Vehicles extends Component {
+    // Initializing class variables within the "state" object
     state = {
         userData: '',
         carData: '',
@@ -18,6 +19,7 @@ export default class Vehicles extends Component {
         year: ''
     };
 
+    // Setter Method for car variables in state
     setCars = (value, index) => {
         this.setState({
             index: index,
@@ -29,6 +31,7 @@ export default class Vehicles extends Component {
         })
     }
 
+    // Initialization of Car vars in state after retrieving data from the database
     initCars = () => {
         this.setState({
             nickname: this.state.carData[this.state.index]["nickname"],
@@ -38,6 +41,7 @@ export default class Vehicles extends Component {
         })
     }
 
+    // Axios method does an API call to the database to pull cars from the cars collection
     getData = async () => {
         if (this.state.carData === ''){
             let res = await axiosInstance.get(
@@ -49,17 +53,19 @@ export default class Vehicles extends Component {
         }
     }
 
+    // Method that creates a list of Car Picker Objects for Dropdown menu
     carList = () => {
         return( Object.keys(this.state.carData).map( (x,i) => { 
             var car_label = this.state.carData[parseInt(x)]["nickname"];
             return( <Picker.Item label={car_label} key={x} value={i}  />)} ));
     }
 
-    // get backend data
+    // Once this component is initialized (doesnt have to be shown immediately in the app), it calls this method to get db data beforehand
     componentDidMount = () => {
         this.getData()
     }
 
+    // Main function that generates the Vehicles page
     render() {
         return (
             <View style={styles.container}>

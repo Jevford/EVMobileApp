@@ -1,11 +1,12 @@
 import React, {Component, useState} from 'react';
-import {Alert, Button, View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, TouchableHighlightBase} from 'react-native';
+import {Alert, Button, View, Text, TextInput, StyleSheet} from 'react-native';
 import Header from '../components/Header';
 import axiosInstance from '../components/axiosInstance';
 import Background from '../components/Background'
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default class Vehicles extends Component {
+// Component asks the user details on a charger to add to their profile of past connected chargers
+export default class ChargerAdd extends Component {
     state = {
         evse: '',
         level: '',
@@ -15,6 +16,7 @@ export default class Vehicles extends Component {
         zip: '',
     }
 
+    // Axios method to post a new charger record in charger collection in the database
     postData = async () => {
         const insert = {
             "evseid":this.state.evse, 
@@ -44,9 +46,12 @@ export default class Vehicles extends Component {
             })
         
         Alert.alert('Charger Added!');
+
+        // Go back to the Charger Page once a new car is added
         this.props.navigation.reset({routes: [{ name: 'Charger' }],});
     }
 
+    // Renders the page elements on the screen, like html
     render() {
         return (
             <View style={styles.container}>

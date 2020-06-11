@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform, Alert, AsyncStorage} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage} from 'react-native';
+
+/* 
+    This specific import is a third party component from the react native community, read up on how this is implemented
+    if you need to change the custom slider unique to this App
+    
+    Refer CustomLeft/RightMarker files in components directory to see how I made the sliders on a single line
+    sliderStyle.js is the specific styling of the overall slider
+*/
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import axiosInstance from '../components/axiosInstance';
 import CustomMarkerLeft from '../components/CustomLeftMarker';
@@ -9,7 +17,10 @@ import customSliderStyle from '../components/sliderStyle';
 import Header from '../components/Header';
 import Background from '../components/Background';
 
+// Component that a user can select prefs and update that data to their userprofile record in the database
 export default class Preferences extends Component {
+    // Constructor wrapper was not really needed, as seen in other files, but we used this just to experiment
+    // You could have just done the this.state object vars initialization as seen in other files
     constructor(){
         super();
         this.state = {
@@ -26,6 +37,7 @@ export default class Preferences extends Component {
         }
     }
 
+    // Method that calculates pref vars and sets them into the state object, as you move the sliders around
     setSliderValues = (s1, s2) => {
         let env = s2 - s1;
         let soc = 100 - (s1 + env);
@@ -34,12 +46,15 @@ export default class Preferences extends Component {
             envValue: env,
             socValue: soc
         })
+
+        // These following methods change the text based on the pref values
         this.setFactorPriorities();
         this.setDescriptionText('cost');
         this.setDescriptionText('env');
         this.setDescriptionText('soc');
     }
 
+    // Changes the priority labels for each pref
     setFactorPriorities = () => {
         this.setState({
             costPriority: this.ratePriority(this.state.costValue),
@@ -48,12 +63,14 @@ export default class Preferences extends Component {
         })
     }
 
+    // In conjuction with setFactorPriorites, determines the priority for each pref based on a given value
     ratePriority = (value) => {
         if(value < 30) return '[Low]';
         else if(value < 50) return '[Medium]';
         else return '[High]';
     }
 
+    // Method that changes the text of a given pref ( factor )
     setDescriptionText = (factor) => {
         if(factor === 'cost'){
             if(this.state.costValue < 30){
@@ -108,6 +125,7 @@ export default class Preferences extends Component {
         }
     }
 
+    // Axios method that update's a user's userprofile record in the database
     postData = async () => {
 
         // Getting the current Username
@@ -119,6 +137,7 @@ export default class Preferences extends Component {
             }
           } catch (error) {
             // Error retrieving data
+            // console.log(error)
           }
 
         const param = {
@@ -132,7 +151,6 @@ export default class Preferences extends Component {
             "environment": this.state.envValue, 
         }
         let insertData = JSON.stringify(insert);
-
 
         const data = `collection=userprofiles&param=${paramData}&data=${insertData}`;
 
@@ -151,9 +169,6 @@ export default class Preferences extends Component {
     }
 
     render() {
-        // TEST POST
-        // this.postData();
-
         return (
             <View style={styles.container}>
                 <Header title='Preferences'/>

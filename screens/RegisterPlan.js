@@ -5,6 +5,7 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Component that asks for the User's Electrical Provider and Plan
 export default function RegisterPlan({route, navigation}){
     const { evseID } = route.params;
     const { user } = route.params;
@@ -66,6 +67,7 @@ export default function RegisterPlan({route, navigation}){
                 <TouchableOpacity 
                     style={styles.btnSubmit}
                     onPress={() => {
+                        // Checks that inputs have been filled and sends this component's data to RegisterCar.js through route
                         if(zipcode != "" && plan != ""){
                             navigation.navigate("RegisterCar", {
                                 evseID: evseID,

@@ -6,6 +6,7 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Helpfer function that posts a user record into the userprofiles collection in the database
 const postData = async (user, make, model, zip, provider, startTime, endTime) => {
     provider = provider.replace("&", "%26")
     const insert = {
@@ -37,8 +38,10 @@ const postData = async (user, make, model, zip, provider, startTime, endTime) =>
         })
 }
 
+// Components that asks the user for Specific Charge Times
 export default function RegisterChargeTimes({route, navigation}){
 
+    // Pulls param values from previous pages through the route 
     const { evseID } = route.params;
     const { user } = route.params;
     const { zipcode } = route.params;
@@ -46,14 +49,12 @@ export default function RegisterChargeTimes({route, navigation}){
     const { make } = route.params;
     const { model } = route.params;
     
+    // Class state vars initialization
     const [selectedStartTime, setStartTime] = useState("");
     const [selectedEndTime, setEndTime] = useState("");
     const [selectedValue, setSelectedValue] = useState("AM");
     const [selectedValue2, setSelectedValue2] = useState("AM");
     
-    // const axios Post Implementation
-
-
     return(
         <View style={styles.container}>
             <Background/>
@@ -130,12 +131,14 @@ export default function RegisterChargeTimes({route, navigation}){
                                 endtime
                             )
 
-                            // Setting new Username for AsyncStorage
+                            // New JSON object to change the username in AsyncStorage
                             let USER_delta = {
                                 username: user
                             }
+                            
+                            // Setting new Username for AsyncStorage
                             AsyncStorage.mergeItem('USER', JSON.stringify(USER_delta), () => {
-                                console.log("Username has been updated for USER")
+                                // console.log("Username has been updated for USER") <- Testing purposes
                             })
 
                             navigation.popToTop()

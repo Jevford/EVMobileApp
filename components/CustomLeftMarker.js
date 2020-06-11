@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Platform, TouchableHighlight } from 'react-native';
 
+// Creates a custom component for the custom left slider shown on the Preferences Page
 class CustomerLeftMarker extends React.Component {
   render() {
     return (

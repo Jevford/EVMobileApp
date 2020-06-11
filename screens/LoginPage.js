@@ -4,11 +4,14 @@ import Background from '../components/Background';
 import Logo from '../assets/registerIcons/logo.png';
 import EVIE from '../assets/registerIcons/finalLogo.png';
 
+// Component that greets the user on initial app startup, asks to login or create a new account (userprofile)
+// If you are logging in, please use a valid username stored in the userprofile collection in the database
+// Otherwise create a new account, and use that same username from then on
 export default function LoginPage({navigation}){
     
+    // Class state vars initialization
     var [username, setUsername] = useState("");
     var [password, setPassword] = useState("");
-    
 
     return(
         <View style={styles.container}>
