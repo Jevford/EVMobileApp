@@ -7,6 +7,10 @@
 
 1.0.0
 
+# Last Updated
+
+June 11, 2020
+
 # Set up and Running the Application
 
 Ask the Sponsor/Project lead or Refer to the EVIE Mobile App Documentation for more information.
