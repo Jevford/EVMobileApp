@@ -4,7 +4,7 @@ This application was developed for CalPlug of CALIT2 and is part of a larger sys
 
 # Project Overview
 
-The EVIE Mobile App gives control to a user on how they want to affect their eletric vehicle charger.  The application allows users to select from a variety of optimized charging options based on their preferences of Cost, Environment, and Society, which will then trigger a custom J1772 model charger to begin charging using the selected optimization option.  This application interacts with a MongoDB database that stores user credentials, preferences, chargers, cars, and statistics based on their charging performance.  MQTT is involved in communicating with the physical charger from the mobile application.
+The EVIE Mobile App gives control to a user on how they want to affect their electric vehicle charger.  The application allows users to select from a variety of optimized charging options based on their preferences of Cost, Environment, and Society, which will then trigger a custom J1772 model charger to begin charging using the selected optimization option.  This application interacts with a MongoDB database that stores user credentials, preferences, chargers, cars, and statistics based on their charging performance.  MQTT is involved in communicating with the physical charger from the mobile application.
 
 # Technologies Used
 
