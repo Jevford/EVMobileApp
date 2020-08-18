@@ -12,8 +12,9 @@ The EVIE Mobile App gives control to a user on how they want to affect their ele
 <img src="Screenshot_1596238198.png" width="450px">
 <img src="Screenshot_1596238248.png" width="450px">
 
+
 Testing MQTT implementation between mobile app and J1772 charger
-<img src="mqttTesting" width="450px">
+<img src="mqttTesting.jpg" width="450px">
 
 # Technologies Used
 
