@@ -8,9 +8,9 @@ The EVIE Mobile App gives control to a user on how they want to affect their ele
 
 <img src="EVIE.gif" width="850px">
 <img src="Screenshot_1596238198.png" width="850px">
-<img src="Screenshot_1596238218.png" width="850px">
-<img src="Screenshot_1596238233.png" width="850px">
-<img src="Screenshot_1596238248.png" width="850px">
+<img src="Screenshot_1596238218.png" width="450px">
+<img src="Screenshot_1596238233.png" width="450px">
+<img src="Screenshot_1596238248.png" width="450px">
 
 # Technologies Used
 
